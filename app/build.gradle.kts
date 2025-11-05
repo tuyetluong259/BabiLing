@@ -61,4 +61,12 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
+    implementation("com.google.firebase:firebase-firestore-ktx") // Cho FirebaseFirestore
+    implementation("com.google.firebase:firebase-storage-ktx")  // Cho FirebaseStorage
+    implementation("com.google.firebase:firebase-database-ktx") // Cho FirebaseDatabase
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 }

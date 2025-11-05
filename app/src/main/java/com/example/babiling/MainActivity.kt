@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.babiling.screens.OnboardingScreen
-import com.example.babiling.screens.SplashScreen
+import com.example.babiling.ui.screens.onboarding.OnboardingScreen
+import com.example.babiling.ui.screens.splash.SplashScreen
 import com.example.babiling.ui.theme.BabiLingTheme
 
 class MainActivity : ComponentActivity() {

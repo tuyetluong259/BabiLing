@@ -1,4 +1,4 @@
-package com.example.babiling.screens
+package com.example.babiling.ui.screens.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.babiling.R
 import com.example.babiling.Screen
-import com.example.babiling.ui.theme.BalooThambiFamily
+import com.example.babiling.ui.theme.BalooThambi2Family
 import com.example.babiling.ui.theme.BabiLingTheme
 import androidx.compose.ui.text.font.FontStyle
 
@@ -65,7 +65,7 @@ fun OnboardingScreen(navController: NavController) {
                 text = "Skip",
                 color = Color(0xFF28BAEE),
                 fontSize = 16.sp,
-                fontFamily = BalooThambiFamily
+                fontFamily = BalooThambi2Family
             )
         }
 
@@ -125,7 +125,7 @@ fun Page1Content() {
                         append("trẻ 3 - 10 tuổi")
                     }
                 },
-                fontFamily = BalooThambiFamily,
+                fontFamily = BalooThambi2Family,
                 fontSize = 26.sp,
                 textAlign = TextAlign.Center,
                 lineHeight = 34.sp
@@ -170,7 +170,7 @@ fun Page2Content() {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "Vừa chơi vừa học",
-            fontFamily = BalooThambiFamily,
+            fontFamily = BalooThambi2Family,
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -180,7 +180,7 @@ fun Page2Content() {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Hình thành niềm yêu thích và hứng thú với học tập.",
-            fontFamily = BalooThambiFamily,
+            fontFamily = BalooThambi2Family,
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Center,
@@ -208,7 +208,7 @@ fun Page3Content() {
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Lộ trình học theo từng cấp độ",
-            fontFamily = BalooThambiFamily,
+            fontFamily = BalooThambi2Family,
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -218,7 +218,7 @@ fun Page3Content() {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Nội dung bài học được sắp xếp\n  bài bản theo độ tuổi",
-            fontFamily = BalooThambiFamily,
+            fontFamily = BalooThambi2Family,
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Center,

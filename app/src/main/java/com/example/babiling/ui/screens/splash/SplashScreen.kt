@@ -1,4 +1,4 @@
-package com.example.babiling.screens
+package com.example.babiling.ui.screens.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.babiling.R
 import com.example.babiling.Screen
-import com.example.babiling.ui.theme.BalooThambiFamily
+import com.example.babiling.ui.theme.BalooThambi2Family
 import com.example.babiling.ui.theme.BabiLingTheme
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.Arrangement
@@ -59,7 +59,7 @@ fun SplashScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp)) //Khoảng cách giữa ảnh và chữ
             Text(
                 text = "Học tiếng thật dễ – Cùng bé học\nngay hôm nay!",
-                fontFamily = BalooThambiFamily,
+                fontFamily = BalooThambi2Family,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,

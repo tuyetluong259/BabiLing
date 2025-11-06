@@ -18,7 +18,9 @@ val BalooThambi2Family = FontFamily(
     Font(R.font.baloothambi2_extrabold, FontWeight.ExtraBold),
     Font(R.font.baloothambi2_semibold, FontWeight.SemiBold)
 )
-
+val BalooThambiFamily = FontFamily(
+    Font(R.font.baloo_thambi_regular)
+)
 // Set of Material typography styles to start with
 val Typography = Typography(
 //    bodyLarge = TextStyle(

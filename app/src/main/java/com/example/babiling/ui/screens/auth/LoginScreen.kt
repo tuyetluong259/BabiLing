@@ -23,8 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.babiling.R
 import com.example.babiling.ui.theme.*
 import com.example.babiling.ui.theme.BabiLingTheme
-import kotlinx.coroutines.flow.collectAsState
-
+import androidx.compose.runtime.collectAsState
 // ===================================================================
 // I. COMPONENT: LoginFormCard (Đã chuyển sang nhận AuthUiState)
 // ===================================================================

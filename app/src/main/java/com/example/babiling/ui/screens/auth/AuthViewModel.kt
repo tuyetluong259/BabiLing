@@ -2,12 +2,11 @@ package com.example.babiling.ui.screens.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-// AuthRepository cùng package
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
+import com.example.babiling.data.repository.AuthRepository // <--- THÊM DÒNG NÀY
 // Trạng thái UI
 data class AuthUiState(
     val phoneNumber: String = "",

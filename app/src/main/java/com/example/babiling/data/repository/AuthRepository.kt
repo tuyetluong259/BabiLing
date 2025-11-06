@@ -1,6 +1,6 @@
 package com.example.babiling.data.repository
 
-import com.example.babiling.FirebaseUtils
+import com.example.babiling.utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseAuth
 import java.lang.IllegalArgumentException
 import kotlinx.coroutines.delay

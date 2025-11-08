@@ -1,4 +1,4 @@
-package com.example.babiling.ui.screens.Choose
+package com.example.babiling.ui.screens.choose
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

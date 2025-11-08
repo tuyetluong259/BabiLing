@@ -18,8 +18,10 @@ import com.example.babiling.ui.screens.splash.SplashScreen
 import com.example.babiling.ui.screens.auth.LoginScreen
 import com.example.babiling.ui.screens.auth.RegisterScreen
 import com.example.babiling.ui.screens.auth.VerificationScreen
-import com.example.babiling.ui.screens.Choose.ChooseLangScreen
-import com.example.babiling.ui.screens.Choose.ChooseAgeScreen
+import com.example.babiling.ui.screens.choose.ChooseLangScreen
+import com.example.babiling.ui.screens.choose.ChooseAgeScreen
+// === THÊM IMPORT CHO HOME SCREEN ===
+import com.example.babiling.ui.screens.home.HomeScreen
 import com.example.babiling.ui.theme.BabiLingTheme
 
 class MainActivity : ComponentActivity() {
@@ -66,7 +68,6 @@ fun AppNavigation() {
                     navController.navigate("register_screen")
                 },
                 onNavigateToHome = {
-                    // Tạm thời điều hướng đến "home_screen" (bạn sẽ tạo sau)
                     navController.navigate("home_screen") {
                         popUpTo("login_screen") { inclusive = true }
                     }
@@ -76,8 +77,6 @@ fun AppNavigation() {
 
         // Màn 4: Register (Đăng ký)
         composable(route = "register_screen") {
-            // SỬA LỖI: Hàm RegisterScreen gốc không có tham số 'onNavigateToLogin'.
-            // Việc điều hướng sẽ được xử lý bên trong màn hình đó.
             RegisterScreen()
         }
 
@@ -86,17 +85,11 @@ fun AppNavigation() {
             route = "verification_screen/{phoneNumber}",
             arguments = listOf(navArgument("phoneNumber") { type = NavType.StringType })
         ) { backStackEntry ->
-            // Lấy số điện thoại đã được truyền qua
-            // val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
-
-            // SỬA LỖI: Gọi hàm VerificationScreen với đúng các tham số mà nó yêu cầu.
             VerificationScreen(
                 onBackClick = {
-                    navController.popBackStack() // Quay lại màn hình trước đó (Login)
+                    navController.popBackStack()
                 },
                 onVerifyClick = { otp ->
-                    // TODO: Xử lý logic xác minh OTP
-                    // Sau khi xác minh thành công, bạn có thể điều hướng đi
                     navController.navigate("home_screen") {
                         popUpTo("login_screen") { inclusive = true }
                     }
@@ -116,8 +109,10 @@ fun AppNavigation() {
         composable(Screen.ChooseAge.route) {
             ChooseAgeScreen(navController = navController)
         }
-        // TODO: Thêm composable cho "home_screen" và các màn hình khác sau này
-        // composable("home_screen") { HomeScreen() }
 
+        // === THÊM MÀN HÌNH HOME VÀO ĐÂY ===
+        composable("home_screen") {
+            HomeScreen(navController = navController)
+          }
     }
 }

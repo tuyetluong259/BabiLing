@@ -8,23 +8,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.compose.material3.Text
+
+import com.google.firebase.FirebaseApp
 import com.example.babiling.ui.screens.onboarding.OnboardingScreen
 import com.example.babiling.ui.screens.splash.SplashScreen
 import com.example.babiling.ui.screens.auth.LoginScreen
-import com.example.babiling.ui.screens.auth.RegisterScreen
-import com.example.babiling.ui.screens.auth.VerificationScreen
-import com.example.babiling.ui.screens.Choose.ChooseLangScreen
-import com.example.babiling.ui.screens.Choose.ChooseAgeScreen
+import com.example.babiling.ui.screens.choose.ChooseLangScreen
+import com.example.babiling.ui.screens.choose.ChooseAgeScreen
 import com.example.babiling.ui.theme.BabiLingTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(this)
+
         setContent {
             BabiLingTheme {
                 Surface(
@@ -46,78 +48,41 @@ fun AppNavigation() {
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
-        // Màn 1: Splash
-        composable(route = Screen.Splash.route) {
-            SplashScreen(navController = navController)
+
+        // Splash
+        composable(Screen.Splash.route) {
+            SplashScreen(navController)
         }
 
-        // Màn 2: Onboarding
-        composable(route = Screen.Onboarding.route) {
-            OnboardingScreen(navController = navController)
+        // Onboarding
+        composable(Screen.Onboarding.route) {
+            OnboardingScreen(navController)
         }
 
-        // Màn 3: Login
-        composable(route = "login_screen") {
+        // Login (now Google only)
+        composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateToVerification = { phoneNumber ->
-                    navController.navigate("verification_screen/$phoneNumber")
-                },
-                onNavigateToRegister = {
-                    navController.navigate("register_screen")
-                },
                 onNavigateToHome = {
-                    // Tạm thời điều hướng đến "home_screen" (bạn sẽ tạo sau)
-                    navController.navigate("home_screen") {
-                        popUpTo("login_screen") { inclusive = true }
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 }
             )
         }
 
-        // Màn 4: Register (Đăng ký)
-        composable(route = "register_screen") {
-            // SỬA LỖI: Hàm RegisterScreen gốc không có tham số 'onNavigateToLogin'.
-            // Việc điều hướng sẽ được xử lý bên trong màn hình đó.
-            RegisterScreen()
-        }
-
-        // Màn 5: Verification (Xác minh OTP)
-        composable(
-            route = "verification_screen/{phoneNumber}",
-            arguments = listOf(navArgument("phoneNumber") { type = NavType.StringType })
-        ) { backStackEntry ->
-            // Lấy số điện thoại đã được truyền qua
-            // val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
-
-            // SỬA LỖI: Gọi hàm VerificationScreen với đúng các tham số mà nó yêu cầu.
-            VerificationScreen(
-                onBackClick = {
-                    navController.popBackStack() // Quay lại màn hình trước đó (Login)
-                },
-                onVerifyClick = { otp ->
-                    // TODO: Xử lý logic xác minh OTP
-                    // Sau khi xác minh thành công, bạn có thể điều hướng đi
-                    navController.navigate("home_screen") {
-                        popUpTo("login_screen") { inclusive = true }
-                    }
-                },
-                onResendClick = {
-                    // TODO: Xử lý logic gửi lại mã OTP
-                }
-            )
-        }
-
-        // 6. Choose Language Screen
+        // Choose Language
         composable(Screen.ChooseLang.route) {
-            ChooseLangScreen(navController = navController)
+            ChooseLangScreen(navController)
         }
 
-        // 7. Choose Age Screen
+        // Choose Age
         composable(Screen.ChooseAge.route) {
-            ChooseAgeScreen(navController = navController)
+            ChooseAgeScreen(navController)
         }
-        // TODO: Thêm composable cho "home_screen" và các màn hình khác sau này
-        // composable("home_screen") { HomeScreen() }
 
+        // Home
+        composable(Screen.Home.route) {
+            Text("Màn hình chính")
+        }
     }
 }

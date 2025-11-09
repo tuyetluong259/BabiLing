@@ -18,4 +18,5 @@ sealed class Screen(val route: String) {
     object Progress : Screen("progress_screen")
     object Settings : Screen("settings_screen")
     object EditProfile : Screen("edit_profile_screen")
+
 }

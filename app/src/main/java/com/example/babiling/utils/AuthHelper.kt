@@ -27,7 +27,7 @@ object AuthHelper {
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(
-                "683013257609-de6tu6gqjh09oq2s1mh5hk9mia2pi5g9.apps.googleusercontent.com"
+                "683013257609-3i3u7lhl7bimaq1jihjqkohjs44cquft.apps.googleusercontent.com"
             )
             .requestEmail()
             .build()

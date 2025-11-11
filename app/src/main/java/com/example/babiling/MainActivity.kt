@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.material3.Text
-
 import com.google.firebase.FirebaseApp
 import com.example.babiling.ui.screens.onboarding.OnboardingScreen
 import com.example.babiling.ui.screens.splash.SplashScreen
 import com.example.babiling.ui.screens.auth.LoginScreen
+import com.example.babiling.ui.screens.auth.RegisterScreen
 import com.example.babiling.ui.screens.choose.ChooseLangScreen
 import com.example.babiling.ui.screens.choose.ChooseAgeScreen
+import com.example.babiling.ui.screens.home.HomeScreen
 import com.example.babiling.ui.theme.BabiLingTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,20 +48,37 @@ fun AppNavigation() {
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
-
-        // Splash
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
 
-        // Onboarding
         composable(Screen.Onboarding.route) {
             OnboardingScreen(navController)
         }
 
-        // Login (now Google only)
         composable(Screen.Login.route) {
             LoginScreen(
+                onLogin = { _, _ ->
+                navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onGoogleLogin = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
+            )
+        }
+
+        composable(Screen.Register.route) {
+            RegisterScreen(
+                onBackToLogin = {
+                    navController.popBackStack()
+                },
                 onNavigateToHome = {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
@@ -70,19 +87,16 @@ fun AppNavigation() {
             )
         }
 
-        // Choose Language
         composable(Screen.ChooseLang.route) {
             ChooseLangScreen(navController)
         }
 
-        // Choose Age
         composable(Screen.ChooseAge.route) {
             ChooseAgeScreen(navController)
         }
 
-        // Home
         composable(Screen.Home.route) {
-            Text("Màn hình chính")
+            HomeScreen()
         }
     }
 }

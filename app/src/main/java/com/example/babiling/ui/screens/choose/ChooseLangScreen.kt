@@ -29,7 +29,9 @@ import com.example.babiling.ui.theme.BabiLingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChooseLangScreen(navController: NavController) {
+fun ChooseLangScreen(
+    onNavigateToChooseAge: () -> Unit = {}
+) {
 
     val titleColor = Color(0xFF0D47A1)
     val titleColor2 = Color(0xFFE25939)
@@ -99,16 +101,12 @@ fun ChooseLangScreen(navController: NavController) {
                     LanguageCard(
                         imageRes = R.drawable.flag_japan,
                         text = "Tiếng Nhật",
-                        onClick = {
-                            navController.navigate(Screen.ChooseAge.route)
-                        }
+                        onClick = onNavigateToChooseAge
                     )
                     LanguageCard(
                         imageRes = R.drawable.flag_my,
                         text = "Tiếng Anh",
-                        onClick = {
-                            navController.navigate(Screen.ChooseAge.route)
-                        }
+                        onClick = onNavigateToChooseAge
                     )
                 }
             }
@@ -119,9 +117,7 @@ fun ChooseLangScreen(navController: NavController) {
 
             // 4. NÚT BẮT ĐẦU
             Button(
-                onClick = {
-                    navController.navigate(Screen.ChooseAge.route)
-                },
+                onClick = onNavigateToChooseAge,
                 modifier = Modifier
                     .fillMaxWidth(0.9f) // Hơi nhỏ hơn 1 chút
                     .height(56.dp),
@@ -203,6 +199,6 @@ fun LanguageCard(
 fun ChooseLangScreenPreview() {
     BabiLingTheme {
         val fakeNavController = rememberNavController()
-        ChooseLangScreen(navController = fakeNavController)
+        ChooseLangScreen()
     }
 }

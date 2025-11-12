@@ -25,7 +25,10 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun ChooseAgeScreen(navController: NavController) {
+fun ChooseAgeScreen(
+    onNavigateToHome: () -> Unit = {},
+    onNavigateBack: () -> Unit = {}
+) {
 
     val backgroundColor = Color(0xFFA7E8BD)
     val titleColor = Color(0xFFE25939)
@@ -49,9 +52,7 @@ fun ChooseAgeScreen(navController: NavController) {
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                IconButton(onClick = {
-                    navController.popBackStack()
-                }) {
+                IconButton(onClick = onNavigateBack) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_back_arrow),
                         contentDescription = "Quay lại",
@@ -77,9 +78,7 @@ fun ChooseAgeScreen(navController: NavController) {
                 imageRes = R.drawable.bbi1,
                 text = "Dưới 4 tuổi",
                 borderColor = cardBorderColor,
-                onClick = {
-                    // TODO: Điều hướng đến màn hình Home
-                }
+                onClick = onNavigateToHome
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -88,9 +87,7 @@ fun ChooseAgeScreen(navController: NavController) {
                 imageRes = R.drawable.bbi2,
                 text = "5-10 tuổi",
                 borderColor = cardBorderColor,
-                onClick = {
-                    // TODO: Điều hướng đến màn hình Home
-                }
+                onClick = onNavigateToHome
             )
         }
 
@@ -172,6 +169,6 @@ fun SunIcon(
 fun ChooseAgeScreenPreview() {
     BabiLingTheme {
         val fakeNavController = rememberNavController()
-        ChooseAgeScreen(navController = fakeNavController)
+        ChooseAgeScreen()
     }
 }

@@ -35,6 +35,28 @@ android {
     buildFeatures {
         compose = true
     }
+    signingConfigs {
+        create("releaseConfig") {
+            storeFile = file("D:/Android_Keys/babiling/babiling_keys")
+            storePassword = "123456"
+            keyAlias = "key0"
+            keyPassword = "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            // Gán cấu hình ký vừa tạo vào bản release
+            signingConfig = signingConfigs.getByName("releaseConfig")
+            
+            // Các cấu hình khác
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -58,7 +80,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    val composeUiVersion = "1.7.0"
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeUiVersion")
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Firebase BOM

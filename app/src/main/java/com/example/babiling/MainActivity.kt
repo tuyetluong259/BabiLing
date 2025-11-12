@@ -59,12 +59,12 @@ fun AppNavigation() {
         composable(Screen.Login.route) {
             LoginScreen(
                 onLogin = { _, _ ->
-                navController.navigate(Screen.Home.route) {
+                navController.navigate(Screen.ChooseLang.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
                 onGoogleLogin = {
-                    navController.navigate(Screen.Home.route) {
+                    navController.navigate(Screen.ChooseLang.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
@@ -79,8 +79,8 @@ fun AppNavigation() {
                 onBackToLogin = {
                     navController.popBackStack()
                 },
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home.route) {
+                onNavigateToLang = {
+                    navController.navigate(Screen.ChooseLang.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 }
@@ -92,7 +92,16 @@ fun AppNavigation() {
         }
 
         composable(Screen.ChooseAge.route) {
-            ChooseAgeScreen(navController)
+            ChooseAgeScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route)
+                    }
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(Screen.Home.route) {

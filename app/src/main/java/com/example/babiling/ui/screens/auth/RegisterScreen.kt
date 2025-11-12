@@ -27,7 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 @Composable
 fun RegisterScreen(
     onBackToLogin: () -> Unit = {},
-    onNavigateToHome: () -> Unit = {}
+    onNavigateToLang: () -> Unit = {}
 ) {
     val firestore = FirebaseFirestore.getInstance()
 
@@ -258,7 +258,7 @@ fun RegisterScreen(
 
                         Spacer(Modifier.height(10.dp))
 
-                        TextButton(onClick = onNavigateToHome) {
+                        TextButton(onClick = onNavigateToLang) {
                             Text(
                                 "Đã có tài khoản? Đăng nhập",
                                 color = DarkText.copy(alpha = 0.7f)

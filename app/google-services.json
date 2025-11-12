@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "683013257609-aqn3f1ciao2dumcv5k49irqri1pu1ais.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.babiling",
+            "certificate_hash": "1fdc157e6bf36831817943b1169fe5f406b0fee9"
+          }
+        },
+        {
+          "client_id": "683013257609-t12i0eb4nq0qiijcdb6jkmj555j6q61n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.babiling",
+            "certificate_hash": "a4a7de150b8a04d6ac0822d08d691657893e1bb6"
+          }
+        },
+        {
           "client_id": "683013257609-de6tu6gqjh09oq2s1mh5hk9mia2pi5g9.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -88,7 +88,11 @@ fun AppNavigation() {
         }
 
         composable(Screen.ChooseLang.route) {
-            ChooseLangScreen(navController)
+            ChooseLangScreen(
+                onNavigateToChooseAge = {
+                    navController.navigate(Screen.ChooseAge.route)
+                }
+            )
         }
 
         composable(Screen.ChooseAge.route) {

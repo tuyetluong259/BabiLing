@@ -22,40 +22,19 @@
           }
         },
         {
-          "client_id": "683013257609-de6tu6gqjh09oq2s1mh5hk9mia2pi5g9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBhQVGFcphrvol_Sdv_q2yRndIGNy2Nmzo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "683013257609-de6tu6gqjh09oq2s1mh5hk9mia2pi5g9.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:683013257609:android:01454f180fffea6b7ec958",
-        "android_client_info": {
-          "package_name": "com.example.btth"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "683013257609-nenvl8hhe83ik2khv8rd2m7ltqunhifo.apps.googleusercontent.com",
+          "client_id": "683013257609-aqn3f1ciao2dumcv5k49irqri1pu1ais.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.btth",
-            "certificate_hash": "f0ed7a4263974095249f8764fdbb2a7be9644a62"
+            "package_name": "com.example.babiling",
+            "certificate_hash": "1fdc157e6bf36831817943b1169fe5f406b0fee9"
+          }
+        },
+        {
+          "client_id": "683013257609-t12i0eb4nq0qiijcdb6jkmj555j6q61n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.babiling",
+            "certificate_hash": "a4a7de150b8a04d6ac0822d08d691657893e1bb6"
           }
         },
         {

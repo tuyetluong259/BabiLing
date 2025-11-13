@@ -2,19 +2,16 @@ package com.example.babiling.ui.screens.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.babiling.data.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.example.babiling.data.repository.AuthRepository // <--- THÊM DÒNG NÀY
-// Trạng thái UI
+
+// UI state cho Google Login
 data class AuthUiState(
-    val phoneNumber: String = "",
-    val otpCode: String = "",
     val isLoading: Boolean = false,
-    val needsOtpVerification: Boolean = false,
-    val isLoginSuccessful: Boolean = false,
-    val isGoogleLoginSuccessful: Boolean = false, // TRẠNG THÁI MỚI CHO GOOGLE
+    val isGoogleLoginSuccessful: Boolean = false,
     val errorMessage: String? = null
 )
 
@@ -25,73 +22,37 @@ class AuthViewModel(
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState
 
-    // --- LOGIC CHUNG (Login Screen) ---
-
-    fun onPhoneNumberChange(newNumber: String) {
-        val filteredNumber = newNumber.filter { it.isDigit() }
-        _uiState.update { it.copy(phoneNumber = filteredNumber, errorMessage = null) }
-    }
-
-    // Gửi mã OTP
-    fun handleLogin() {
-        val currentNumber = _uiState.value.phoneNumber
-        if (currentNumber.length < 10) {
-            _uiState.update { it.copy(errorMessage = "Vui lòng nhập đủ 10 số điện thoại.") }
-            return
-        }
-        _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-
-        viewModelScope.launch {
-            try {
-                repository.sendVerificationCode(currentNumber)
-                _uiState.update { it.copy(isLoading = false, needsOtpVerification = true) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false, errorMessage = e.message ?: "Lỗi gửi mã.") }
-            }
-        }
-    }
-
-    // Đăng nhập bằng Google
+    //Login bằng Google
     fun handleGoogleLogin() {
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch {
             try {
                 repository.signInWithGoogle()
-                _uiState.update { it.copy(isLoading = false, isGoogleLoginSuccessful = true) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isGoogleLoginSuccessful = true
+                    )
+                }
             } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false, errorMessage = e.message ?: "Lỗi Google Sign-In.") }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = e.message ?: "Lỗi đăng nhập Google."
+                    )
+                }
             }
         }
     }
 
-    fun onOtpVerificationNavigated() {
-        _uiState.update { it.copy(needsOtpVerification = false) }
+    //Reset error sau khi hiển thị popup
+    fun clearError() {
+        _uiState.update { it.copy(errorMessage = null) }
     }
 
-    // --- LOGIC CHO VERIFICATION SCREEN ---
-
-    fun onOtpCodeChange(newCode: String) {
-        val filteredCode = newCode.filter { it.isDigit() }.take(6)
-        _uiState.update { it.copy(otpCode = filteredCode, errorMessage = null) }
-    }
-
-    // Xác minh mã OTP
-    fun handleOtpVerification() {
-        val currentOtp = _uiState.value.otpCode
-        if (currentOtp.length != 6) {
-            _uiState.update { it.copy(errorMessage = "Mã OTP phải có 6 chữ số.") }
-            return
-        }
-        _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-
-        viewModelScope.launch {
-            try {
-                repository.signInWithOtp(currentOtp)
-                _uiState.update { it.copy(isLoading = false, isLoginSuccessful = true) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false, errorMessage = e.message ?: "Xác minh OTP thất bại.") }
-            }
-        }
+    //Reset trạng thái Google login nếu cần điều hướng lại
+    fun resetGoogleLoginFlag() {
+        _uiState.update { it.copy(isGoogleLoginSuccessful = false) }
     }
 }

@@ -26,6 +26,10 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BalooThambiFamily
 import com.example.babiling.ui.theme.BabiLingTheme
 
+// <-- CÁC IMPORT ĐƯỢC THÊM VÀO -->
+import androidx.compose.foundation.clickable
+import com.example.babiling.Screen
+
 @Composable
 fun HomeScreen(navController: NavController) {
 
@@ -54,8 +58,14 @@ fun HomeScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
+                // ======== THAY ĐỔI Ở ĐÂY ========
                 Card(
-                    modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .clickable { // <-- DÒNG 1: THÊM HÀNH ĐỘNG CLICK
+                            navController.navigate(Screen.TopicSelect.route) // <-- DÒNG 2: ĐIỀU HƯỚNG
+                        },
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(4.dp)
@@ -82,6 +92,7 @@ fun HomeScreen(navController: NavController) {
                         )
                     }
                 }
+                // ======== KẾT THÚC THAY ĐỔI ========
 
                 Card(
                     modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),

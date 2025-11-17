@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,73 +31,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
-import androidx.compose.material3.CenterAlignedTopAppBar
 import com.example.babiling.ui.theme.BalooThambi2Family
-data class FlashcardItem(
-    val name: String,
-    val imagePath: String
-)
+import androidx.compose.material3.CenterAlignedTopAppBar
 
-val greetingList = listOf(
-    FlashcardItem("HELLO", "greetings_flashcard/greetings_flashcard_hello.png"),
-    FlashcardItem("GOODBYE", "greetings_flashcard/greetings_flashcard_goodbye.png"),
-    FlashcardItem("GOOD MORNING", "greetings_flashcard/greetings_flashcard_goodmorning.png"),
-    FlashcardItem("GOOD NIGHT", "greetings_flashcard/greetings_flashcard_goodnight.png"),
-    FlashcardItem("GOOD AFTERNOON", "greetings_flashcard/greetings_flashcard_goodafternoon.png"),
-    FlashcardItem("GOOD EVENING", "greetings_flashcard/greetings_flashcard_goodevening.png")
-)
 
-@Composable
-fun FlashcardCard(
-    item: FlashcardItem,
-    onClick: (FlashcardItem) -> Unit
-) {
-    val context = LocalContext.current
-    val bitmap = remember(item.imagePath) {
-        try {
-            context.assets.open(item.imagePath).use {
-                BitmapFactory.decodeStream(it)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(0.7f)
-            .clickable { onClick(item) },
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if (bitmap != null) {
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = item.name,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.6f),
-                    contentScale = ContentScale.Fit
-                )
-            } else {
-                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                    Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
-                }
-            }
-        }
-    }
-}
+val bodyList = listOf(
+    FlashcardItem("ARMS", "body_flashcard/body_flashcard_arms.png"),
+    FlashcardItem("BODY", "body_flashcard/body_flashcard_body.png"),
+    FlashcardItem("NOSE", "body_flashcard/body_flashcard_nose.png"),
+    FlashcardItem("EARS", "body_flashcard/body_flashcard_ears.png"),
+    FlashcardItem("ELBOWS", "body_flashcard/body_flashcard_elbows.png"),
+    FlashcardItem("EYELASHES", "body_flashcard/body_flashcard_eyelashes.png"),
+    FlashcardItem("EYES", "body_flashcard/body_flashcard_eyes.png"),
+    FlashcardItem("FACE", "body_flashcard/body_flashcard_face.png"),
+    FlashcardItem("FEET", "body_flashcard/body_flashcard_feet.png"),
+    FlashcardItem("FINGERS", "body_flashcard/body_flashcard_fingers.png"),
+    FlashcardItem("HAIR", "body_flashcard/body_flashcard_hair.png"),
+    FlashcardItem("HANDS", "body_flashcard/body_flashcard_hands.png"),
+    FlashcardItem("HEAD", "body_flashcard/body_flashcard_head.png"),
+    FlashcardItem("KNEES", "body_flashcard/body_flashcard_knees.png"),
+    FlashcardItem("LEGS", "body_flashcard/body_flashcard_legs.png"),
+    FlashcardItem("LIPS", "body_flashcard/body_flashcard_lips.png"),
+    FlashcardItem("MOUTH", "body_flashcard/body_flashcard_mouth.png"),
+    FlashcardItem("NECK", "body_flashcard/body_flashcard_neck.png")
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GreetingsScreen(
+fun BodyScreen(
     onNavigateBack: () -> Unit,
     onFinish: () -> Unit,
     onNavigateForward: () -> Unit,
@@ -122,10 +82,10 @@ fun GreetingsScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Greetings",
+                        text = "Body",
                         fontFamily = BalooThambi2Family,
                         color = Color(0xFFE53935),
-                        fontSize = 32.sp,
+                        fontSize = 36.sp,
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -168,7 +128,7 @@ fun GreetingsScreen(
     ) { paddingValues ->
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Fixed(3),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -178,7 +138,7 @@ fun GreetingsScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            items(greetingList) { item ->
+            items(bodyList) { item ->
                 FlashcardCard(
                     item = item,
                     onClick = { selectedItem ->
@@ -222,9 +182,9 @@ fun GreetingsScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingsScreenPreview() {
+fun BodyScreenPreview() {
     BabiLingTheme {
-        GreetingsScreen(
+        BodyScreen(
             onNavigateBack = {},
             onFinish = {},
             onNavigateForward = {},

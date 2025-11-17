@@ -1,7 +1,7 @@
 package com.example.babiling
 
 import android.os.Bundle
-import android.widget.Toast // Import
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext // Import
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -22,10 +22,10 @@ import com.example.babiling.ui.screens.choose.ChooseLangScreen
 import com.example.babiling.ui.screens.choose.ChooseAgeScreen
 import com.example.babiling.ui.screens.home.HomeScreen
 import com.example.babiling.ui.theme.BabiLingTheme
-
-// <-- THÊM 2 IMPORT CỦA MÀN HÌNH MỚI -->
 import com.example.babiling.ui.screens.topic.TopicSelectionScreen
-import com.example.babiling.ui.screens.study.GreetingsScreen
+import com.example.babiling.ui.screens.topic.study.GreetingsScreen
+import com.example.babiling.ui.screens.topic.study.BodyScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,14 +55,13 @@ fun AppNavigation() {
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
+        // --- CÁC MÀN HÌNH ĐIỀU HƯỚNG CƠ BẢN ---
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
-
         composable(Screen.Onboarding.route) {
             OnboardingScreen(navController)
         }
-
         composable(Screen.Login.route) {
             LoginScreen(
                 onLogin = { _, _ ->
@@ -80,7 +79,6 @@ fun AppNavigation() {
                 }
             )
         }
-
         composable(Screen.Register.route) {
             RegisterScreen(
                 onBackToLogin = {
@@ -93,7 +91,6 @@ fun AppNavigation() {
                 }
             )
         }
-
         composable(Screen.ChooseLang.route) {
             ChooseLangScreen(
                 onNavigateToChooseAge = {
@@ -101,7 +98,6 @@ fun AppNavigation() {
                 }
             )
         }
-
         composable(Screen.ChooseAge.route) {
             ChooseAgeScreen(
                 onNavigateToHome = {
@@ -114,16 +110,12 @@ fun AppNavigation() {
                 }
             )
         }
-
         composable(Screen.Home.route) {
             HomeScreen(navController = navController)
         }
 
-        // <-- LỖI CỦA BẠN LÀ DO THIẾU 2 KHỐI NÀY -->
-
-        // 1. Màn hình Chọn Chủ Đề (mà "topic_select_screen" trỏ tới)
         composable(Screen.TopicSelect.route) {
-            TopicSelectionScreen( // Dùng hàm từ TopicScreen1.kt
+            TopicSelectionScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
@@ -131,6 +123,9 @@ fun AppNavigation() {
                     when (topic.title) {
                         "Greetings" -> {
                             navController.navigate(Screen.Greetings.route)
+                        }
+                        "Body" -> {
+                            navController.navigate(Screen.Body.route)
                         }
                         else -> {
                             Toast.makeText(context, "${topic.title} (Sắp có)", Toast.LENGTH_SHORT).show()
@@ -140,7 +135,6 @@ fun AppNavigation() {
             )
         }
 
-        // 2. Màn hình học (Greetings)
         composable(Screen.Greetings.route) {
             GreetingsScreen(
                 onNavigateBack = {
@@ -150,9 +144,28 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateForward = {
+                    // TODO: Xử lý đi tới
                 },
-                onItemSelected = { item -> // Đổi tên từ onFruitSelected
+                onItemSelected = { item ->
                     println("Đã nhấn vào: ${item.name}")
+                }
+            )
+        }
+
+        composable(Screen.Body.route) {
+            BodyScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onFinish = {
+                    navController.popBackStack()
+                },
+                onNavigateForward = {
+                    // TODO: Xử lý đi tới
+                },
+                onItemSelected = { item ->
+                    println("Đã nhấn vào: ${item.name}")
+                    // viewModel.playSoundFor(item.name)
                 }
             )
         }

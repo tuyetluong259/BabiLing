@@ -22,13 +22,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -39,42 +36,44 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
 
-// 1. DATA VÀ DỮ LIỆU MẪU
-val bodyList = listOf(
-    FlashcardItem("ARMS", "body_flashcard/body_flashcard_arms.png"),
-    FlashcardItem("BODY", "body_flashcard/body_flashcard_body.png"),
-    FlashcardItem("NOSE", "body_flashcard/body_flashcard_nose.png"),
-    FlashcardItem("EARS", "body_flashcard/body_flashcard_ears.png"),
-    FlashcardItem("ELBOWS", "body_flashcard/body_flashcard_elbows.png"),
-    FlashcardItem("EYELASHES", "body_flashcard/body_flashcard_eyelashes.png"),
-    FlashcardItem("EYES", "body_flashcard/body_flashcard_eyes.png"),
-    FlashcardItem("FACE", "body_flashcard/body_flashcard_face.png"),
-    FlashcardItem("FEET", "body_flashcard/body_flashcard_feet.png"),
-    FlashcardItem("FINGERS", "body_flashcard/body_flashcard_fingers.png"),
-    FlashcardItem("HAIR", "body_flashcard/body_flashcard_hair.png"),
-    FlashcardItem("HANDS", "body_flashcard/body_flashcard_hands.png"),
-    FlashcardItem("HEAD", "body_flashcard/body_flashcard_head.png"),
-    FlashcardItem("KNEES", "body_flashcard/body_flashcard_knees.png"),
-    FlashcardItem("LEGS", "body_flashcard/body_flashcard_legs.png"),
-    FlashcardItem("LIPS", "body_flashcard/body_flashcard_lips.png"),
-    FlashcardItem("MOUTH", "body_flashcard/body_flashcard_mouth.png"),
-    FlashcardItem("NECK", "body_flashcard/body_flashcard_neck.png")
+val colorList = listOf(
+    FlashcardItem("BLACK", "color_flashcard/color_flashcard_black.jpg"),
+    FlashcardItem("BLUE", "color_flashcard/color_flashcard_blue.jpeg"),
+    FlashcardItem("BROWN", "color_flashcard/color_flashcard_brown.jpeg"),
+    FlashcardItem("GOLD", "color_flashcard/color_flashcard_gold.jpeg"),
+    FlashcardItem("GREEN", "color_flashcard/color_flashcard_green.jpeg"),
+    FlashcardItem("GREY", "color_flashcard/color_flashcard_grey.jpeg"),
+    FlashcardItem("LILAC", "color_flashcard/color_flashcard_lilac.jpeg"),
+    FlashcardItem("NAVY", "color_flashcard/color_flashcard_navy.jpeg"),
+    FlashcardItem("ORANGE", "color_flashcard/color_flashcard_orange.jpeg"),
+    FlashcardItem("PINK", "color_flashcard/color_flashcard_pink.jpeg"),
+    FlashcardItem("PURPLE", "color_flashcard/color_flashcard_purple.jpeg"),
+    FlashcardItem("RED", "color_flashcard/color_flashcard_red.jpeg"),
+    FlashcardItem("SILVER", "color_flashcard/color_flashcard_silver.jpeg"),
+    FlashcardItem("WHITE", "color_flashcard/color_flashcard_white.jpeg"),
+    FlashcardItem("YELLOW", "color_flashcard/color_flashcard_yellow.jpeg")
 )
 
+// --- HÀM VẼ CHỮ "MY FIRST COLORS" ---
 @Composable
-fun ColorfulTitle(
+fun ColorfulTitleColors(
     text: String,
-    fontSize: TextUnit = 40.sp
+    fontSize: TextUnit = 36.sp
 ) {
     val colors = listOf(
-        Color(0xFFEF5350), // Cam đỏ
-        Color(0xFFFFCA28), // Vàng
-        Color(0xFF26A69A), // Xanh lá đậm
-        Color(0xFF42A5F5), // Xanh dương
-        Color(0xFFFFA726), // Cam
-        Color(0xFF66BB6A), // Xanh lá
-        Color(0xFFAB47BC), // Tím (nếu cần)
-        Color(0xFF29B6F6)  // Xanh dương nhạt
+        Color(0xFFD32F2F), // Đỏ (M)
+        Color(0xFF1976D2), // Xanh dương (y)
+        Color(0xFFFFC107), // Vàng (F)
+        Color(0xFF43A047), // Xanh lá (i)
+        Color(0xFF7E57C2), // Tím (r)
+        Color(0xFFF06292), // Hồng (s)
+        Color(0xFFEC407A), // Hồng đậm (t)
+        Color(0xFF26C6DA), // Xanh lơ (C)
+        Color(0xFFD32F2F), // Đỏ (o)
+        Color(0xFF1976D2), // Xanh dương (l)
+        Color(0xFFFFC107), // Vàng (o)
+        Color(0xFF43A047), // Xanh lá (r)
+        Color(0xFFF4511E)  // Cam (s)
     )
 
     Row(
@@ -82,28 +81,17 @@ fun ColorfulTitle(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp)
     ) {
-        text.forEachIndexed { index, char ->
-            val textColor = colors[index % colors.size]
+        // Chúng ta bỏ qua khoảng trắng khi đếm index màu để màu sắc liên tục hơn
+        var colorIndex = 0
 
+        text.forEach { char ->
             if (char == ' ') {
                 Spacer(modifier = Modifier.width(8.dp))
             } else {
+                val textColor = colors[colorIndex % colors.size]
+                colorIndex++
+
                 Box(contentAlignment = Alignment.Center) {
-                    Text(
-                        text = char.toString(),
-                        color = Color.Black,
-                        fontSize = fontSize,
-                        fontFamily = BalooThambi2Family,
-                        fontWeight = FontWeight.Bold,
-                        style = TextStyle.Default.copy(
-                            drawStyle = Stroke(
-                                miter = 10f,
-                                width = 8f, // Viền dày hơn chút cho nổi
-                                join = StrokeJoin.Round
-                            )
-                        )
-                    )
-                    // Lớp màu chính
                     Text(
                         text = char.toString(),
                         color = textColor,
@@ -118,7 +106,7 @@ fun ColorfulTitle(
 }
 
 @Composable
-fun BodyPartCard(
+fun ColorsPartCard(
     item: FlashcardItem,
     onClick: (FlashcardItem) -> Unit
 ) {
@@ -149,7 +137,6 @@ fun BodyPartCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // CHỈ HIỂN THỊ ẢNH
             if (bitmap != null) {
                 Image(
                     bitmap = bitmap.asImageBitmap(),
@@ -171,7 +158,7 @@ fun BodyPartCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BodyScreen(
+fun ColorsScreen(
     onNavigateBack: () -> Unit,
     onFinish: () -> Unit,
     onNavigateForward: () -> Unit,
@@ -195,9 +182,9 @@ fun BodyScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Body",
+                        text = "Colors",
                         fontFamily = BalooThambi2Family,
-                        color = Color(0xFF485FDA),
+                        color = Color(0xFFEF993A),
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -254,11 +241,13 @@ fun BodyScreen(
             item(
                 span = { GridItemSpan(maxLineSpan) }
             ) {
-                ColorfulTitle(text = "BODY PARTS")
+                // Gọi hàm vẽ chữ nhiều màu
+                ColorfulTitleColors(text = "My First Colors")
             }
 
-            items(bodyList) { item ->
-                BodyPartCard(
+            //DANH SÁCH ẢNH MÀU
+            items(colorList) { item ->
+                ColorsPartCard(
                     item = item,
                     onClick = { selectedItem ->
                         onItemSelected(selectedItem)
@@ -301,9 +290,9 @@ fun BodyScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun BodyScreenPreview() {
+fun ColorsScreenPreview() {
     BabiLingTheme {
-        BodyScreen(
+        ColorsScreen(
             onNavigateBack = {},
             onFinish = {},
             onNavigateForward = {},

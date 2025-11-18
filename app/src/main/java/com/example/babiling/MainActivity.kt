@@ -22,10 +22,12 @@ import com.example.babiling.ui.screens.choose.ChooseLangScreen
 import com.example.babiling.ui.screens.choose.ChooseAgeScreen
 import com.example.babiling.ui.screens.home.HomeScreen
 import com.example.babiling.ui.theme.BabiLingTheme
+
+// --- CÁC IMPORT CHO MÀN HÌNH CHỦ ĐỀ ---
 import com.example.babiling.ui.screens.topic.TopicSelectionScreen
 import com.example.babiling.ui.screens.topic.study.GreetingsScreen
 import com.example.babiling.ui.screens.topic.study.BodyScreen
-
+import com.example.babiling.ui.screens.topic.study.ColorsScreen // <-- 1. IMPORT MỚI
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,6 +116,9 @@ fun AppNavigation() {
             HomeScreen(navController = navController)
         }
 
+        // --- CÁC MÀN HÌNH HỌC TẬP ---
+
+        // 1. Màn hình Chọn Chủ Đề
         composable(Screen.TopicSelect.route) {
             TopicSelectionScreen(
                 onNavigateBack = {
@@ -127,6 +132,9 @@ fun AppNavigation() {
                         "Body" -> {
                             navController.navigate(Screen.Body.route)
                         }
+                        "Colors" -> { // <-- 2. THÊM LOGIC CHUYỂN HƯỚNG CHO COLORS
+                            navController.navigate(Screen.Colors.route)
+                        }
                         else -> {
                             Toast.makeText(context, "${topic.title} (Sắp có)", Toast.LENGTH_SHORT).show()
                         }
@@ -135,6 +143,7 @@ fun AppNavigation() {
             )
         }
 
+        // 2. Greetings
         composable(Screen.Greetings.route) {
             GreetingsScreen(
                 onNavigateBack = {
@@ -144,7 +153,6 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateForward = {
-                    // TODO: Xử lý đi tới
                 },
                 onItemSelected = { item ->
                     println("Đã nhấn vào: ${item.name}")
@@ -152,8 +160,25 @@ fun AppNavigation() {
             )
         }
 
+        // 3. Body
         composable(Screen.Body.route) {
             BodyScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onFinish = {
+                    navController.popBackStack()
+                },
+                onNavigateForward = {
+                },
+                onItemSelected = { item ->
+                    println("Đã nhấn vào: ${item.name}")
+                }
+            )
+        }
+
+        composable(Screen.Colors.route) {
+            ColorsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },

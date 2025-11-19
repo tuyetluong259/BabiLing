@@ -36,25 +36,25 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
 
+
 val colorList = listOf(
-    FlashcardItem("BLACK", "color_flashcard/color_flashcard_black.jpg"),
-    FlashcardItem("BLUE", "color_flashcard/color_flashcard_blue.jpeg"),
-    FlashcardItem("BROWN", "color_flashcard/color_flashcard_brown.jpeg"),
-    FlashcardItem("GOLD", "color_flashcard/color_flashcard_gold.jpeg"),
-    FlashcardItem("GREEN", "color_flashcard/color_flashcard_green.jpeg"),
-    FlashcardItem("GREY", "color_flashcard/color_flashcard_grey.jpeg"),
-    FlashcardItem("LILAC", "color_flashcard/color_flashcard_lilac.jpeg"),
-    FlashcardItem("NAVY", "color_flashcard/color_flashcard_navy.jpeg"),
-    FlashcardItem("ORANGE", "color_flashcard/color_flashcard_orange.jpeg"),
-    FlashcardItem("PINK", "color_flashcard/color_flashcard_pink.jpeg"),
-    FlashcardItem("PURPLE", "color_flashcard/color_flashcard_purple.jpeg"),
-    FlashcardItem("RED", "color_flashcard/color_flashcard_red.jpeg"),
-    FlashcardItem("SILVER", "color_flashcard/color_flashcard_silver.jpeg"),
-    FlashcardItem("WHITE", "color_flashcard/color_flashcard_white.jpeg"),
-    FlashcardItem("YELLOW", "color_flashcard/color_flashcard_yellow.jpeg")
+    FlashcardItem("BLACK", "Màu đen", "color_flashcard/color_flashcard_black.jpg"),
+    FlashcardItem("BLUE", "Màu xanh dương", "color_flashcard/color_flashcard_blue.jpeg"),
+    FlashcardItem("BROWN", "Màu nâu", "color_flashcard/color_flashcard_brown.jpeg"),
+    FlashcardItem("GOLD", "Màu vàng kim", "color_flashcard/color_flashcard_gold.jpeg"),
+    FlashcardItem("GREEN", "Màu xanh lá", "color_flashcard/color_flashcard_green.jpeg"),
+    FlashcardItem("GREY", "Màu xám", "color_flashcard/color_flashcard_grey.jpeg"),
+    FlashcardItem("LILAC", "Màu tím hoa cà", "color_flashcard/color_flashcard_lilac.jpeg"),
+    FlashcardItem("NAVY", "Màu xanh navy", "color_flashcard/color_flashcard_navy.jpeg"),
+    FlashcardItem("ORANGE", "Màu cam", "color_flashcard/color_flashcard_orange.jpeg"),
+    FlashcardItem("PINK", "Màu hồng", "color_flashcard/color_flashcard_pink.jpeg"),
+    FlashcardItem("PURPLE", "Màu tím", "color_flashcard/color_flashcard_purple.jpeg"),
+    FlashcardItem("RED", "Màu đỏ", "color_flashcard/color_flashcard_red.jpeg"),
+    FlashcardItem("SILVER", "Màu bạc", "color_flashcard/color_flashcard_silver.jpeg"),
+    FlashcardItem("WHITE", "Màu trắng", "color_flashcard/color_flashcard_white.jpeg"),
+    FlashcardItem("YELLOW", "Màu vàng", "color_flashcard/color_flashcard_yellow.jpeg")
 )
 
-// --- HÀM VẼ CHỮ "MY FIRST COLORS" ---
 @Composable
 fun ColorfulTitleColors(
     text: String,
@@ -134,8 +134,9 @@ fun ColorsPartCard(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
+            // Ảnh/Màu
             if (bitmap != null) {
                 Image(
                     bitmap = bitmap.asImageBitmap(),
@@ -151,6 +152,16 @@ fun ColorsPartCard(
                     Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
                 }
             }
+
+            // Tiếng Việt
+            Text(
+                text = item.nameVi,
+                fontSize = 14.sp,
+                fontFamily = BalooThambi2Family,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

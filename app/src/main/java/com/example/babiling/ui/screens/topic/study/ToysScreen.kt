@@ -39,28 +39,29 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
 
+
 val toysListData = listOf(
-    FlashcardItem("BABY DOLL", "toys_flashcard/baby_doll.png"),
-    FlashcardItem("BALL", "toys_flashcard/ball.png"),
-    FlashcardItem("BICYCLE", "toys_flashcard/bicycle.png"),
-    FlashcardItem("BLOCK GAME", "toys_flashcard/block_game.png"),
-    FlashcardItem("BLOCKS", "toys_flashcard/blocks.png"),
-    FlashcardItem("BOARD GAME", "toys_flashcard/board_game.png"),
-    FlashcardItem("BOUNCING TOY", "toys_flashcard/bouncing_toy.png"),
-    FlashcardItem("BUILDING BLOCKS", "toys_flashcard/building_blocks.png"),
-    FlashcardItem("CARD GAME", "toys_flashcard/card_game.png"),
-    FlashcardItem("DOLL", "toys_flashcard/doll.png"),
-    FlashcardItem("FIGURINE", "toys_flashcard/figurine.png"),
-    FlashcardItem("JUMP ROPE", "toys_flashcard/jump_rope.png"),
-    FlashcardItem("PUZZLE", "toys_flashcard/puzzle.png"),
-    FlashcardItem("RC CAR", "toys_flashcard/RC_car.png"),
-    FlashcardItem("ROBOT", "toys_flashcard/robot.png"),
-    FlashcardItem("SCOOTER", "toys_flashcard/scooter.png"),
-    FlashcardItem("TABLET", "toys_flashcard/tablet.png"),
-    FlashcardItem("TEDDY BEAR", "toys_flashcard/teddy_bear.png"),
-    FlashcardItem("TOY CAR", "toys_flashcard/toy_car.png"),
-    FlashcardItem("TOY TRUCK", "toys_flashcard/toy_truck.png"),
-    FlashcardItem("VIDEOGAME", "toys_flashcard/videogame.png")
+    FlashcardItem("BABY DOLL", "Búp bê em bé", "toys_flashcard/baby_doll.png"),
+    FlashcardItem("BALL", "Bóng", "toys_flashcard/ball.png"),
+    FlashcardItem("BICYCLE", "Xe đạp", "toys_flashcard/bicycle.png"),
+    FlashcardItem("BLOCK GAME", "Trò chơi khối", "toys_flashcard/block_game.png"),
+    FlashcardItem("BLOCKS", "Khối đồ chơi", "toys_flashcard/blocks.png"),
+    FlashcardItem("BOARD GAME", "Trò chơi cờ bàn", "toys_flashcard/board_game.png"),
+    FlashcardItem("BOUNCING TOY", "Đồ chơi nảy", "toys_flashcard/bouncing_toy.png"),
+    FlashcardItem("BUILDING BLOCKS", "Khối xếp hình", "toys_flashcard/building_blocks.png"),
+    FlashcardItem("CARD GAME", "Trò chơi bài", "toys_flashcard/card_game.png"),
+    FlashcardItem("DOLL", "Búp bê", "toys_flashcard/doll.png"),
+    FlashcardItem("FIGURINE", "Mô hình nhỏ", "toys_flashcard/figurine.png"),
+    FlashcardItem("JUMP ROPE", "Dây nhảy", "toys_flashcard/jump_rope.png"),
+    FlashcardItem("PUZZLE", "Trò xếp hình", "toys_flashcard/puzzle.png"),
+    FlashcardItem("RC CAR", "Xe đồ chơi", "toys_flashcard/RC_car.png"),
+    FlashcardItem("ROBOT", "Robot", "toys_flashcard/robot.png"),
+    FlashcardItem("SCOOTER", "Xe scooter", "toys_flashcard/scooter.png"),
+    FlashcardItem("TABLET", "Máy tính bảng", "toys_flashcard/tablet.png"),
+    FlashcardItem("TEDDY BEAR", "Gấu bông Teddy", "toys_flashcard/teddy_bear.png"),
+    FlashcardItem("TOY CAR", "Xe ô tô đồ chơi", "toys_flashcard/toy_car.png"),
+    FlashcardItem("TOY TRUCK", "Xe tải đồ chơi", "toys_flashcard/toy_truck.png"),
+    FlashcardItem("VIDEOGAME", "Trò chơi điện tử", "toys_flashcard/videogame.png")
 )
 
 @Composable
@@ -129,7 +130,6 @@ fun ToysFlashcard(
 
     val bitmap = remember(item.imagePath) {
         try {
-            // Thay thế tên file bằng underscore
             context.assets.open(item.imagePath.replace(" ", "_")).use {
                 BitmapFactory.decodeStream(it)
             }
@@ -151,7 +151,7 @@ fun ToysFlashcard(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             if (bitmap != null) {
                 Image(
@@ -168,6 +168,17 @@ fun ToysFlashcard(
                     Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
                 }
             }
+
+            Spacer(modifier = Modifier.height(4.dp))
+            // Tiếng Việt
+            Text(
+                text = item.nameVi,
+                fontSize = 14.sp,
+                fontFamily = BalooThambi2Family,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -253,7 +264,6 @@ fun ToysScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // ITEM 1: TIÊU ĐỀ "TOYS" MÀU SẮC
             item(
                 span = { GridItemSpan(maxLineSpan) }
             ) {
@@ -269,7 +279,6 @@ fun ToysScreen(
                 )
             }
 
-            // NÚT FINISH
             item(
                 span = { GridItemSpan(maxLineSpan) }
             ) {

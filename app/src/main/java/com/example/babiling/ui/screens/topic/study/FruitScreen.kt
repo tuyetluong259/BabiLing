@@ -39,28 +39,29 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
 
+
 val fruitListData = listOf(
-    FlashcardItem("APPLE", "fruit_flashcard/fruit-flashcard-apple.jpeg"),
-    FlashcardItem("AVOCADO", "fruit_flashcard/fruit-flashcard-avocado.jpeg"),
-    FlashcardItem("BANANA", "fruit_flashcard/fruit-flashcard-banana.jpeg"),
-    FlashcardItem("CHERRY", "fruit_flashcard/fruit-flashcard-cherry.jpeg"),
-    FlashcardItem("COCONUT", "fruit_flashcard/fruit-flashcard-coconut.jpeg"),
-    FlashcardItem("GRAPEFRUIT", "fruit_flashcard/fruit-flashcard-grapefruit.jpeg"),
-    FlashcardItem("GRAPES", "fruit_flashcard/fruit-flashcard-grapes.jpeg"),
-    FlashcardItem("KIWI", "fruit_flashcard/fruit-flashcard-kiwi.jpeg"),
-    FlashcardItem("LEMON", "fruit_flashcard/fruit-flashcard-lemon.jpeg"),
-    FlashcardItem("LIME", "fruit_flashcard/fruit-flashcard-lime.jpeg"),
-    FlashcardItem("MANGO", "fruit_flashcard/fruit-flashcard-mango.jpeg"),
-    FlashcardItem("MELON", "fruit_flashcard/fruit-flashcard-melon.jpeg"),
-    FlashcardItem("ORANGE", "fruit_flashcard/fruit-flashcard-orange.jpeg"),
-    FlashcardItem("PAPAYA", "fruit_flashcard/fruit-flashcard-papaya.jpeg"),
-    FlashcardItem("PEACH", "fruit_flashcard/fruit-flashcard-peach.jpeg"),
-    FlashcardItem("PEAR", "fruit_flashcard/fruit-flashcard-pear.jpeg"),
-    FlashcardItem("PINEAPPLE", "fruit_flashcard/fruit-flashcard-pineapple.jpeg"),
-    FlashcardItem("PLUM", "fruit_flashcard/fruit-flashcard-plum.jpeg"),
-    FlashcardItem("RASPBERRY", "fruit_flashcard/fruit-flashcard-raspberry.jpeg"),
-    FlashcardItem("STRAWBERRY", "fruit_flashcard/fruit-flashcard-strawberry.jpeg"),
-    FlashcardItem("WATERMELON", "fruit_flashcard/fruit-flashcard-watermelon.jpeg")
+    FlashcardItem("APPLE", "Quả táo", "fruit_flashcard/fruit-flashcard-apple.jpeg"),
+    FlashcardItem("AVOCADO", "Quả bơ", "fruit_flashcard/fruit-flashcard-avocado.jpeg"),
+    FlashcardItem("BANANA", "Quả chuối", "fruit_flashcard/fruit-flashcard-banana.jpeg"),
+    FlashcardItem("CHERRY", "Quả cherry", "fruit_flashcard/fruit-flashcard-cherry.jpeg"),
+    FlashcardItem("COCONUT", "Quả dừa", "fruit_flashcard/fruit-flashcard-coconut.jpeg"),
+    FlashcardItem("GRAPEFRUIT", "Quả bưởi", "fruit_flashcard/fruit-flashcard-grapefruit.jpeg"),
+    FlashcardItem("GRAPES", "Quả nho", "fruit_flashcard/fruit-flashcard-grapes.jpeg"),
+    FlashcardItem("KIWI", "Quả kiwi", "fruit_flashcard/fruit-flashcard-kiwi.jpeg"),
+    FlashcardItem("LEMON", "Quả chanh vàng", "fruit_flashcard/fruit-flashcard-lemon.jpeg"),
+    FlashcardItem("LIME", "Quả chanh xanh", "fruit_flashcard/fruit-flashcard-lime.jpeg"),
+    FlashcardItem("MANGO", "Quả xoài", "fruit_flashcard/fruit-flashcard-mango.jpeg"),
+    FlashcardItem("MELON", "Quả dưa lưới", "fruit_flashcard/fruit-flashcard-melon.jpeg"),
+    FlashcardItem("ORANGE", "Quả cam", "fruit_flashcard/fruit-flashcard-orange.jpeg"),
+    FlashcardItem("PAPAYA", "Quả đu đủ", "fruit_flashcard/fruit-flashcard-papaya.jpeg"),
+    FlashcardItem("PEACH", "Quả đào", "fruit_flashcard/fruit-flashcard-peach.jpeg"),
+    FlashcardItem("PEAR", "Quả lê", "fruit_flashcard/fruit-flashcard-pear.jpeg"),
+    FlashcardItem("PINEAPPLE", "Quả dứa", "fruit_flashcard/fruit-flashcard-pineapple.jpeg"),
+    FlashcardItem("PLUM", "Quả mận", "fruit_flashcard/fruit-flashcard-plum.jpeg"),
+    FlashcardItem("RASPBERRY", "Quả mâm xôi", "fruit_flashcard/fruit-flashcard-raspberry.jpeg"),
+    FlashcardItem("STRAWBERRY", "Quả dâu tây", "fruit_flashcard/fruit-flashcard-strawberry.jpeg"),
+    FlashcardItem("WATERMELON", "Quả dưa hấu", "fruit_flashcard/fruit-flashcard-watermelon.jpeg")
 )
 
 @Composable
@@ -148,8 +149,9 @@ fun FruitPartCard(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
+            // Ảnh
             if (bitmap != null) {
                 Image(
                     bitmap = bitmap.asImageBitmap(),
@@ -165,6 +167,16 @@ fun FruitPartCard(
                     Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
                 }
             }
+
+            // Tiếng Việt
+            Text(
+                text = item.nameVi,
+                fontSize = 14.sp,
+                fontFamily = BalooThambi2Family,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

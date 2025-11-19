@@ -39,26 +39,26 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
 
-// 1. DATA VÀ DỮ LIỆU MẪU
+
 val bodyList = listOf(
-    FlashcardItem("ARMS", "body_flashcard/body_flashcard_arms.png"),
-    FlashcardItem("BODY", "body_flashcard/body_flashcard_body.png"),
-    FlashcardItem("NOSE", "body_flashcard/body_flashcard_nose.png"),
-    FlashcardItem("EARS", "body_flashcard/body_flashcard_ears.png"),
-    FlashcardItem("ELBOWS", "body_flashcard/body_flashcard_elbows.png"),
-    FlashcardItem("EYELASHES", "body_flashcard/body_flashcard_eyelashes.png"),
-    FlashcardItem("EYES", "body_flashcard/body_flashcard_eyes.png"),
-    FlashcardItem("FACE", "body_flashcard/body_flashcard_face.png"),
-    FlashcardItem("FEET", "body_flashcard/body_flashcard_feet.png"),
-    FlashcardItem("FINGERS", "body_flashcard/body_flashcard_fingers.png"),
-    FlashcardItem("HAIR", "body_flashcard/body_flashcard_hair.png"),
-    FlashcardItem("HANDS", "body_flashcard/body_flashcard_hands.png"),
-    FlashcardItem("HEAD", "body_flashcard/body_flashcard_head.png"),
-    FlashcardItem("KNEES", "body_flashcard/body_flashcard_knees.png"),
-    FlashcardItem("LEGS", "body_flashcard/body_flashcard_legs.png"),
-    FlashcardItem("LIPS", "body_flashcard/body_flashcard_lips.png"),
-    FlashcardItem("MOUTH", "body_flashcard/body_flashcard_mouth.png"),
-    FlashcardItem("NECK", "body_flashcard/body_flashcard_neck.png")
+    FlashcardItem("ARMS", "Cánh tay", "body_flashcard/body_flashcard_arms.png"),
+    FlashcardItem("BODY", "Cơ thể", "body_flashcard/body_flashcard_body.png"),
+    FlashcardItem("NOSE", "Mũi", "body_flashcard/body_flashcard_nose.png"),
+    FlashcardItem("EARS", "Tai", "body_flashcard/body_flashcard_ears.png"),
+    FlashcardItem("ELBOWS", "Khuỷu tay", "body_flashcard/body_flashcard_elbows.png"),
+    FlashcardItem("EYELASHES", "Lông mi", "body_flashcard/body_flashcard_eyelashes.png"),
+    FlashcardItem("EYES", "Mắt", "body_flashcard/body_flashcard_eyes.png"),
+    FlashcardItem("FACE", "Khuôn mặt", "body_flashcard/body_flashcard_face.png"),
+    FlashcardItem("FEET", "Bàn chân", "body_flashcard/body_flashcard_feet.png"),
+    FlashcardItem("FINGERS", "Ngón tay", "body_flashcard/body_flashcard_fingers.png"),
+    FlashcardItem("HAIR", "Tóc", "body_flashcard/body_flashcard_hair.png"),
+    FlashcardItem("HANDS", "Bàn tay", "body_flashcard/body_flashcard_hands.png"),
+    FlashcardItem("HEAD", "Đầu", "body_flashcard/body_flashcard_head.png"),
+    FlashcardItem("KNEES", "Đầu gối", "body_flashcard/body_flashcard_knees.png"),
+    FlashcardItem("LEGS", "Chân", "body_flashcard/body_flashcard_legs.png"),
+    FlashcardItem("LIPS", "Môi", "body_flashcard/body_flashcard_lips.png"),
+    FlashcardItem("MOUTH", "Miệng", "body_flashcard/body_flashcard_mouth.png"),
+    FlashcardItem("NECK", "Cổ", "body_flashcard/body_flashcard_neck.png")
 )
 
 @Composable
@@ -98,7 +98,7 @@ fun ColorfulTitle(
                         style = TextStyle.Default.copy(
                             drawStyle = Stroke(
                                 miter = 10f,
-                                width = 8f, // Viền dày hơn chút cho nổi
+                                width = 8f,
                                 join = StrokeJoin.Round
                             )
                         )
@@ -147,24 +147,36 @@ fun BodyPartCard(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
-            // CHỈ HIỂN THỊ ẢNH
+            // Ảnh
             if (bitmap != null) {
                 Image(
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = item.name,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(0.7f)
                         .padding(4.dp),
                     contentScale = ContentScale.Fit
                 )
             } else {
-                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.weight(0.7f), contentAlignment = Alignment.Center) {
                     Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
                 }
             }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            // Tiếng Việt
+            Text(
+                text = item.nameVi,
+                fontSize = 14.sp,
+                fontFamily = BalooThambi2Family,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }

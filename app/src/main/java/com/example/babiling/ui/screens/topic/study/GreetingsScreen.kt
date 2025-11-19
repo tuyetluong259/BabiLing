@@ -34,18 +34,15 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import androidx.compose.material3.CenterAlignedTopAppBar
 import com.example.babiling.ui.theme.BalooThambi2Family
-data class FlashcardItem(
-    val name: String,
-    val imagePath: String
-)
+
 
 val greetingList = listOf(
-    FlashcardItem("HELLO", "greetings_flashcard/greetings_flashcard_hello.png"),
-    FlashcardItem("GOODBYE", "greetings_flashcard/greetings_flashcard_goodbye.png"),
-    FlashcardItem("GOOD MORNING", "greetings_flashcard/greetings_flashcard_goodmorning.png"),
-    FlashcardItem("GOOD NIGHT", "greetings_flashcard/greetings_flashcard_goodnight.png"),
-    FlashcardItem("GOOD AFTERNOON", "greetings_flashcard/greetings_flashcard_goodafternoon.png"),
-    FlashcardItem("GOOD EVENING", "greetings_flashcard/greetings_flashcard_goodevening.png")
+    FlashcardItem("HELLO", "Xin chào", "greetings_flashcard/greetings_flashcard_hello.png"),
+    FlashcardItem("GOODBYE", "Tạm biệt", "greetings_flashcard/greetings_flashcard_goodbye.png"),
+    FlashcardItem("GOOD MORNING", "Chào buổi sáng", "greetings_flashcard/greetings_flashcard_goodmorning.png"),
+    FlashcardItem("GOOD NIGHT", "Chúc ngủ ngon", "greetings_flashcard/greetings_flashcard_goodnight.png"),
+    FlashcardItem("GOOD AFTERNOON", "Chào buổi chiều", "greetings_flashcard/greetings_flashcard_goodafternoon.png"),
+    FlashcardItem("GOOD EVENING", "Chào buổi tối", "greetings_flashcard/greetings_flashcard_goodevening.png")
 )
 
 @Composable
@@ -76,7 +73,7 @@ fun FlashcardCard(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             if (bitmap != null) {
                 Image(
@@ -84,7 +81,8 @@ fun FlashcardCard(
                     contentDescription = item.name,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(0.6f),
+                        .weight(0.7f)
+                        .padding(4.dp),
                     contentScale = ContentScale.Fit
                 )
             } else {
@@ -92,6 +90,17 @@ fun FlashcardCard(
                     Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
                 }
             }
+
+            Spacer(modifier = Modifier.height(4.dp))
+            // Tiếng Việt
+            Text(
+                text = item.nameVi,
+                fontSize = 14.sp,
+                fontFamily = BalooThambi2Family,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

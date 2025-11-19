@@ -40,34 +40,36 @@ import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
 
+
 val animalsListData = listOf(
-    FlashcardItem("ALLIGATOR", "animals_flashcard_ABC/A.jpeg"),
-    FlashcardItem("BEAR", "animals_flashcard_ABC/B.jpeg"),
-    FlashcardItem("CAT", "animals_flashcard_ABC/C.jpeg"),
-    FlashcardItem("DOG", "animals_flashcard_ABC/D.jpeg"),
-    FlashcardItem("ELEPHANT", "animals_flashcard_ABC/E.jpeg"),
-    FlashcardItem("FROG", "animals_flashcard_ABC/F.jpeg"),
-    FlashcardItem("GOAT", "animals_flashcard_ABC/G.jpeg"),
-    FlashcardItem("HORSE", "animals_flashcard_ABC/H.jpeg"),
-    FlashcardItem("IGUANA", "animals_flashcard_ABC/I.jpeg"),
-    FlashcardItem("JELLYFISH", "animals_flashcard_ABC/J.jpeg"),
-    FlashcardItem("KANGAROO", "animals_flashcard_ABC/K.jpeg"),
-    FlashcardItem("LION", "animals_flashcard_ABC/L.jpeg"),
-    FlashcardItem("MONKEY", "animals_flashcard_ABC/M.jpeg"),
-    FlashcardItem("NARWHAL", "animals_flashcard_ABC/N.jpeg"),
-    FlashcardItem("OCTOPUS", "animals_flashcard_ABC/O.jpeg"),
-    FlashcardItem("PIG", "animals_flashcard_ABC/P.jpeg"),
-    FlashcardItem("QUAIL", "animals_flashcard_ABC/Q.jpeg"),
-    FlashcardItem("RABBIT", "animals_flashcard_ABC/R.jpeg"),
-    FlashcardItem("SNAKE", "animals_flashcard_ABC/S.jpeg"),
-    FlashcardItem("TIGER", "animals_flashcard_ABC/T.jpeg"),
-    FlashcardItem("URCHIN", "animals_flashcard_ABC/U.jpeg"),
-    FlashcardItem("VULTURE", "animals_flashcard_ABC/V.jpeg"),
-    FlashcardItem("WHALE", "animals_flashcard_ABC/W.jpeg"),
-    FlashcardItem("FOX", "animals_flashcard_ABC/F.jpeg"),
-    FlashcardItem("YAK", "animals_flashcard_ABC/Y.jpeg"),
-    FlashcardItem("ZEBRA", "animals_flashcard_ABC/Z.jpeg")
+    FlashcardItem("ALLIGATOR", "Cá sấu", "animals_flashcard_ABC/A.jpeg"),
+    FlashcardItem("BEAR", "Gấu", "animals_flashcard_ABC/B.jpeg"),
+    FlashcardItem("CAT", "Mèo", "animals_flashcard_ABC/C.jpeg"),
+    FlashcardItem("DOG", "Chó", "animals_flashcard_ABC/D.jpeg"),
+    FlashcardItem("ELEPHANT", "Voi", "animals_flashcard_ABC/E.jpeg"),
+    FlashcardItem("FROG", "Ếch", "animals_flashcard_ABC/F.jpeg"),
+    FlashcardItem("GOAT", "Dê", "animals_flashcard_ABC/G.jpeg"),
+    FlashcardItem("HORSE", "Ngựa", "animals_flashcard_ABC/H.jpeg"),
+    FlashcardItem("IGUANA", "Kỳ nhông", "animals_flashcard_ABC/I.jpeg"),
+    FlashcardItem("JELLYFISH", "Sứa", "animals_flashcard_ABC/J.jpeg"),
+    FlashcardItem("KANGAROO", "Chuột túi", "animals_flashcard_ABC/K.jpeg"),
+    FlashcardItem("LION", "Sư tử", "animals_flashcard_ABC/L.jpeg"),
+    FlashcardItem("MONKEY", "Khỉ", "animals_flashcard_ABC/M.jpeg"),
+    FlashcardItem("NARWHAL", "Cá voi một sừng", "animals_flashcard_ABC/N.jpeg"),
+    FlashcardItem("OCTOPUS", "Bạch tuộc", "animals_flashcard_ABC/O.jpeg"),
+    FlashcardItem("PIG", "Heo", "animals_flashcard_ABC/P.jpeg"),
+    FlashcardItem("QUAIL", "Chim cút", "animals_flashcard_ABC/Q.jpeg"),
+    FlashcardItem("RABBIT", "Thỏ", "animals_flashcard_ABC/R.jpeg"),
+    FlashcardItem("SNAKE", "Rắn", "animals_flashcard_ABC/S.jpeg"),
+    FlashcardItem("TIGER", "Hổ", "animals_flashcard_ABC/T.jpeg"),
+    FlashcardItem("URCHIN", "Nhím biển", "animals_flashcard_ABC/U.jpeg"),
+    FlashcardItem("VULTURE", "Kền kền", "animals_flashcard_ABC/V.jpeg"),
+    FlashcardItem("WHALE", "Cá voi", "animals_flashcard_ABC/W.jpeg"),
+    FlashcardItem("FOX", "Cáo", "animals_flashcard_ABC/F.jpeg"),
+    FlashcardItem("YAK", "Bò Tây Tạng", "animals_flashcard_ABC/Y.jpeg"),
+    FlashcardItem("ZEBRA", "Ngựa vằn", "animals_flashcard_ABC/Z.jpeg")
 )
+
 @Composable
 fun ColorfulTitleAnimals(
     text: String,
@@ -152,7 +154,7 @@ fun AnimalsFlashcard(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             if (bitmap != null) {
                 Image(
@@ -160,15 +162,32 @@ fun AnimalsFlashcard(
                     contentDescription = item.name,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                        .padding(4.dp),
+                        .weight(0.7f)
+                    ,
                     contentScale = ContentScale.Fit
                 )
             } else {
-                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.weight(0.7f), contentAlignment = Alignment.Center) {
                     Text(text = "Lỗi", fontSize = 10.sp, color = Color.Red)
                 }
             }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            // Tiếng Việt
+            Text(
+                text = item.nameVi,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = BalooThambi2Family,
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 1.dp)
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }

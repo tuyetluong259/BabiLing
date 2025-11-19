@@ -22,14 +22,13 @@ import com.example.babiling.ui.screens.choose.ChooseLangScreen
 import com.example.babiling.ui.screens.choose.ChooseAgeScreen
 import com.example.babiling.ui.screens.home.HomeScreen
 import com.example.babiling.ui.theme.BabiLingTheme
-
-// --- CÁC IMPORT CHO MÀN HÌNH CHỦ ĐỀ ---
 import com.example.babiling.ui.screens.topic.TopicSelectionScreen
 import com.example.babiling.ui.screens.topic.study.GreetingsScreen
 import com.example.babiling.ui.screens.topic.study.BodyScreen
 import com.example.babiling.ui.screens.topic.study.ColorsScreen
 import com.example.babiling.ui.screens.topic.study.FruitScreen
-import com.example.babiling.ui.screens.topic.study.AnimalsScreen // <-- 1. THÊM IMPORT MỚI
+import com.example.babiling.ui.screens.topic.study.AnimalsScreen
+import com.example.babiling.ui.screens.topic.study.ToysScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val context = LocalContext.current // Lấy context để dùng Toast
+    val context = LocalContext.current
 
     NavHost(
         navController = navController,
@@ -75,7 +74,7 @@ fun AppNavigation() {
                 },
                 onGoogleLogin = {
                     navController.navigate(Screen.ChooseLang.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
+                        popUpTo(Screen.ChooseLang.route) { inclusive = true }
                     }
                 },
                 onNavigateRegister = {
@@ -118,9 +117,6 @@ fun AppNavigation() {
             HomeScreen(navController = navController)
         }
 
-        // --- CÁC MÀN HÌNH HỌC TẬP ---
-
-        // 1. Màn hình Chọn Chủ Đề (CẬP NHẬT LOGIC)
         composable(Screen.TopicSelect.route) {
             TopicSelectionScreen(
                 onNavigateBack = {
@@ -140,8 +136,11 @@ fun AppNavigation() {
                         "Fruit" -> {
                             navController.navigate(Screen.Fruit.route)
                         }
-                        "Animals" -> { // <-- 2. THÊM LOGIC CHO ANIMALS
+                        "Animals" -> {
                             navController.navigate(Screen.Animals.route)
+                        }
+                        "Toys" -> {
+                            navController.navigate(Screen.Toys.route)
                         }
                         else -> {
                             Toast.makeText(context, "${topic.title} (Sắp có)", Toast.LENGTH_SHORT).show()
@@ -151,7 +150,6 @@ fun AppNavigation() {
             )
         }
 
-        // 2. Greetings (Giữ nguyên)
         composable(Screen.Greetings.route) {
             GreetingsScreen(
                 onNavigateBack = {
@@ -168,7 +166,6 @@ fun AppNavigation() {
             )
         }
 
-        // 3. Body (Giữ nguyên)
         composable(Screen.Body.route) {
             BodyScreen(
                 onNavigateBack = {
@@ -185,7 +182,6 @@ fun AppNavigation() {
             )
         }
 
-        // 4. Colors (Giữ nguyên)
         composable(Screen.Colors.route) {
             ColorsScreen(
                 onNavigateBack = {
@@ -195,6 +191,7 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateForward = {
+                    // TODO: Xử lý đi tới
                 },
                 onItemSelected = { item ->
                     println("Đã nhấn vào: ${item.name}")
@@ -202,7 +199,6 @@ fun AppNavigation() {
             )
         }
 
-        // 5. Fruit (Giữ nguyên)
         composable(Screen.Fruit.route) {
             FruitScreen(
                 onNavigateBack = {
@@ -212,6 +208,7 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateForward = {
+                    // TODO: Xử lý đi tới
                 },
                 onItemSelected = { item ->
                     println("Đã nhấn vào: ${item.name}")
@@ -219,8 +216,7 @@ fun AppNavigation() {
             )
         }
 
-        // 6. Animals (MỚI THÊM VÀO)
-        composable(Screen.Animals.route) { // <-- 3. THÊM COMPOSABLE MỚI
+        composable(Screen.Animals.route) {
             AnimalsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
@@ -229,9 +225,27 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateForward = {
+                    // TODO: Xử lý đi tới
                 },
                 onItemSelected = { item ->
                     println("Đã nhấn vào Animals: ${item.name}")
+                }
+            )
+        }
+
+        composable(Screen.Toys.route) {
+            ToysScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onFinish = {
+                    navController.popBackStack()
+                },
+                onNavigateForward = {
+                    // TODO: Xử lý đi tới
+                },
+                onItemSelected = { item ->
+                    println("Đã nhấn vào Toy: ${item.name}")
                 }
             )
         }

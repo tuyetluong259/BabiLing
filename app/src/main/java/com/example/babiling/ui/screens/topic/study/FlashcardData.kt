@@ -4,5 +4,6 @@ package com.example.babiling.ui.screens.topic.study
 data class FlashcardItem(
     val name: String,     // Tên/từ vựng tiếng Anh
     val nameVi: String,   // Dịch nghĩa tiếng Việt
-    val imagePath: String // Đường dẫn đến ảnh trong thư mục assets
+    val imagePath: String, // Đường dẫn đến ảnh trong thư mục assets
+    val soundPath: String
 )

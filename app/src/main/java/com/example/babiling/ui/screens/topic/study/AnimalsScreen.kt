@@ -39,35 +39,36 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
+import com.example.babiling.utils.SoundPlayer
 
 
 val animalsListData = listOf(
-    FlashcardItem("ALLIGATOR", "Cá sấu", "animals_flashcard_ABC/A.jpeg"),
-    FlashcardItem("BEAR", "Gấu", "animals_flashcard_ABC/B.jpeg"),
-    FlashcardItem("CAT", "Mèo", "animals_flashcard_ABC/C.jpeg"),
-    FlashcardItem("DOG", "Chó", "animals_flashcard_ABC/D.jpeg"),
-    FlashcardItem("ELEPHANT", "Voi", "animals_flashcard_ABC/E.jpeg"),
-    FlashcardItem("FROG", "Ếch", "animals_flashcard_ABC/F.jpeg"),
-    FlashcardItem("GOAT", "Dê", "animals_flashcard_ABC/G.jpeg"),
-    FlashcardItem("HORSE", "Ngựa", "animals_flashcard_ABC/H.jpeg"),
-    FlashcardItem("IGUANA", "Kỳ nhông", "animals_flashcard_ABC/I.jpeg"),
-    FlashcardItem("JELLYFISH", "Sứa", "animals_flashcard_ABC/J.jpeg"),
-    FlashcardItem("KANGAROO", "Chuột túi", "animals_flashcard_ABC/K.jpeg"),
-    FlashcardItem("LION", "Sư tử", "animals_flashcard_ABC/L.jpeg"),
-    FlashcardItem("MONKEY", "Khỉ", "animals_flashcard_ABC/M.jpeg"),
-    FlashcardItem("NARWHAL", "Cá voi một sừng", "animals_flashcard_ABC/N.jpeg"),
-    FlashcardItem("OCTOPUS", "Bạch tuộc", "animals_flashcard_ABC/O.jpeg"),
-    FlashcardItem("PIG", "Heo", "animals_flashcard_ABC/P.jpeg"),
-    FlashcardItem("QUAIL", "Chim cút", "animals_flashcard_ABC/Q.jpeg"),
-    FlashcardItem("RABBIT", "Thỏ", "animals_flashcard_ABC/R.jpeg"),
-    FlashcardItem("SNAKE", "Rắn", "animals_flashcard_ABC/S.jpeg"),
-    FlashcardItem("TIGER", "Hổ", "animals_flashcard_ABC/T.jpeg"),
-    FlashcardItem("URCHIN", "Nhím biển", "animals_flashcard_ABC/U.jpeg"),
-    FlashcardItem("VULTURE", "Kền kền", "animals_flashcard_ABC/V.jpeg"),
-    FlashcardItem("WHALE", "Cá voi", "animals_flashcard_ABC/W.jpeg"),
-    FlashcardItem("FOX", "Cáo", "animals_flashcard_ABC/F.jpeg"),
-    FlashcardItem("YAK", "Bò Tây Tạng", "animals_flashcard_ABC/Y.jpeg"),
-    FlashcardItem("ZEBRA", "Ngựa vằn", "animals_flashcard_ABC/Z.jpeg")
+    FlashcardItem("ALLIGATOR", "Cá sấu", "animals_flashcard_ABC/A.jpeg", "sound/animals/alligator.mp3"),
+    FlashcardItem("BEAR", "Gấu", "animals_flashcard_ABC/B.jpeg", "sound/animals/bear.mp3"),
+    FlashcardItem("CAT", "Mèo", "animals_flashcard_ABC/C.jpeg", "sound/animals/cat.mp3"),
+    FlashcardItem("DOG", "Chó", "animals_flashcard_ABC/D.jpeg", "sound/animals/dog.mp3"),
+    FlashcardItem("ELEPHANT", "Voi", "animals_flashcard_ABC/E.jpeg", "sound/animals/elephant.mp3"),
+    FlashcardItem("FROG", "Ếch", "animals_flashcard_ABC/F.jpeg", "sound/animals/frog.mp3"),
+    FlashcardItem("GOAT", "Dê", "animals_flashcard_ABC/G.jpeg", "sound/animals/goat.mp3"),
+    FlashcardItem("HORSE", "Ngựa", "animals_flashcard_ABC/H.jpeg", "sound/animals/horse.mp3"),
+    FlashcardItem("IGUANA", "Kỳ nhông", "animals_flashcard_ABC/I.jpeg", "sound/animals/iguana.mp3"),
+    FlashcardItem("JELLYFISH", "Sứa", "animals_flashcard_ABC/J.jpeg", "sound/animals/jellyfish.mp3"),
+    FlashcardItem("KANGAROO", "Chuột túi", "animals_flashcard_ABC/K.jpeg", "sound/animals/kangaroo.mp3"),
+    FlashcardItem("LION", "Sư tử", "animals_flashcard_ABC/L.jpeg", "sound/animals/lion.mp3"),
+    FlashcardItem("MONKEY", "Khỉ", "animals_flashcard_ABC/M.jpeg", "sound/animals/monkey.mp3"),
+    FlashcardItem("NARWHAL", "Cá voi một sừng", "animals_flashcard_ABC/N.jpeg", "sound/animals/narwhal.mp3"),
+    FlashcardItem("OCTOPUS", "Bạch tuộc", "animals_flashcard_ABC/O.jpeg", "sound/animals/octopus.mp3"),
+    FlashcardItem("PIG", "Heo", "animals_flashcard_ABC/P.jpeg", "sound/animals/pig.mp3"),
+    FlashcardItem("QUAIL", "Chim cút", "animals_flashcard_ABC/Q.jpeg", "sound/animals/quail.mp3"),
+    FlashcardItem("RABBIT", "Thỏ", "animals_flashcard_ABC/R.jpeg", "sound/animals/rabbit.mp3"),
+    FlashcardItem("SNAKE", "Rắn", "animals_flashcard_ABC/S.jpeg", "sound/animals/snake.mp3"),
+    FlashcardItem("TIGER", "Hổ", "animals_flashcard_ABC/T.jpeg", "sound/animals/tiger.mp3"),
+    FlashcardItem("URCHIN", "Nhím biển", "animals_flashcard_ABC/U.jpeg", "sound/animals/urchin.mp3"),
+    FlashcardItem("VULTURE", "Kền kền", "animals_flashcard_ABC/V.jpeg", "sound/animals/vulture.mp3"),
+    FlashcardItem("WHALE", "Cá voi", "animals_flashcard_ABC/W.jpeg", "sound/animals/whale.mp3"),
+    FlashcardItem("FOX", "Cáo", "animals_flashcard_ABC/F.jpeg", "sound/animals/fox.mp3"),
+    FlashcardItem("YAK", "Bò Tây Tạng", "animals_flashcard_ABC/Y.jpeg", "sound/animals/yak.mp3"),
+    FlashcardItem("ZEBRA", "Ngựa vằn", "animals_flashcard_ABC/Z.jpeg", "sound/animals/zebra.mp3")
 )
 
 @Composable
@@ -284,6 +285,7 @@ fun AnimalsScreen(
                 AnimalsFlashcard(
                     item = item,
                     onClick = { selectedItem ->
+                        SoundPlayer.play(context, selectedItem.soundPath)
                         onItemSelected(selectedItem)
                     }
                 )

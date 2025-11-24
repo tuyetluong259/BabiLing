@@ -35,24 +35,24 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
-
+import com.example.babiling.utils.SoundPlayer
 
 val colorList = listOf(
-    FlashcardItem("BLACK", "Màu đen", "color_flashcard/color_flashcard_black.jpg"),
-    FlashcardItem("BLUE", "Màu xanh dương", "color_flashcard/color_flashcard_blue.jpeg"),
-    FlashcardItem("BROWN", "Màu nâu", "color_flashcard/color_flashcard_brown.jpeg"),
-    FlashcardItem("GOLD", "Màu vàng kim", "color_flashcard/color_flashcard_gold.jpeg"),
-    FlashcardItem("GREEN", "Màu xanh lá", "color_flashcard/color_flashcard_green.jpeg"),
-    FlashcardItem("GREY", "Màu xám", "color_flashcard/color_flashcard_grey.jpeg"),
-    FlashcardItem("LILAC", "Màu tím hoa cà", "color_flashcard/color_flashcard_lilac.jpeg"),
-    FlashcardItem("NAVY", "Màu xanh navy", "color_flashcard/color_flashcard_navy.jpeg"),
-    FlashcardItem("ORANGE", "Màu cam", "color_flashcard/color_flashcard_orange.jpeg"),
-    FlashcardItem("PINK", "Màu hồng", "color_flashcard/color_flashcard_pink.jpeg"),
-    FlashcardItem("PURPLE", "Màu tím", "color_flashcard/color_flashcard_purple.jpeg"),
-    FlashcardItem("RED", "Màu đỏ", "color_flashcard/color_flashcard_red.jpeg"),
-    FlashcardItem("SILVER", "Màu bạc", "color_flashcard/color_flashcard_silver.jpeg"),
-    FlashcardItem("WHITE", "Màu trắng", "color_flashcard/color_flashcard_white.jpeg"),
-    FlashcardItem("YELLOW", "Màu vàng", "color_flashcard/color_flashcard_yellow.jpeg")
+    FlashcardItem("BLACK", "Màu đen", "color_flashcard/color_flashcard_black.jpg", "sound/color/black.mp3"),
+    FlashcardItem("BLUE", "Màu xanh dương", "color_flashcard/color_flashcard_blue.jpeg", "sound/color/blue.mp3"),
+    FlashcardItem("BROWN", "Màu nâu", "color_flashcard/color_flashcard_brown.jpeg", "sound/color/brown.mp3"),
+    FlashcardItem("GOLD", "Màu vàng kim", "color_flashcard/color_flashcard_gold.jpeg", "sound/color/gold.mp3"),
+    FlashcardItem("GREEN", "Màu xanh lá", "color_flashcard/color_flashcard_green.jpeg", "sound/color/green.mp3"),
+    FlashcardItem("GREY", "Màu xám", "color_flashcard/color_flashcard_grey.jpeg", "sound/color/grey.mp3"),
+    FlashcardItem("LILAC", "Màu tím hoa cà", "color_flashcard/color_flashcard_lilac.jpeg", "sound/color/lilac.mp3"),
+    FlashcardItem("NAVY", "Màu xanh navy", "color_flashcard/color_flashcard_navy.jpeg", "sound/color/navy.mp3"),
+    FlashcardItem("ORANGE", "Màu cam", "color_flashcard/color_flashcard_orange.jpeg", "sound/color/orange.mp3"),
+    FlashcardItem("PINK", "Màu hồng", "color_flashcard/color_flashcard_pink.jpeg", "sound/color/pink.mp3"),
+    FlashcardItem("PURPLE", "Màu tím", "color_flashcard/color_flashcard_purple.jpeg", "sound/color/purple.mp3"),
+    FlashcardItem("RED", "Màu đỏ", "color_flashcard/color_flashcard_red.jpeg", "sound/color/red.mp3"),
+    FlashcardItem("SILVER", "Màu bạc", "color_flashcard/color_flashcard_silver.jpeg", "sound/color/silver.mp3"),
+    FlashcardItem("WHITE", "Màu trắng", "color_flashcard/color_flashcard_white.jpeg", "sound/color/white.mp3"),
+    FlashcardItem("YELLOW", "Màu vàng", "color_flashcard/color_flashcard_yellow.jpeg", "sound/color/yellow.mp3")
 )
 
 @Composable
@@ -260,6 +260,7 @@ fun ColorsScreen(
                 ColorsPartCard(
                     item = item,
                     onClick = { selectedItem ->
+                        SoundPlayer.play(context, selectedItem.soundPath)
                         onItemSelected(selectedItem)
                     }
                 )

@@ -38,30 +38,31 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
+import com.example.babiling.utils.SoundPlayer
 
 
 val fruitListData = listOf(
-    FlashcardItem("APPLE", "Quả táo", "fruit_flashcard/fruit-flashcard-apple.jpeg"),
-    FlashcardItem("AVOCADO", "Quả bơ", "fruit_flashcard/fruit-flashcard-avocado.jpeg"),
-    FlashcardItem("BANANA", "Quả chuối", "fruit_flashcard/fruit-flashcard-banana.jpeg"),
-    FlashcardItem("CHERRY", "Quả cherry", "fruit_flashcard/fruit-flashcard-cherry.jpeg"),
-    FlashcardItem("COCONUT", "Quả dừa", "fruit_flashcard/fruit-flashcard-coconut.jpeg"),
-    FlashcardItem("GRAPEFRUIT", "Quả bưởi", "fruit_flashcard/fruit-flashcard-grapefruit.jpeg"),
-    FlashcardItem("GRAPES", "Quả nho", "fruit_flashcard/fruit-flashcard-grapes.jpeg"),
-    FlashcardItem("KIWI", "Quả kiwi", "fruit_flashcard/fruit-flashcard-kiwi.jpeg"),
-    FlashcardItem("LEMON", "Quả chanh vàng", "fruit_flashcard/fruit-flashcard-lemon.jpeg"),
-    FlashcardItem("LIME", "Quả chanh xanh", "fruit_flashcard/fruit-flashcard-lime.jpeg"),
-    FlashcardItem("MANGO", "Quả xoài", "fruit_flashcard/fruit-flashcard-mango.jpeg"),
-    FlashcardItem("MELON", "Quả dưa lưới", "fruit_flashcard/fruit-flashcard-melon.jpeg"),
-    FlashcardItem("ORANGE", "Quả cam", "fruit_flashcard/fruit-flashcard-orange.jpeg"),
-    FlashcardItem("PAPAYA", "Quả đu đủ", "fruit_flashcard/fruit-flashcard-papaya.jpeg"),
-    FlashcardItem("PEACH", "Quả đào", "fruit_flashcard/fruit-flashcard-peach.jpeg"),
-    FlashcardItem("PEAR", "Quả lê", "fruit_flashcard/fruit-flashcard-pear.jpeg"),
-    FlashcardItem("PINEAPPLE", "Quả dứa", "fruit_flashcard/fruit-flashcard-pineapple.jpeg"),
-    FlashcardItem("PLUM", "Quả mận", "fruit_flashcard/fruit-flashcard-plum.jpeg"),
-    FlashcardItem("RASPBERRY", "Quả mâm xôi", "fruit_flashcard/fruit-flashcard-raspberry.jpeg"),
-    FlashcardItem("STRAWBERRY", "Quả dâu tây", "fruit_flashcard/fruit-flashcard-strawberry.jpeg"),
-    FlashcardItem("WATERMELON", "Quả dưa hấu", "fruit_flashcard/fruit-flashcard-watermelon.jpeg")
+    FlashcardItem("APPLE", "Quả táo", "fruit_flashcard/fruit-flashcard-apple.jpeg", "sound/fruit/apple.mp3"),
+    FlashcardItem("AVOCADO", "Quả bơ", "fruit_flashcard/fruit-flashcard-avocado.jpeg", "sound/fruit/avocado.mp3"),
+    FlashcardItem("BANANA", "Quả chuối", "fruit_flashcard/fruit-flashcard-banana.jpeg", "sound/fruit/banana.mp3"),
+    FlashcardItem("CHERRY", "Quả cherry", "fruit_flashcard/fruit-flashcard-cherry.jpeg", "sound/fruit/cherry.mp3"),
+    FlashcardItem("COCONUT", "Quả dừa", "fruit_flashcard/fruit-flashcard-coconut.jpeg", "sound/fruit/coconut.mp3"),
+    FlashcardItem("GRAPEFRUIT", "Quả bưởi", "fruit_flashcard/fruit-flashcard-grapefruit.jpeg", "sound/fruit/grapefruit.mp3"),
+    FlashcardItem("GRAPES", "Quả nho", "fruit_flashcard/fruit-flashcard-grapes.jpeg", "sound/fruit/grapes.mp3"),
+    FlashcardItem("KIWI", "Quả kiwi", "fruit_flashcard/fruit-flashcard-kiwi.jpeg", "sound/fruit/kiwi.mp3"),
+    FlashcardItem("LEMON", "Quả chanh vàng", "fruit_flashcard/fruit-flashcard-lemon.jpeg", "sound/fruit/lemon.mp3"),
+    FlashcardItem("LIME", "Quả chanh xanh", "fruit_flashcard/fruit-flashcard-lime.jpeg", "sound/fruit/lime.mp3"),
+    FlashcardItem("MANGO", "Quả xoài", "fruit_flashcard/fruit-flashcard-mango.jpeg", "sound/fruit/mango.mp3"),
+    FlashcardItem("MELON", "Quả dưa lưới", "fruit_flashcard/fruit-flashcard-melon.jpeg", "sound/fruit/melon.mp3"),
+    FlashcardItem("ORANGE", "Quả cam", "fruit_flashcard/fruit-flashcard-orange.jpeg", "sound/fruit/orange.mp3"),
+    FlashcardItem("PAPAYA", "Quả đu đủ", "fruit_flashcard/fruit-flashcard-papaya.jpeg", "sound/fruit/papaya.mp3"),
+    FlashcardItem("PEACH", "Quả đào", "fruit_flashcard/fruit-flashcard-peach.jpeg", "sound/fruit/peach.mp3"),
+    FlashcardItem("PEAR", "Quả lê", "fruit_flashcard/fruit-flashcard-pear.jpeg", "sound/fruit/pear.mp3"),
+    FlashcardItem("PINEAPPLE", "Quả dứa", "fruit_flashcard/fruit-flashcard-pineapple.jpeg", "sound/fruit/pineapple.mp3"),
+    FlashcardItem("PLUM", "Quả mận", "fruit_flashcard/fruit-flashcard-plum.jpeg", "sound/fruit/plum.mp3"),
+    FlashcardItem("RASPBERRY", "Quả mâm xôi", "fruit_flashcard/fruit-flashcard-raspberry.jpeg", "sound/fruit/raspberry.mp3"),
+    FlashcardItem("STRAWBERRY", "Quả dâu tây", "fruit_flashcard/fruit-flashcard-strawberry.jpeg", "sound/fruit/strawberry.mp3"),
+    FlashcardItem("WATERMELON", "Quả dưa hấu", "fruit_flashcard/fruit-flashcard-watermelon.jpeg", "sound/fruit/watermelon.mp3")
 )
 
 @Composable
@@ -272,6 +273,7 @@ fun FruitScreen(
                 FruitPartCard(
                     item = item,
                     onClick = { selectedItem ->
+                        SoundPlayer.play(context, selectedItem.soundPath)
                         onItemSelected(selectedItem)
                     }
                 )

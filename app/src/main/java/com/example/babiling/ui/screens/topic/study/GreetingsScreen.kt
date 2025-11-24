@@ -34,15 +34,16 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import androidx.compose.material3.CenterAlignedTopAppBar
 import com.example.babiling.ui.theme.BalooThambi2Family
+import com.example.babiling.utils.SoundPlayer
 
 
 val greetingList = listOf(
-    FlashcardItem("HELLO", "Xin chào", "greetings_flashcard/greetings_flashcard_hello.png"),
-    FlashcardItem("GOODBYE", "Tạm biệt", "greetings_flashcard/greetings_flashcard_goodbye.png"),
-    FlashcardItem("GOOD MORNING", "Chào buổi sáng", "greetings_flashcard/greetings_flashcard_goodmorning.png"),
-    FlashcardItem("GOOD NIGHT", "Chúc ngủ ngon", "greetings_flashcard/greetings_flashcard_goodnight.png"),
-    FlashcardItem("GOOD AFTERNOON", "Chào buổi chiều", "greetings_flashcard/greetings_flashcard_goodafternoon.png"),
-    FlashcardItem("GOOD EVENING", "Chào buổi tối", "greetings_flashcard/greetings_flashcard_goodevening.png")
+    FlashcardItem("HELLO", "Xin chào", "greetings_flashcard/greetings_flashcard_hello.png", "sound/greetings/hello.mp3"),
+    FlashcardItem("GOODBYE", "Tạm biệt", "greetings_flashcard/greetings_flashcard_goodbye.png", "sound/greetings/goodbye.mp3"),
+    FlashcardItem("GOOD MORNING", "Chào buổi sáng", "greetings_flashcard/greetings_flashcard_goodmorning.png", "sound/greetings/good_morning.mp3"),
+    FlashcardItem("GOOD NIGHT", "Chúc ngủ ngon", "greetings_flashcard/greetings_flashcard_goodnight.png", "sound/greetings/goodnight.mp3"),
+    FlashcardItem("GOOD AFTERNOON", "Chào buổi chiều", "greetings_flashcard/greetings_flashcard_goodafternoon.png", "sound/greetings/good_afternoon.mp3"),
+    FlashcardItem("GOOD EVENING", "Chào buổi tối", "greetings_flashcard/greetings_flashcard_goodevening.png", "sound/greetings/good_evening.mp3")
 )
 
 @Composable
@@ -191,6 +192,7 @@ fun GreetingsScreen(
                 FlashcardCard(
                     item = item,
                     onClick = { selectedItem ->
+                        SoundPlayer.play(context, selectedItem.soundPath)
                         onItemSelected(selectedItem)
                     }
                 )

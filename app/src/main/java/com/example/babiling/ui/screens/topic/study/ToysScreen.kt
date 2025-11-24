@@ -38,30 +38,31 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
+import com.example.babiling.utils.SoundPlayer
 
 
 val toysListData = listOf(
-    FlashcardItem("BABY DOLL", "Búp bê em bé", "toys_flashcard/baby_doll.png"),
-    FlashcardItem("BALL", "Bóng", "toys_flashcard/ball.png"),
-    FlashcardItem("BICYCLE", "Xe đạp", "toys_flashcard/bicycle.png"),
-    FlashcardItem("BLOCK GAME", "Trò chơi khối", "toys_flashcard/block_game.png"),
-    FlashcardItem("BLOCKS", "Khối đồ chơi", "toys_flashcard/blocks.png"),
-    FlashcardItem("BOARD GAME", "Trò chơi cờ bàn", "toys_flashcard/board_game.png"),
-    FlashcardItem("BOUNCING TOY", "Đồ chơi nảy", "toys_flashcard/bouncing_toy.png"),
-    FlashcardItem("BUILDING BLOCKS", "Khối xếp hình", "toys_flashcard/building_blocks.png"),
-    FlashcardItem("CARD GAME", "Trò chơi bài", "toys_flashcard/card_game.png"),
-    FlashcardItem("DOLL", "Búp bê", "toys_flashcard/doll.png"),
-    FlashcardItem("FIGURINE", "Mô hình nhỏ", "toys_flashcard/figurine.png"),
-    FlashcardItem("JUMP ROPE", "Dây nhảy", "toys_flashcard/jump_rope.png"),
-    FlashcardItem("PUZZLE", "Trò xếp hình", "toys_flashcard/puzzle.png"),
-    FlashcardItem("RC CAR", "Xe đồ chơi", "toys_flashcard/RC_car.png"),
-    FlashcardItem("ROBOT", "Robot", "toys_flashcard/robot.png"),
-    FlashcardItem("SCOOTER", "Xe scooter", "toys_flashcard/scooter.png"),
-    FlashcardItem("TABLET", "Máy tính bảng", "toys_flashcard/tablet.png"),
-    FlashcardItem("TEDDY BEAR", "Gấu bông Teddy", "toys_flashcard/teddy_bear.png"),
-    FlashcardItem("TOY CAR", "Xe ô tô đồ chơi", "toys_flashcard/toy_car.png"),
-    FlashcardItem("TOY TRUCK", "Xe tải đồ chơi", "toys_flashcard/toy_truck.png"),
-    FlashcardItem("VIDEOGAME", "Trò chơi điện tử", "toys_flashcard/videogame.png")
+    FlashcardItem("BABY DOLL", "Búp bê em bé", "toys_flashcard/baby_doll.png", "sound/toys/baby_doll.mp3"),
+    FlashcardItem("BALL", "Bóng", "toys_flashcard/ball.png", "sound/toys/ball.mp3"),
+    FlashcardItem("BICYCLE", "Xe đạp", "toys_flashcard/bicycle.png", "sound/toys/bicycle.mp3"),
+    FlashcardItem("BLOCK GAME", "Trò chơi khối", "toys_flashcard/block_game.png", "sound/toys/block_game.mp3"),
+    FlashcardItem("BLOCKS", "Khối đồ chơi", "toys_flashcard/blocks.png", "sound/toys/blocks.mp3"),
+    FlashcardItem("BOARD GAME", "Trò chơi cờ bàn", "toys_flashcard/board_game.png", "sound/toys/board_game.mp3"),
+    FlashcardItem("BOUNCING TOY", "Đồ chơi nảy", "toys_flashcard/bouncing_toy.png", "sound/toys/bouncing_toy.mp3"),
+    FlashcardItem("BUILDING BLOCKS", "Khối xếp hình", "toys_flashcard/building_blocks.png", "sound/toys/building_blocks.mp3"),
+    FlashcardItem("CARD GAME", "Trò chơi bài", "toys_flashcard/card_game.png", "sound/toys/card_game.mp3"),
+    FlashcardItem("DOLL", "Búp bê", "toys_flashcard/doll.png", "sound/toys/doll.mp3"),
+    FlashcardItem("FIGURINE", "Mô hình nhỏ", "toys_flashcard/figurine.png", "sound/toys/figurine.mp3"),
+    FlashcardItem("JUMP ROPE", "Dây nhảy", "toys_flashcard/jump_rope.png", "sound/toys/jump_rope.mp3"),
+    FlashcardItem("PUZZLE", "Trò xếp hình", "toys_flashcard/puzzle.png", "sound/toys/puzzle.mp3"),
+    FlashcardItem("RC CAR", "Xe đồ chơi", "toys_flashcard/RC_car.png", "sound/toys/RC_car.mp3"),
+    FlashcardItem("ROBOT", "Robot", "toys_flashcard/robot.png", "sound/toys/robot.mp3"),
+    FlashcardItem("SCOOTER", "Xe scooter", "toys_flashcard/scooter.png", "sound/toys/scooter.mp3"),
+    FlashcardItem("TABLET", "Máy tính bảng", "toys_flashcard/tablet.png", "sound/toys/tablet.mp3"),
+    FlashcardItem("TEDDY BEAR", "Gấu bông Teddy", "toys_flashcard/teddy_bear.png", "sound/toys/teddy_bear.mp3"),
+    FlashcardItem("TOY CAR", "Xe ô tô đồ chơi", "toys_flashcard/toy_car.png", "sound/toys/toy_car.mp3"),
+    FlashcardItem("TOY TRUCK", "Xe tải đồ chơi", "toys_flashcard/toy_truck.png", "sound/toys/toy_truck.mp3"),
+    FlashcardItem("VIDEOGAME", "Trò chơi điện tử", "toys_flashcard/videogame.png", "sound/toys/videogame.mp3")
 )
 
 @Composable
@@ -274,6 +275,7 @@ fun ToysScreen(
                 ToysFlashcard(
                     item = item,
                     onClick = { selectedItem ->
+                        SoundPlayer.play(context, selectedItem.soundPath)
                         onItemSelected(selectedItem)
                     }
                 )

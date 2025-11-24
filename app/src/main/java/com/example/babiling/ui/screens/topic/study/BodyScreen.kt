@@ -38,27 +38,28 @@ import com.example.babiling.R
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.example.babiling.ui.theme.BalooThambi2Family
 import androidx.compose.material3.CenterAlignedTopAppBar
+import com.example.babiling.utils.SoundPlayer
 
 
 val bodyList = listOf(
-    FlashcardItem("ARMS", "Cánh tay", "body_flashcard/body_flashcard_arms.png"),
-    FlashcardItem("BODY", "Cơ thể", "body_flashcard/body_flashcard_body.png"),
-    FlashcardItem("NOSE", "Mũi", "body_flashcard/body_flashcard_nose.png"),
-    FlashcardItem("EARS", "Tai", "body_flashcard/body_flashcard_ears.png"),
-    FlashcardItem("ELBOWS", "Khuỷu tay", "body_flashcard/body_flashcard_elbows.png"),
-    FlashcardItem("EYELASHES", "Lông mi", "body_flashcard/body_flashcard_eyelashes.png"),
-    FlashcardItem("EYES", "Mắt", "body_flashcard/body_flashcard_eyes.png"),
-    FlashcardItem("FACE", "Khuôn mặt", "body_flashcard/body_flashcard_face.png"),
-    FlashcardItem("FEET", "Bàn chân", "body_flashcard/body_flashcard_feet.png"),
-    FlashcardItem("FINGERS", "Ngón tay", "body_flashcard/body_flashcard_fingers.png"),
-    FlashcardItem("HAIR", "Tóc", "body_flashcard/body_flashcard_hair.png"),
-    FlashcardItem("HANDS", "Bàn tay", "body_flashcard/body_flashcard_hands.png"),
-    FlashcardItem("HEAD", "Đầu", "body_flashcard/body_flashcard_head.png"),
-    FlashcardItem("KNEES", "Đầu gối", "body_flashcard/body_flashcard_knees.png"),
-    FlashcardItem("LEGS", "Chân", "body_flashcard/body_flashcard_legs.png"),
-    FlashcardItem("LIPS", "Môi", "body_flashcard/body_flashcard_lips.png"),
-    FlashcardItem("MOUTH", "Miệng", "body_flashcard/body_flashcard_mouth.png"),
-    FlashcardItem("NECK", "Cổ", "body_flashcard/body_flashcard_neck.png")
+    FlashcardItem("ARMS", "Cánh tay", "body_flashcard/body_flashcard_arms.png", "sound/body/arms.mp3"),
+    FlashcardItem("BODY", "Cơ thể", "body_flashcard/body_flashcard_body.png", "sound/body/body.mp3"),
+    FlashcardItem("NOSE", "Mũi", "body_flashcard/body_flashcard_nose.png", "sound/body/nose.mp3"),
+    FlashcardItem("EARS", "Tai", "body_flashcard/body_flashcard_ears.png", "sound/body/ears.mp3"),
+    FlashcardItem("ELBOWS", "Khuỷu tay", "body_flashcard/body_flashcard_elbows.png", "sound/body/elbows.mp3"),
+    FlashcardItem("EYELASHES", "Lông mi", "body_flashcard/body_flashcard_eyelashes.png", "sound/body/eyelashes.mp3"),
+    FlashcardItem("EYES", "Mắt", "body_flashcard/body_flashcard_eyes.png", "sound/body/eyes.mp3"),
+    FlashcardItem("FACE", "Khuôn mặt", "body_flashcard/body_flashcard_face.png", "sound/body/face.mp3"),
+    FlashcardItem("FEET", "Bàn chân", "body_flashcard/body_flashcard_feet.png", "sound/body/feet.mp3"),
+    FlashcardItem("FINGERS", "Ngón tay", "body_flashcard/body_flashcard_fingers.png", "sound/body/fingers.mp3"),
+    FlashcardItem("HAIR", "Tóc", "body_flashcard/body_flashcard_hair.png", "sound/body/hair.mp3"),
+    FlashcardItem("HANDS", "Bàn tay", "body_flashcard/body_flashcard_hands.png", "sound/body/hands.mp3"),
+    FlashcardItem("HEAD", "Đầu", "body_flashcard/body_flashcard_head.png", "sound/body/head.mp3"),
+    FlashcardItem("KNEES", "Đầu gối", "body_flashcard/body_flashcard_knees.png", "sound/body/knees.mp3"),
+    FlashcardItem("LEGS", "Chân", "body_flashcard/body_flashcard_legs.png", "sound/body/legs.mp3"),
+    FlashcardItem("LIPS", "Môi", "body_flashcard/body_flashcard_lips.png", "sound/body/lips.mp3"),
+    FlashcardItem("MOUTH", "Miệng", "body_flashcard/body_flashcard_mouth.png", "sound/body/mouth.mp3"),
+    FlashcardItem("NECK", "Cổ", "body_flashcard/body_flashcard_neck.png", "sound/body/neck.mp3")
 )
 
 @Composable
@@ -273,6 +274,7 @@ fun BodyScreen(
                 BodyPartCard(
                     item = item,
                     onClick = { selectedItem ->
+                        SoundPlayer.play(context, selectedItem.soundPath)
                         onItemSelected(selectedItem)
                     }
                 )

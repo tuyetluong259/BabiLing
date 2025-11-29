@@ -1,25 +1,41 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.babiling"
-    compileSdk = 36
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.babiling"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        create("releaseConfig") {
+            storeFile = file("D:/Android_Keys/babiling/babiling_keys")
+            storePassword = "123456"
+            keyAlias = "key0"
+            keyPassword = "123456"
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("releaseConfig")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -35,32 +51,22 @@ android {
     buildFeatures {
         compose = true
     }
-    signingConfigs {
-        create("releaseConfig") {
-            storeFile = file("D:/Android_Keys/babiling/babiling_keys")
-            storePassword = "123456"
-            keyAlias = "key0"
-            keyPassword = "123456"
-        }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 
-    buildTypes {
-        release {
-            // Gán cấu hình ký vừa tạo vào bản release
-            signingConfig = signingConfigs.getByName("releaseConfig")
-            
-            // Các cấu hình khác
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }
 
 dependencies {
-    // Compose BOM
+    // ---- THỐNG NHẤT VỀ VERSION CATALOG ----
+
+    // Compose BOM (Quản lý phiên bản cho các thư viện Compose)
     implementation(platform(libs.androidx.compose.bom))
 
     // Core & Lifecycle
@@ -74,17 +80,11 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    debugImplementation(libs.androidx.compose.ui.tooling)
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    val composeUiVersion = "1.7.0"
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeUiVersion")
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    // ✨ 1. THÊM THƯ VIỆN ICON MỞ RỘNG ĐỂ SỬA LỖI "VolumeUp" ✨
+    implementation(libs.androidx.compose.material.icons.extended)
 
-    // Firebase BOM
+    // Firebase BOM (Quản lý phiên bản cho các thư viện Firebase)
     implementation(platform(libs.firebase.bom))
 
     // Firebase libraries
@@ -93,18 +93,28 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.database.ktx)
-
-    // Firebase App Check Play Integrity
     implementation(libs.firebase.appcheck.ktx)
     implementation(libs.firebase.appcheck.playintegrity)
 
-    // Google Play Services Auth
+    // Google Services
     implementation(libs.google.play.services.auth)
-
-    // Kotlin Coroutines Play Services
     implementation(libs.kotlinx.coroutines.play.services)
-    implementation("com.google.android.gms:play-services-auth:21.4.0")
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.accompanist:accompanist-insets-ui:0.30.1")
 
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Other Libraries (đã được thống nhất)
+    implementation(libs.accompanist.insets.ui)
+    implementation(libs.gson)
+
+    // Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

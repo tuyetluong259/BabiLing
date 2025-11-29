@@ -1,0 +1,170 @@
+[
+  {
+    "id": "toy_001",
+    "topicId": "toys",
+    "name": "BABY DOLL",
+    "nameVi": "Búp bê em bé",
+    "imagePath": "images/toys/baby_doll.png",
+    "soundPath": "sounds/toys/baby_doll.mp3"
+  },
+  {
+    "id": "toy_002",
+    "topicId": "toys",
+    "name": "BALL",
+    "nameVi": "Bóng",
+    "imagePath": "images/toys/ball.png",
+    "soundPath": "sounds/toys/ball.mp3"
+  },
+  {
+    "id": "toy_003",
+    "topicId": "toys",
+    "name": "BICYCLE",
+    "nameVi": "Xe đạp",
+    "imagePath": "images/toys/bicycle.png",
+    "soundPath": "sounds/toys/bicycle.mp3"
+  },
+  {
+    "id": "toy_004",
+    "topicId": "toys",
+    "name": "BLOCK GAME",
+    "nameVi": "Trò chơi khối",
+    "imagePath": "images/toys/block_game.png",
+    "soundPath": "sounds/toys/block_game.mp3"
+  },
+  {
+    "id": "toy_005",
+    "topicId": "toys",
+    "name": "BLOCKS",
+    "nameVi": "Khối đồ chơi",
+    "imagePath": "images/toys/blocks.png",
+    "soundPath": "sounds/toys/blocks.mp3"
+  },
+  {
+    "id": "toy_006",
+    "topicId": "toys",
+    "name": "BOARD GAME",
+    "nameVi": "Trò chơi cờ bàn",
+    "imagePath": "images/toys/board_game.png",
+    "soundPath": "sounds/toys/board_game.mp3"
+  },
+  {
+    "id": "toy_007",
+    "topicId": "toys",
+    "name": "BOUNCING TOY",
+    "nameVi": "Đồ chơi nảy",
+    "imagePath": "images/toys/bouncing_toy.png",
+    "soundPath": "sounds/toys/bouncing_toy.mp3"
+  },
+  {
+    "id": "toy_008",
+    "topicId": "toys",
+    "name": "BUILDING BLOCKS",
+    "nameVi": "Khối xếp hình",
+    "imagePath": "images/toys/building_blocks.png",
+    "soundPath": "sounds/toys/building_blocks.mp3"
+  },
+  {
+    "id": "toy_009",
+    "topicId": "toys",
+    "name": "CARD GAME",
+    "nameVi": "Trò chơi bài",
+    "imagePath": "images/toys/card_game.png",
+    "soundPath": "sounds/toys/card_game.mp3"
+  },
+  {
+    "id": "toys_010",
+    "topicId": "toys",
+    "name": "DOLL",
+    "nameVi": "Búp bê",
+    "imagePath": "images/toys/doll.png",
+    "soundPath": "sounds/toys/doll.mp3"
+  },
+  {
+    "id": "toys_011",
+    "topicId": "toys",
+    "name": "FIGURINE",
+    "nameVi": "Mô hình nhỏ",
+    "imagePath": "images/toys/figurine.png",
+    "soundPath": "sounds/toys/figurine.mp3"
+  },
+  {
+    "id": "toys_012",
+    "topicId": "toys",
+    "name": "JUMP ROPE",
+    "nameVi": "Dây nhảy",
+    "imagePath": "images/toys/jump_rope.png",
+    "soundPath": "sounds/toys/jump_rope.mp3"
+  },
+  {
+    "id": "toys_013",
+    "topicId": "toys",
+    "name": "PUZZLE",
+    "nameVi": "Trò xếp hình",
+    "imagePath": "images/toys/puzzle.png",
+    "soundPath": "sounds/toys/puzzle.mp3"
+  },
+  {
+    "id": "toys_014",
+    "topicId": "toys",
+    "name": "RC CAR",
+    "nameVi": "Xe đồ chơi",
+    "imagePath": "images/toys/RC_car.png",
+    "soundPath": "sounds/toys/RC_car.mp3"
+  },
+  {
+    "id": "toys_015",
+    "topicId": "toys",
+    "name": "ROBOT",
+    "nameVi": "Robot",
+    "imagePath": "images/toys/robot.png",
+    "soundPath": "sounds/toys/robot.mp3"
+  },
+  {
+    "id": "toys_016",
+    "topicId": "toys",
+    "name": "SCOOTER",
+    "nameVi": "Xe scooter",
+    "imagePath": "images/toys/scooter.png",
+    "soundPath": "sounds/toys/scooter.mp3"
+  },
+  {
+    "id": "toys_017",
+    "topicId": "toys",
+    "name": "TABLET",
+    "nameVi": "Máy tính bảng",
+    "imagePath": "images/toys/tablet.png",
+    "soundPath": "sounds/toys/tablet.mp3"
+  },
+  {
+    "id": "toys_018",
+    "topicId": "toys",
+    "name": "TEDDY BEAR",
+    "nameVi": "Gấu bông Teddy",
+    "imagePath": "images/toys/teddy_bear.png",
+    "soundPath": "sounds/toys/teddy_bear.mp3"
+  },
+  {
+    "id": "toys_019",
+    "topicId": "toys",
+    "name": "TOY CAR",
+    "nameVi": "Xe ô tô đồ chơi",
+    "imagePath": "images/toys/toy_car.png",
+    "soundPath": "sounds/toys/toy_car.mp3"
+  },
+  {
+    "id": "toys_020",
+    "topicId": "toys",
+    "name": "TOY TRUCK",
+    "nameVi": "Xe tải đồ chơi",
+    "imagePath": "images/toys/toy_truck.png",
+    "soundPath": "sounds/toys/toy_truck.mp3"
+  },
+  {
+    "id": "toys_021",
+    "topicId": "toys",
+    "name": "VIDEOGAME",
+    "nameVi": "Trò chơi điện tử",
+    "imagePath": "images/toys/videogame.png",
+    "soundPath": "sounds/toys/videogame.mp3"
+  }
+]

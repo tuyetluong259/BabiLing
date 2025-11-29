@@ -1,0 +1,146 @@
+[
+  {
+    "id": "body_001",
+    "topicId": "body",
+    "name": "ARMS",
+    "nameVi": "Cánh tay",
+    "imagePath": "images/body/body_flashcard_arms.png",
+    "soundPath": "sounds/body/arms.mp3"
+  },
+  {
+    "id": "body_002",
+    "topicId": "body",
+    "name": "BODY",
+    "nameVi": "Cơ thể",
+    "imagePath": "images/body/body_flashcard_body.png",
+    "soundPath": "sounds/body/body.mp3"
+  },
+  {
+    "id": "body_003",
+    "topicId": "body",
+    "name": "NOSE",
+    "nameVi": "Mũi",
+    "imagePath": "images/body/body_flashcard_nose.png",
+    "soundPath": "sounds/body/nose.mp3"
+  },
+  {
+    "id": "body_004",
+    "topicId": "body",
+    "name": "EARS",
+    "nameVi": "Tai",
+    "imagePath": "images/body/body_flashcard_ears.png",
+    "soundPath": "sounds/body/ears.mp3"
+  },
+  {
+    "id": "body_005",
+    "topicId": "body",
+    "name": "ELBOWS",
+    "nameVi": "Khuỷu tay",
+    "imagePath": "images/body/body_flashcard_elbows.png",
+    "soundPath": "sounds/body/elbows.mp3"
+  },
+  {
+    "id": "body_006",
+    "topicId": "body",
+    "name": "EYELASHES",
+    "nameVi": "Lông mi",
+    "imagePath": "images/body/body_flashcard_eyelashes.png",
+    "soundPath": "sounds/body/eyelashes.mp3"
+  },
+  {
+    "id": "body_007",
+    "topicId": "body",
+    "name": "EYES",
+    "nameVi": "Mắt",
+    "imagePath": "images/body/body_flashcard_eyes.png",
+    "soundPath": "sounds/body/eyes.mp3"
+  },
+  {
+    "id": "body_008",
+    "topicId": "body",
+    "name": "FACE",
+    "nameVi": "Khuôn mặt",
+    "imagePath": "images/body/body_flashcard_face.png",
+    "soundPath": "sounds/body/face.mp3"
+  },
+  {
+    "id": "body_009",
+    "topicId": "body",
+    "name": "FEET",
+    "nameVi": "Bàn chân",
+    "imagePath": "images/body/body_flashcard_feet.png",
+    "soundPath": "sounds/body/feet.mp3"
+  },
+  {
+    "id": "body_010",
+    "topicId": "body",
+    "name": "FINGERS",
+    "nameVi": "Ngón tay",
+    "imagePath": "images/body/body_flashcard_fingers.png",
+    "soundPath": "sounds/body/fingers.mp3"
+  },
+  {
+    "id": "body_011",
+    "topicId": "body",
+    "name": "HAIR",
+    "nameVi": "Tóc",
+    "imagePath": "images/body/body_flashcard_hair.png",
+    "soundPath": "sounds/body/hair.mp3"
+  },
+  {
+    "id": "body_012",
+    "topicId": "body",
+    "name": "HANDS",
+    "nameVi": "Bàn tay",
+    "imagePath": "images/body/body_flashcard_hands.png",
+    "soundPath": "sounds/body/hands.mp3"
+  },
+  {
+    "id": "body_013",
+    "topicId": "body",
+    "name": "HEAD",
+    "nameVi": "Đầu",
+    "imagePath": "images/body/body_flashcard_head.png",
+    "soundPath": "sounds/body/head.mp3"
+  },
+  {
+    "id": "body_014",
+    "topicId": "body",
+    "name": "KNEES",
+    "nameVi": "Đầu gối",
+    "imagePath": "images/body/body_flashcard_knees.png",
+    "soundPath": "sounds/body/knees.mp3"
+  },
+  {
+    "id": "body_015",
+    "topicId": "body",
+    "name": "LEGS",
+    "nameVi": "Chân",
+    "imagePath": "images/body/body_flashcard_legs.png",
+    "soundPath": "sounds/body/legs.mp3"
+  },
+  {
+    "id": "body_016",
+    "topicId": "body",
+    "name": "LIPS",
+    "nameVi": "Môi",
+    "imagePath": "images/body/body_flashcard_lips.png",
+    "soundPath": "sounds/body/lips.mp3"
+  },
+  {
+    "id": "body_017",
+    "topicId": "body",
+    "name": "MOUTH",
+    "nameVi": "Miệng",
+    "imagePath": "images/body/body_flashcard_mouth.png",
+    "soundPath": "sounds/body/mouth.mp3"
+  },
+  {
+    "id": "body_018",
+    "topicId": "body",
+    "name": "NECK",
+    "nameVi": "Cổ",
+    "imagePath": "images/body/body_flashcard_neck.png",
+    "soundPath": "sounds/body/neck.mp3"
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "id": "fruit_001",
+    "topicId": "fruit",
+    "name": "APPLE",
+    "nameVi": "Quả táo",
+    "imagePath": "images/fruit/apple.jpeg",
+    "soundPath": "sounds/fruit/apple.mp3"
+  },
+  {
+    "id": "fruit_002",
+    "topicId": "fruit",
+    "name": "AVOCADO",
+    "nameVi": "Quả bơ",
+    "imagePath": "images/fruit/avocado.jpeg",
+    "soundPath": "sounds/fruit/avocado.mp3"
+  },
+  {
+    "id": "fruit_003",
+    "topicId": "fruit",
+    "name": "BANANA",
+    "nameVi": "Quả chuối",
+    "imagePath": "images/fruit/banana.jpeg",
+    "soundPath": "sounds/fruit/banana.mp3"
+  },
+  {
+    "id": "fruit_004",
+    "topicId": "fruit",
+    "name": "CHERRY",
+    "nameVi": "Quả cherry",
+    "imagePath": "images/fruit/cherry.jpeg",
+    "soundPath": "sounds/fruit/cherry.mp3"
+  },
+  {
+    "id": "fruit_005",
+    "topicId": "fruit",
+    "name": "COCONUT",
+    "nameVi": "Quả dừa",
+    "imagePath": "images/fruit/coconut.jpeg",
+    "soundPath": "sounds/fruit/coconut.mp3"
+  },
+  {
+    "id": "fruit_006",
+    "topicId": "fruit",
+    "name": "GRAPEFRUIT",
+    "nameVi": "Quả bưởi",
+    "imagePath": "images/fruit/grapefruit.jpeg",
+    "soundPath": "sounds/fruit/grapefruit.mp3"
+  },
+  {
+    "id": "fruit_007",
+    "topicId": "fruit",
+    "name": "GRAPES",
+    "nameVi": "Quả nho",
+    "imagePath": "images/fruit/grapes.jpeg",
+    "soundPath": "sounds/fruit/grapes.mp3"
+  },
+  {
+    "id": "fruit_008",
+    "topicId": "fruit",
+    "name": "KIWI",
+    "nameVi": "Quả kiwi",
+    "imagePath": "images/fruit/kiwi.jpeg",
+    "soundPath": "sounds/fruit/kiwi.mp3"
+  },
+  {
+    "id": "fruit_009",
+    "topicId": "fruit",
+    "name": "LEMON",
+    "nameVi": "Quả chanh vàng",
+    "imagePath": "images/fruit/lemon.jpeg",
+    "soundPath": "sounds/fruit/lemon.mp3"
+  },
+  {
+    "id": "fruit_010",
+    "topicId": "fruit",
+    "name": "LIME",
+    "nameVi": "Quả chanh xanh",
+    "imagePath": "images/fruit/lime.jpeg",
+    "soundPath": "sounds/fruit/lime.mp3"
+  },
+  {
+    "id": "fruit_011",
+    "topicId": "fruit",
+    "name": "MANGO",
+    "nameVi": "Quả xoài",
+    "imagePath": "images/fruit/mango.jpeg",
+    "soundPath": "sounds/fruit/mango.mp3"
+  },
+  {
+    "id": "fruit_012",
+    "topicId": "fruit",
+    "name": "MELON",
+    "nameVi": "Quả dưa lưới",
+    "imagePath": "images/fruit/melon.jpeg",
+    "soundPath": "sounds/fruit/melon.mp3"
+  },
+  {
+    "id": "fruit_013",
+    "topicId": "fruit",
+    "name": "ORANGE",
+    "nameVi": "Quả cam",
+    "imagePath": "images/fruit/orange.jpeg",
+    "soundPath": "sounds/fruit/orange.mp3"
+  },
+  {
+    "id": "fruit_014",
+    "topicId": "fruit",
+    "name": "PAPAYA",
+    "nameVi": "Quả đu đủ",
+    "imagePath": "images/fruit/papaya.jpeg",
+    "soundPath": "sounds/fruit/papaya.mp3"
+  },
+  {
+    "id": "fruit_015",
+    "topicId": "fruit",
+    "name": "PEACH",
+    "nameVi": "Quả đào",
+    "imagePath": "images/fruit/peach.jpeg",
+    "soundPath": "sounds/fruit/peach.mp3"
+  },
+  {
+    "id": "fruit_016",
+    "topicId": "fruit",
+    "name": "PEAR",
+    "nameVi": "Quả lê",
+    "imagePath": "images/fruit/pear.jpeg",
+    "soundPath": "sounds/fruit/pear.mp3"
+  },
+  {
+    "id": "fruit_017",
+    "topicId": "fruit",
+    "name": "PINEAPPLE",
+    "nameVi": "Quả dứa",
+    "imagePath": "images/fruit/pineapple.jpeg",
+    "soundPath": "sounds/fruit/pineapple.mp3"
+  },
+  {
+    "id": "fruit_018",
+    "topicId": "fruit",
+    "name": "PLUM",
+    "nameVi": "Quả mận",
+    "imagePath": "images/fruit/plum.jpeg",
+    "soundPath": "sounds/fruit/plum.mp3"
+  },
+  {
+    "id": "fruit_019",
+    "topicId": "fruit",
+    "name": "RASPBERRY",
+    "nameVi": "Quả mâm xôi",
+    "imagePath": "images/fruit/raspberry.jpeg",
+    "soundPath": "sounds/fruit/raspberry.mp3"
+  },
+  {
+    "id": "fruit_020",
+    "topicId": "fruit",
+    "name": "STRAWBERRY",
+    "nameVi": "Quả dâu tây",
+    "imagePath": "images/fruit/strawberry.jpeg",
+    "soundPath": "sounds/fruit/strawberry.mp3"
+  },
+  {
+    "id": "fruit_021",
+    "topicId": "fruit",
+    "name": "WATERMELON",
+    "nameVi": "Quả dưa hấu",
+    "imagePath": "images/fruit/watermelon.jpeg",
+    "soundPath": "sounds/fruit/watermelon.mp3"
+  }
+]

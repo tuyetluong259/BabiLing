@@ -17,10 +17,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 object AuthHelper {
 
-    /**
-     * ✅ KHÔNG còn bị trùng tên
-     * ✅ Dùng Web Client ID từ google-services.json
-     */
     @Composable
     fun getGoogleClient(): GoogleSignInClient {
         val context = LocalContext.current

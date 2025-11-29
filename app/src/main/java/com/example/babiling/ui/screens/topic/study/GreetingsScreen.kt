@@ -38,12 +38,12 @@ import com.example.babiling.utils.SoundPlayer
 
 
 val greetingList = listOf(
-    FlashcardItem("HELLO", "Xin chào", "greetings_flashcard/greetings_flashcard_hello.png", "sound/greetings/hello.mp3"),
-    FlashcardItem("GOODBYE", "Tạm biệt", "greetings_flashcard/greetings_flashcard_goodbye.png", "sound/greetings/goodbye.mp3"),
-    FlashcardItem("GOOD MORNING", "Chào buổi sáng", "greetings_flashcard/greetings_flashcard_goodmorning.png", "sound/greetings/good_morning.mp3"),
-    FlashcardItem("GOOD NIGHT", "Chúc ngủ ngon", "greetings_flashcard/greetings_flashcard_goodnight.png", "sound/greetings/goodnight.mp3"),
-    FlashcardItem("GOOD AFTERNOON", "Chào buổi chiều", "greetings_flashcard/greetings_flashcard_goodafternoon.png", "sound/greetings/good_afternoon.mp3"),
-    FlashcardItem("GOOD EVENING", "Chào buổi tối", "greetings_flashcard/greetings_flashcard_goodevening.png", "sound/greetings/good_evening.mp3")
+    FlashcardItem("HELLO", "Xin chào", "images/greetings/greetings_flashcard_hello.png", "sounds/greetings/hello.mp3"),
+    FlashcardItem("GOODBYE", "Tạm biệt", "images/greetings/greetings_flashcard_goodbye.png", "sounds/greetings/goodbye.mp3"),
+    FlashcardItem("GOOD MORNING", "Chào buổi sáng", "images/greetings/greetings_flashcard_goodmorning.png", "sounds/greetings/good_morning.mp3"),
+    FlashcardItem("GOOD NIGHT", "Chúc ngủ ngon", "images/greetings/greetings_flashcard_goodnight.png", "sounds/greetings/goodnight.mp3"),
+    FlashcardItem("GOOD AFTERNOON", "Chào buổi chiều", "images/greetings/greetings_flashcard_goodafternoon.png", "sounds/greetings/good_afternoon.mp3"),
+    FlashcardItem("GOOD EVENING", "Chào buổi tối", "images/greetings/greetings_flashcard_goodevening.png", "sounds/greetings/good_evening.mp3")
 )
 
 @Composable

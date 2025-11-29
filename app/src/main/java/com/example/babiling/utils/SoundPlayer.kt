@@ -19,7 +19,7 @@ object SoundPlayer {
                 start()
             }
         } catch (e: Exception) {
-            Log.e("SoundPlayer", "Error playing sound: $e")
+            Log.e("SoundPlayer", "Error playing sounds: $e")
         }
     }
 }

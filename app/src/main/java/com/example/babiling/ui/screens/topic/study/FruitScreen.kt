@@ -42,27 +42,27 @@ import com.example.babiling.utils.SoundPlayer
 
 
 val fruitListData = listOf(
-    FlashcardItem("APPLE", "Quả táo", "fruit_flashcard/fruit-flashcard-apple.jpeg", "sound/fruit/apple.mp3"),
-    FlashcardItem("AVOCADO", "Quả bơ", "fruit_flashcard/fruit-flashcard-avocado.jpeg", "sound/fruit/avocado.mp3"),
-    FlashcardItem("BANANA", "Quả chuối", "fruit_flashcard/fruit-flashcard-banana.jpeg", "sound/fruit/banana.mp3"),
-    FlashcardItem("CHERRY", "Quả cherry", "fruit_flashcard/fruit-flashcard-cherry.jpeg", "sound/fruit/cherry.mp3"),
-    FlashcardItem("COCONUT", "Quả dừa", "fruit_flashcard/fruit-flashcard-coconut.jpeg", "sound/fruit/coconut.mp3"),
-    FlashcardItem("GRAPEFRUIT", "Quả bưởi", "fruit_flashcard/fruit-flashcard-grapefruit.jpeg", "sound/fruit/grapefruit.mp3"),
-    FlashcardItem("GRAPES", "Quả nho", "fruit_flashcard/fruit-flashcard-grapes.jpeg", "sound/fruit/grapes.mp3"),
-    FlashcardItem("KIWI", "Quả kiwi", "fruit_flashcard/fruit-flashcard-kiwi.jpeg", "sound/fruit/kiwi.mp3"),
-    FlashcardItem("LEMON", "Quả chanh vàng", "fruit_flashcard/fruit-flashcard-lemon.jpeg", "sound/fruit/lemon.mp3"),
-    FlashcardItem("LIME", "Quả chanh xanh", "fruit_flashcard/fruit-flashcard-lime.jpeg", "sound/fruit/lime.mp3"),
-    FlashcardItem("MANGO", "Quả xoài", "fruit_flashcard/fruit-flashcard-mango.jpeg", "sound/fruit/mango.mp3"),
-    FlashcardItem("MELON", "Quả dưa lưới", "fruit_flashcard/fruit-flashcard-melon.jpeg", "sound/fruit/melon.mp3"),
-    FlashcardItem("ORANGE", "Quả cam", "fruit_flashcard/fruit-flashcard-orange.jpeg", "sound/fruit/orange.mp3"),
-    FlashcardItem("PAPAYA", "Quả đu đủ", "fruit_flashcard/fruit-flashcard-papaya.jpeg", "sound/fruit/papaya.mp3"),
-    FlashcardItem("PEACH", "Quả đào", "fruit_flashcard/fruit-flashcard-peach.jpeg", "sound/fruit/peach.mp3"),
-    FlashcardItem("PEAR", "Quả lê", "fruit_flashcard/fruit-flashcard-pear.jpeg", "sound/fruit/pear.mp3"),
-    FlashcardItem("PINEAPPLE", "Quả dứa", "fruit_flashcard/fruit-flashcard-pineapple.jpeg", "sound/fruit/pineapple.mp3"),
-    FlashcardItem("PLUM", "Quả mận", "fruit_flashcard/fruit-flashcard-plum.jpeg", "sound/fruit/plum.mp3"),
-    FlashcardItem("RASPBERRY", "Quả mâm xôi", "fruit_flashcard/fruit-flashcard-raspberry.jpeg", "sound/fruit/raspberry.mp3"),
-    FlashcardItem("STRAWBERRY", "Quả dâu tây", "fruit_flashcard/fruit-flashcard-strawberry.jpeg", "sound/fruit/strawberry.mp3"),
-    FlashcardItem("WATERMELON", "Quả dưa hấu", "fruit_flashcard/fruit-flashcard-watermelon.jpeg", "sound/fruit/watermelon.mp3")
+    FlashcardItem("APPLE", "Quả táo", "images/fruit/apple.jpeg", "sounds/fruit/apple.mp3"),
+    FlashcardItem("AVOCADO", "Quả bơ", "images/fruit/avocado.jpeg", "sounds/fruit/avocado.mp3"),
+    FlashcardItem("BANANA", "Quả chuối", "images/fruit/banana.jpeg", "sounds/fruit/banana.mp3"),
+    FlashcardItem("CHERRY", "Quả cherry", "images/fruit/cherry.jpeg", "sounds/fruit/cherry.mp3"),
+    FlashcardItem("COCONUT", "Quả dừa", "images/fruit/coconut.jpeg", "sounds/fruit/coconut.mp3"),
+    FlashcardItem("GRAPEFRUIT", "Quả bưởi", "images/fruit/grapefruit.jpeg", "sounds/fruit/grapefruit.mp3"),
+    FlashcardItem("GRAPES", "Quả nho", "images/fruit/grapes.jpeg", "sounds/fruit/grapes.mp3"),
+    FlashcardItem("KIWI", "Quả kiwi", "images/fruit/kiwi.jpeg", "sounds/fruit/kiwi.mp3"),
+    FlashcardItem("LEMON", "Quả chanh vàng", "images/fruit/lemon.jpeg", "sounds/fruit/lemon.mp3"),
+    FlashcardItem("LIME", "Quả chanh xanh", "images/fruit/lime.jpeg", "sounds/fruit/lime.mp3"),
+    FlashcardItem("MANGO", "Quả xoài", "images/fruit/mango.jpeg", "sounds/fruit/mango.mp3"),
+    FlashcardItem("MELON", "Quả dưa lưới", "images/fruit/melon.jpeg", "sounds/fruit/melon.mp3"),
+    FlashcardItem("ORANGE", "Quả cam", "images/fruit/orange.jpeg", "sounds/fruit/orange.mp3"),
+    FlashcardItem("PAPAYA", "Quả đu đủ", "images/fruit/papaya.jpeg", "sounds/fruit/papaya.mp3"),
+    FlashcardItem("PEACH", "Quả đào", "images/fruit/peach.jpeg", "sounds/fruit/peach.mp3"),
+    FlashcardItem("PEAR", "Quả lê", "images/fruit/pear.jpeg", "sounds/fruit/pear.mp3"),
+    FlashcardItem("PINEAPPLE", "Quả dứa", "images/fruit/pineapple.jpeg", "sounds/fruit/pineapple.mp3"),
+    FlashcardItem("PLUM", "Quả mận", "images/fruit/plum.jpeg", "sounds/fruit/plum.mp3"),
+    FlashcardItem("RASPBERRY", "Quả mâm xôi", "images/fruit/raspberry.jpeg", "sounds/fruit/raspberry.mp3"),
+    FlashcardItem("STRAWBERRY", "Quả dâu tây", "images/fruit/strawberry.jpeg", "sounds/fruit/strawberry.mp3"),
+    FlashcardItem("WATERMELON", "Quả dưa hấu", "images/fruit/watermelon.jpeg", "sounds/fruit/watermelon.mp3")
 )
 
 @Composable

@@ -1,0 +1,209 @@
+[{
+  "id": "animal_001",
+  "topicId": "animals",
+  "name": "ALLIGATOR",
+  "nameVi": "Cá sấu",
+  "imagePath": "images/animals/A.jpeg",
+  "soundPath": "sounds/animals/alligator.mp3"
+},
+  {
+    "id": "animal_002",
+    "topicId": "animals",
+    "name": "BEAR",
+    "nameVi": "Gấu",
+    "imagePath": "images/animals/B.jpeg",
+    "soundPath": "sounds/animals/bear.mp3"
+  },
+  {
+    "id": "animal_003",
+    "topicId": "animals",
+    "name": "CAT",
+    "nameVi": "Mèo",
+    "imagePath": "images/animals/C.jpeg",
+    "soundPath": "sounds/animals/cat.mp3"
+  },
+  {
+    "id": "animal_004",
+    "topicId": "animals",
+    "name": "DOG",
+    "nameVi": "Chó",
+    "imagePath": "images/animals/D.jpeg",
+    "soundPath": "sounds/animals/dog.mp3"
+  },
+  {
+    "id": "animal_005",
+    "topicId": "animals",
+    "name": "ELEPHANT",
+    "nameVi": "Voi",
+    "imagePath": "images/animals/E.jpeg",
+    "soundPath": "sounds/animals/elephant.mp3"
+  },
+  {
+    "id": "animal_006",
+    "topicId": "animals",
+    "name": "FROG",
+    "nameVi": "Ếch",
+    "imagePath": "images/animals/F.jpeg",
+    "soundPath": "sounds/animals/frog.mp3"
+  },
+  {
+    "id": "animal_007",
+    "topicId": "animals",
+    "name": "GOAT",
+    "nameVi": "Dê",
+    "imagePath": "images/animals/G.jpeg",
+    "soundPath": "sounds/animals/goat.mp3"
+  },
+  {
+    "id": "animal_008",
+    "topicId": "animals",
+    "name": "HORSE",
+    "nameVi": "Ngựa",
+    "imagePath": "images/animals/H.jpeg",
+    "soundPath": "sounds/animals/horse.mp3"
+  },
+  {
+    "id": "animal_009",
+    "topicId": "animals",
+    "name": "IGUANA",
+    "nameVi": "Kỳ nhông",
+    "imagePath": "images/animals/I.jpeg",
+    "soundPath": "sounds/animals/iguana.mp3"
+  },
+  {
+    "id": "animal_010",
+    "topicId": "animals",
+    "name": "JELLYFISH",
+    "nameVi": "Sứa",
+    "imagePath": "images/animals/J.jpeg",
+    "soundPath": "sounds/animals/jellyfish.mp3"
+  },
+  {
+    "id": "animal_011",
+    "topicId": "animals",
+    "name": "KANGAROO",
+    "nameVi": "Chuột túi",
+    "imagePath": "images/animals/K.jpeg",
+    "soundPath": "sounds/animals/kangaroo.mp3"
+  },
+  {
+    "id": "animal_012",
+    "topicId": "animals",
+    "name": "LION",
+    "nameVi": "Sư tử",
+    "imagePath": "images/animals/L.jpeg",
+    "soundPath": "sounds/animals/lion.mp3"
+  },
+  {
+    "id": "animal_013",
+    "topicId": "animals",
+    "name": "MONKEY",
+    "nameVi": "Khỉ",
+    "imagePath": "images/animals/M.jpeg",
+    "soundPath": "sounds/animals/monkey.mp3"
+  },
+  {
+    "id": "animal_014",
+    "topicId": "animals",
+    "name": "NARWHAL",
+    "nameVi": "Cá voi một sừng",
+    "imagePath": "images/animals/N.jpeg",
+    "soundPath": "sounds/animals/narwhal.mp3"
+  },
+  {
+    "id": "animal_015",
+    "topicId": "animals",
+    "name": "OCTOPUS",
+    "nameVi": "Bạch tuộc",
+    "imagePath": "images/animals/O.jpeg",
+    "soundPath": "sounds/animals/octopus.mp3"
+  },
+  {
+    "id": "animal_016",
+    "topicId": "animals",
+    "name": "PIG",
+    "nameVi": "Heo",
+    "imagePath": "images/animals/P.jpeg",
+    "soundPath": "sounds/animals/pig.mp3"
+  },
+  {
+    "id": "animal_017",
+    "topicId": "animals",
+    "name": "QUAIL",
+    "nameVi": "Chim cút",
+    "imagePath": "images/animals/Q.jpeg",
+    "soundPath": "sounds/animals/quail.mp3"
+  },
+  {
+    "id": "animal_018",
+    "topicId": "animals",
+    "name": "RABBIT",
+    "nameVi": "Thỏ",
+    "imagePath": "images/animals/R.jpeg",
+    "soundPath": "sounds/animals/rabbit.mp3"
+  },
+  {
+    "id": "animal_019",
+    "topicId": "animals",
+    "name": "SNAKE",
+    "nameVi": "Rắn",
+    "imagePath": "images/animals/S.jpeg",
+    "soundPath": "sounds/animals/snake.mp3"
+  },
+  {
+    "id": "animal_020",
+    "topicId": "animals",
+    "name": "TIGER",
+    "nameVi": "Hổ",
+    "imagePath": "images/animals/T.jpeg",
+    "soundPath": "sounds/animals/tiger.mp3"
+  },
+  {
+    "id": "animal_021",
+    "topicId": "animals",
+    "name": "URCHIN",
+    "nameVi": "Nhím biển",
+    "imagePath": "images/animals/U.jpeg",
+    "soundPath": "sounds/animals/urchin.mp3"
+  },
+  {
+    "id": "animal_022",
+    "topicId": "animals",
+    "name": "VULTURE",
+    "nameVi": "Kền kền",
+    "imagePath": "images/animals/V.jpeg",
+    "soundPath": "sounds/animals/vulture.mp3"
+  },
+  {
+    "id": "animal_023",
+    "topicId": "animals",
+    "name": "WHALE",
+    "nameVi": "Cá voi",
+    "imagePath": "images/animals/W.jpeg",
+    "soundPath": "sounds/animals/whale.mp3"
+  },
+  {
+    "id": "animal_024",
+    "topicId": "animals",
+    "name": "FOX",
+    "nameVi": "Cáo",
+    "imagePath": "images/animals/F.jpeg",
+    "soundPath": "sounds/animals/fox.mp3"
+  },
+  {
+    "id": "animal_025",
+    "topicId": "animals",
+    "name": "YAK",
+    "nameVi": "Bò Tây Tạng",
+    "imagePath": "images/animals/Y.jpeg",
+    "soundPath": "sounds/animals/yak.mp3"
+  },
+  {
+    "id": "animal_026",
+    "topicId": "animals",
+    "name": "ZEBRA",
+    "nameVi": "Ngựa vằn",
+    "imagePath": "images/animals/Z.jpeg",
+    "soundPath": "sounds/animals/zebra.mp3"
+  }
+]

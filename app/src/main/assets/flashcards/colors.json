@@ -1,0 +1,122 @@
+[
+  {
+    "id": "color_001",
+    "topicId": "colors",
+    "name": "BLACK",
+    "nameVi": "Màu đen",
+    "imagePath": "images/color/color_flashcard_black.jpg",
+    "soundPath": "sounds/color/black.mp3"
+  },
+  {
+    "id": "color_002",
+    "topicId": "colors",
+    "name": "BLUE",
+    "nameVi": "Màu xanh dương",
+    "imagePath": "images/color/color_flashcard_blue.jpeg",
+    "soundPath": "sounds/color/blue.mp3"
+  },
+  {
+    "id": "color_003",
+    "topicId": "colors",
+    "name": "BROWN",
+    "nameVi": "Màu nâu",
+    "imagePath": "images/color/color_flashcard_brown.jpeg",
+    "soundPath": "sounds/color/brown.mp3"
+  },
+  {
+    "id": "color_004",
+    "topicId": "colors",
+    "name": "GOLD",
+    "nameVi": "Màu vàng kim",
+    "imagePath": "images/color/color_flashcard_gold.jpeg",
+    "soundPath": "sounds/color/gold.mp3"
+  },
+  {
+    "id": "color_005",
+    "topicId": "colors",
+    "name": "GREEN",
+    "nameVi": "Màu xanh lá",
+    "imagePath": "images/color/color_flashcard_green.jpeg",
+    "soundPath": "sounds/color/green.mp3"
+  },
+  {
+    "id": "color_006",
+    "topicId": "colors",
+    "name": "GREY",
+    "nameVi": "Màu xám",
+    "imagePath": "images/color/color_flashcard_grey.jpeg",
+    "soundPath": "sounds/color/grey.mp3"
+  },
+  {
+    "id": "color_007",
+    "topicId": "colors",
+    "name": "LILAC",
+    "nameVi": "Màu tím hoa cà",
+    "imagePath": "images/color/color_flashcard_lilac.jpeg",
+    "soundPath": "sounds/color/lilac.mp3"
+  },
+  {
+    "id": "color_008",
+    "topicId": "colors",
+    "name": "NAVY",
+    "nameVi": "Màu xanh navy",
+    "imagePath": "images/color/color_flashcard_navy.jpeg",
+    "soundPath": "sounds/color/navy.mp3"
+  },
+  {
+    "id": "color_009",
+    "topicId": "colors",
+    "name": "ORANGE",
+    "nameVi": "Màu cam",
+    "imagePath": "images/color/color_flashcard_orange.jpeg",
+    "soundPath": "sounds/color/orange.mp3"
+  },
+  {
+    "id": "color_010",
+    "topicId": "colors",
+    "name": "PINK",
+    "nameVi": "Màu hồng",
+    "imagePath": "images/color/color_flashcard_pink.jpeg",
+    "soundPath": "sounds/color/pink.mp3"
+  },
+  {
+    "id": "color_011",
+    "topicId": "colors",
+    "name": "PURPLE",
+    "nameVi": "Màu tím",
+    "imagePath": "images/color/color_flashcard_purple.jpeg",
+    "soundPath": "sounds/color/purple.mp3"
+  },
+  {
+    "id": "color_012",
+    "topicId": "colors",
+    "name": "RED",
+    "nameVi": "Màu đỏ",
+    "imagePath": "images/color/color_flashcard_red.jpeg",
+    "soundPath": "sounds/color/red.mp3"
+  },
+  {
+    "id": "color_013",
+    "topicId": "colors",
+    "name": "SILVER",
+    "nameVi": "Màu bạc",
+    "imagePath": "images/color/color_flashcard_silver.jpeg",
+    "soundPath": "sounds/color/silver.mp3"
+  },
+  {
+    "id": "color_014",
+    "topicId": "colors",
+    "name": "WHITE",
+    "nameVi": "Màu trắng",
+    "imagePath": "images/color/color_flashcard_white.jpeg",
+    "soundPath": "sounds/color/white.mp3"
+  },
+  {
+    "id": "color_015",
+    "topicId": "colors",
+    "name": "YELLOW",
+    "nameVi": "Màu vàng",
+    "imagePath": "images/color/color_flashcard_yellow.jpeg",
+    "soundPath": "sounds/color/yellow.mp3"
+  }
+]

@@ -46,6 +46,7 @@ import com.example.babiling.ui.theme.*
 // -----------------------------------------------------------------------------
 
 data class Topic(
+    val id: String,
     val title: String,
     @DrawableRes val imageResId: Int,
     val textColor: Color
@@ -54,12 +55,12 @@ data class Topic(
 fun getTopics(): List<Topic> {
     return listOf(
         // ✨ FIX: Thêm giá trị cho backgroundColor
-        Topic("Greetings", R.drawable.greetings, textColor = AccentRed),
-        Topic("Body", R.drawable.body, textColor = IndigoBlue),
-        Topic("Colors", R.drawable.color, textColor = WarmOrange),
-        Topic("Fruit", R.drawable.fruit, textColor = ForestGreen),
-        Topic("Animals", R.drawable.animals, textColor = SkyBlue),
-        Topic("Toys", R.drawable.toys, textColor = AlertRed)
+        Topic("greetings", "Greetings", R.drawable.greetings, textColor = AccentRed),
+        Topic("body", "Body", R.drawable.body, textColor = IndigoBlue),
+        Topic("colors", "Colors", R.drawable.color, textColor = WarmOrange),
+        Topic("fruit", "Fruit", R.drawable.fruit, textColor = ForestGreen),
+        Topic("animals", "Animals",R.drawable.animals, textColor = SkyBlue),
+        Topic("toys", "Toys",R.drawable.toys, textColor = AlertRed)
     )
 }
 

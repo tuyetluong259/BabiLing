@@ -1,6 +1,7 @@
 package com.example.babiling.ui.screens.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,16 +24,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.babiling.R
+import com.example.babiling.Screen
 import com.example.babiling.ui.theme.BalooThambiFamily
 import com.example.babiling.ui.theme.BabiLingTheme
 
-// <-- CÁC IMPORT ĐƯỢC THÊM VÀO -->
-import androidx.compose.foundation.clickable
-import com.example.babiling.Screen
-
 @Composable
 fun HomeScreen(navController: NavController) {
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -47,24 +44,20 @@ fun HomeScreen(navController: NavController) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-
-            HeaderSection()
+            HeaderSection(navController = navController)
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                // ======== THAY ĐỔI Ở ĐÂY ========
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(IntrinsicSize.Min)
-                        .clickable { // <-- DÒNG 1: THÊM HÀNH ĐỘNG CLICK
-                            navController.navigate(Screen.TopicSelect.route) // <-- DÒNG 2: ĐIỀU HƯỚNG
+                        .clickable {
+                            navController.navigate(Screen.TopicSelect.route)
                         },
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -92,7 +85,6 @@ fun HomeScreen(navController: NavController) {
                         )
                     }
                 }
-                // ======== KẾT THÚC THAY ĐỔI ========
 
                 Card(
                     modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
@@ -159,7 +151,7 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun HeaderSection() {
+fun HeaderSection(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -174,7 +166,11 @@ fun HeaderSection() {
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Cài đặt",
                 tint = Color.White,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+                        navController.navigate(Screen.Settings.route)
+                    }
             )
             Spacer(modifier = Modifier.width(16.dp))
             Icon(
@@ -229,7 +225,6 @@ fun AdsSection() {
     }
 }
 
-// === HÀM PREVIEW (Giữ nguyên) ===
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {

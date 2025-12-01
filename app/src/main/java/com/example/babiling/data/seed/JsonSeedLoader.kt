@@ -31,26 +31,26 @@ object JsonSeedLoader {
     private data class SeedItem(
         // Các biến này sẽ được Gson tự động điền giá trị từ JSON
         val id: String,
-        val topicId: String, // ĐÃ SỬA: Phải là "topicId" để khớp với JSON
+        val topicId: String,
         val name: String,
         val nameVi: String,
         val imagePath: String,
-        val soundPath: String
+        val soundPath: String,
+        // ✨ BƯỚC 1: THÊM TRƯỜNG `lessonNumber` ĐỂ KHỚP VỚI JSON MỚI ✨
+        val lessonNumber: Int
     ) {
         /**
          * Hàm chuyển đổi từ đối tượng trung gian (SeedItem) thành đối tượng thực thể của database (FlashcardEntity).
          */
         fun toFlashcardEntity() = FlashcardEntity(
-            // id của FlashcardEntity phải lấy từ id của SeedItem
-            id = this.id, // ĐÃ SỬA: Lấy id từ chính SeedItem, không phải gán cứng
-
-            // topicId của FlashcardEntity lấy từ topicId của SeedItem
-            topicId = this.topicId, // ĐÃ SỬA: Lấy topicId từ chính SeedItem
-
+            id = this.id,
+            topicId = this.topicId,
             name = this.name,
             nameVi = this.nameVi,
             imagePath = this.imagePath,
-            soundPath = this.soundPath
+            soundPath = this.soundPath,
+            // ✨ BƯỚC 2: TRUYỀN GIÁ TRỊ `lessonNumber` VÀO ENTITY ✨
+            lessonNumber = this.lessonNumber
         )
     }
 }

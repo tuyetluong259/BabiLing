@@ -1,44 +1,52 @@
 package com.example.babiling.ui.screens.topic.learn
 
-import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.babiling.data.model.FlashcardEntity
 import com.example.babiling.ui.theme.BabiLingTheme
-import com.example.babiling.ui.theme.Learn
+import com.example.babiling.utils.rememberBitmapFromAssets
 
+// ✨ BƯỚC 1: TINH GỌN CHỮ KÝ HÀM, LOẠI BỎ CÁC THAM SỐ THỪA
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearnScreen(
-    topicId: String,
-    viewModel: LearnViewModel = viewModel(),
-    onBack: () -> Unit = {}
+    onBack: () -> Unit,
+    onLessonComplete: () -> Unit,
+    viewModel: LearnViewModel = viewModel() // ViewModel sẽ tự lấy dữ liệu
 ) {
     val context = LocalContext.current
     val cards by viewModel.cards.collectAsState()
     val index by viewModel.index.collectAsState()
+    val isFinished by viewModel.isFinished.collectAsState()
     var player: MediaPlayer? by remember { mutableStateOf(null) }
+
+    // ✨ LẤY TOPICID TỪ CARD ĐẦU TIÊN ĐỂ HIỂN THỊ TIÊU ĐỀ
+    // Cách này giúp UI không cần biết trước topicId
+    val topicIdForTitle = cards.firstOrNull()?.topicId ?: "Loading..."
 
     DisposableEffect(Unit) {
         onDispose {
@@ -46,105 +54,67 @@ fun LearnScreen(
         }
     }
 
-    LaunchedEffect(topicId) { viewModel.load(topicId) }
+    // ✨ BƯỚC 2: KHÔNG CẦN LAUNCHEDEFFECT ĐỂ GỌI viewModel.load() NỮA
+    // ViewModel đã tự làm việc này trong khối init
+
+    LaunchedEffect(isFinished) {
+        if (isFinished) {
+            onLessonComplete()
+        }
+    }
 
     Scaffold(
+        containerColor = Color(0xFFE3F2FD),
         topBar = {
             TopAppBar(
-                title = { Text("Học từ vựng") },
+                title = {
+                    Text(
+                        topicIdForTitle.replaceFirstChar { it.titlecase() },
+                        color = Color(0xFF00B0FF),
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Quay lại")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Quay lại", tint = Color(0xFF00B0FF))
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         }
     ) { paddingValues ->
 
         if (cards.isEmpty()) {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
+            Box(Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
-                Text("Đang tải thẻ...", Modifier.padding(top = 80.dp))
             }
             return@Scaffold
         }
 
-        val currentCard = cards.getOrNull(index)
+        val currentCard = cards.getOrNull(index) ?: return@Scaffold
 
-        // --- ✨ BỐ CỤC MỚI THEO YÊU CẦU ✨ ---
+        // ✨ --- BẮT ĐẦU CHỈNH SỬA BỐ CỤC --- ✨
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp), // Thêm padding chung cho toàn màn hình
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            // 1. Bỏ SpaceBetween để có thể tự kiểm soát khoảng cách
+            verticalArrangement = Arrangement.Top
         ) {
-            if (currentCard == null) {
-                // Trường hợp thẻ không tồn tại (sẽ không xảy ra nếu logic đúng)
-                Spacer(modifier = Modifier.weight(1f))
-            } else {
-                // ✨ THAY ĐỔI 1: Phóng to Card và cho nó chiếm phần lớn không gian trên
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.8f), // Card chiếm 70% không gian dọc còn lại
-                    colors = CardDefaults.cardColors(
-                        containerColor = Learn // Bạn có thể thay bằng màu khác
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize() // Lấp đầy Card
-                            .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center // Canh giữa nội dung trong Card
-                    ) {
-                        // --- Ảnh của thẻ ---
-                        val bitmap = remember(currentCard.imagePath) {
-                            try {
-                                val input = context.assets.open(currentCard.imagePath)
-                                BitmapFactory.decodeStream(input)
-                            } catch (e: Exception) {
-                                null
-                            }
-                        }
+            // Thẻ học (giữ nguyên)
+            LearnFlashcard(card = currentCard)
 
-                        if (bitmap != null) {
-                            Image(
-                                bitmap = bitmap.asImageBitmap(),
-                                contentDescription = currentCard.name,
-                                contentScale = ContentScale.Fit, // Dùng Fit để ảnh không bị cắt
-                                modifier = Modifier
-                                    .weight(1f) // Cho ảnh chiếm không gian còn lại
-                                    .clip(MaterialTheme.shapes.medium)
-                            )
-                        } else {
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.shapes.medium)
-                            )
-                        }
+            // 2. Dùng Spacer với weight để tạo khoảng trống co giãn, đẩy nội dung xuống dưới
+            Spacer(modifier = Modifier.weight(1f))
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // --- Tên tiếng Anh và tiếng Việt ---
-                        Text(currentCard.name, fontSize = 40.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
-                        Text(currentCard.nameVi, fontSize = 20.sp, color = MaterialTheme.colorScheme.secondary, textAlign = TextAlign.Center)
-                    }
-                }
-
-                // ✨ THAY ĐỔI 2: Dịch nút Voice xuống và tạo khoảng trống
-                // Dùng Spacer với weight để đẩy nút Voice và thanh điều hướng xuống dưới
-                Spacer(modifier = Modifier.weight(0.1f))
-
-                // --- Nút Nghe hình tròn ---
+            // Khối từ vựng và nút nghe (giữ nguyên)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(currentCard.name.uppercase(), fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(4.dp))
+                Text(currentCard.nameVi, fontSize = 20.sp, color = Color.Gray)
+                Spacer(Modifier.height(24.dp))
                 Button(
                     onClick = {
                         player?.release()
@@ -161,54 +131,174 @@ fun LearnScreen(
                     },
                     modifier = Modifier.size(72.dp),
                     shape = CircleShape,
-                    contentPadding = PaddingValues(0.dp)
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFDD835))
                 ) {
                     Icon(
                         Icons.Filled.VolumeUp,
                         contentDescription = "Nghe",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(36.dp),
+                        tint = Color.Black
                     )
                 }
             }
 
-            // Đẩy thanh điều hướng xuống đáy
-            Spacer(modifier = Modifier.weight(0.2f))
+            // 3. Thêm khoảng trống cố định phía trên nút bấm chính
+            Spacer(modifier = Modifier.height(32.dp))
 
-            // ✨ THAY ĐỔI 3: Giữ nguyên thanh điều hướng ở cuối
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            // Nút Finish/Continue (giữ nguyên)
+            Button(
+                onClick = { viewModel.next() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFDD835))
             ) {
-                IconButton(
-                    onClick = { viewModel.previous() },
-                    enabled = index > 0
+                Text(
+                    if (index == cards.size - 1) "FINISH" else "CONTINUE",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = Color.Black
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun LearnFlashcard(card: FlashcardEntity) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(0.dp),
+        border = BorderStroke(2.dp, Color(0xFF00B0FF).copy(alpha = 0.5f))
+    ) {
+        Row(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(0.6f)
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                val bitmap = rememberBitmapFromAssets(imagePath = card.imagePath)
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = card.name,
+                        contentScale = ContentScale.Fit
+                    )
+                }
+            }
+
+            Divider(
+                color = Color(0xFF00B0FF).copy(alpha = 0.5f),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(2.dp)
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(0.4f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Thẻ trước", modifier = Modifier.size(48.dp))
+                    Text(
+                        text = "${card.name.first().uppercaseChar()}${card.name.first()}",
+                        fontSize = 48.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
 
-                Text(
-                    text = "${index + 1} / ${cards.size}",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Divider(color = Color(0xFF00B0FF).copy(alpha = 0.5f), thickness = 2.dp)
 
-                IconButton(
-                    onClick = { viewModel.next() },
-                    enabled = index < cards.size - 1
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Thẻ tiếp theo", modifier = Modifier.size(48.dp))
+                    val annotatedString = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Color.Magenta)) {
+                            append(card.name.first())
+                        }
+                        append(card.name.substring(1))
+                    }
+                    Text(
+                        text = annotatedString,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
         }
     }
 }
 
-// ----- PHẦN PREVIEW GIỮ NGUYÊN -----
+
 @Preview(showBackground = true, name = "Learn Screen Preview")
 @Composable
 fun LearnScreenPreview() {
     BabiLingTheme {
-        LearnScreen(topicId = "preview", onBack = {})
+        val previewCard = FlashcardEntity(
+            id = "pre_01", topicId = "preview",
+            name = "alligator", nameVi = "cá sấu",
+            imagePath = "images/animals/alligator.png",
+            soundPath = "", lessonNumber = 1
+        )
+        Scaffold(containerColor = Color(0xFFE3F2FD)) { padding ->
+            // ✨ ÁP DỤNG BỐ CỤC MỚI CHO PREVIEW
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                LearnFlashcard(card = previewCard)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(previewCard.name.uppercase(), fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(4.dp))
+                    Text(previewCard.nameVi, fontSize = 20.sp, color = Color.Gray)
+                    Spacer(Modifier.height(24.dp))
+                    Button(
+                        onClick = { },
+                        modifier = Modifier.size(72.dp),
+                        shape = CircleShape,
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFDD835))
+                    ) {
+                        Icon(Icons.Filled.VolumeUp, "Nghe", modifier = Modifier.size(36.dp), tint = Color.Black)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Button(
+                    onClick = { },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFDD835))
+                ) {
+                    Text("FINISH", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
+                }
+            }
+        }
     }
 }

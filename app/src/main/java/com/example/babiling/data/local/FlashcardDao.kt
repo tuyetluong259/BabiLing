@@ -52,4 +52,35 @@ interface FlashcardDao {
     """)
     suspend fun updateProgress(flashcardId: String, newMasteryLevel: Int, newCorrectCountInRow: Int)
 
+
+    // ✨ ================= BỔ SUNG TRUY VẤN CHO BÀI HỌC ================= ✨
+
+    /**
+     * Lấy tất cả các flashcard thuộc một chủ đề VÀ một bài học cụ thể.
+     * Đây là hàm cốt lõi để màn hình LearnScreen có thể hiển thị đúng các thẻ.
+     */
+    @Query("SELECT * FROM flashcards WHERE topicId = :topicId AND lessonNumber = :lessonNumber ORDER BY id ASC")
+    suspend fun getFlashcardsByLesson(topicId: String, lessonNumber: Int): List<FlashcardEntity>
+
+    /**
+     * Lấy danh sách các số thứ tự bài học (không trùng lặp) có trong một chủ đề.
+     * Ví dụ: trả về [1, 2, 3, 4] cho chủ đề "animals".
+     * Cần thiết để màn hình LessonSelectionScreen hiển thị các nút "Bài 1", "Bài 2",...
+     */
+    @Query("SELECT DISTINCT lessonNumber FROM flashcards WHERE topicId = :topicId ORDER BY lessonNumber ASC")
+    suspend fun getLessonNumbersForTopic(topicId: String): List<Int>
+
+    // ✨ ======================= KẾT THÚC BỔ SUNG ======================= ✨
+
+
+    // ✨ ================= BỔ SUNG CHO MÀN HÌNH TIẾN ĐỘ ================= ✨
+
+    /**
+     * Lấy danh sách ID của tất cả các thẻ trong một chủ đề cụ thể.
+     * Hàm này được gọi bởi FlashcardRepository để cung cấp danh sách ID cho UserProgressDao.
+     */
+    @Query("SELECT id FROM flashcards WHERE topicId = :topicId")
+    suspend fun getCardIdsByTopic(topicId: String): List<String>
+
+    // ✨ ======================= KẾT THÚC BỔ SUNG ======================= ✨
 }

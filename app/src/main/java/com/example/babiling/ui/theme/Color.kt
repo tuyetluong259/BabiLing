@@ -20,6 +20,7 @@ val bglogin = Color(0xE3F0656B)
 
 val DeepBlue = Color(0xFF6395EE)
 
+val TextHome = Color(0xFFFFF5BE)
 val PrimaryYellow = Color(0xFFFED402)
 // --- Các Màu Mới Được Thêm ---
 
@@ -46,3 +47,18 @@ val ForestGreen = Color(0xFF47A570)
 val Learn = Color(0x0700BCD4)
 val CorrectGreen = Color(0xFF4CAF50) // Màu xanh lá cây cho câu trả lời đúng
 val IncorrectRed = Color(0xFFF44336)
+val LearnCardBackground = Color(0xFFE0F7FA)
+val LightBlueBackground = Color(0xFFD7F3FF)
+// Màu chữ tiêu đề chính
+val BrownRedTitle = Color(0xFFC75D35)
+// Màu cho các icon chức năng (như nút Back)
+val DarkGreyIcon = Color(0xFF4A4A4A)
+// Màu cho dấu tích hoàn thành
+val DarkGreenCheck = Color(0xFF006400)
+val LessonBlue = Color(0xFF59C2FE)
+val LessonGreen = Color(0xFF54F6B4)
+val LessonPink = Color(0xFFF962E3)
+val LessonYellow = Color(0xFFFBF46D)
+val LessonRed = Color(0xFFFC6D6A)
+val LessonPurple = Color(0xFFA685E2)
+val LessonOrange = Color(0xFFFB9300)

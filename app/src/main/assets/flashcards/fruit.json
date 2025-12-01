@@ -5,7 +5,8 @@
     "name": "APPLE",
     "nameVi": "Quả táo",
     "imagePath": "images/fruit/apple.jpeg",
-    "soundPath": "sounds/fruit/apple.mp3"
+    "soundPath": "sounds/fruit/apple.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_002",
@@ -13,7 +14,8 @@
     "name": "AVOCADO",
     "nameVi": "Quả bơ",
     "imagePath": "images/fruit/avocado.jpeg",
-    "soundPath": "sounds/fruit/avocado.mp3"
+    "soundPath": "sounds/fruit/avocado.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_003",
@@ -21,7 +23,8 @@
     "name": "BANANA",
     "nameVi": "Quả chuối",
     "imagePath": "images/fruit/banana.jpeg",
-    "soundPath": "sounds/fruit/banana.mp3"
+    "soundPath": "sounds/fruit/banana.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_004",
@@ -29,7 +32,8 @@
     "name": "CHERRY",
     "nameVi": "Quả cherry",
     "imagePath": "images/fruit/cherry.jpeg",
-    "soundPath": "sounds/fruit/cherry.mp3"
+    "soundPath": "sounds/fruit/cherry.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_005",
@@ -37,7 +41,8 @@
     "name": "COCONUT",
     "nameVi": "Quả dừa",
     "imagePath": "images/fruit/coconut.jpeg",
-    "soundPath": "sounds/fruit/coconut.mp3"
+    "soundPath": "sounds/fruit/coconut.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_006",
@@ -45,7 +50,8 @@
     "name": "GRAPEFRUIT",
     "nameVi": "Quả bưởi",
     "imagePath": "images/fruit/grapefruit.jpeg",
-    "soundPath": "sounds/fruit/grapefruit.mp3"
+    "soundPath": "sounds/fruit/grapefruit.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_007",
@@ -53,7 +59,8 @@
     "name": "GRAPES",
     "nameVi": "Quả nho",
     "imagePath": "images/fruit/grapes.jpeg",
-    "soundPath": "sounds/fruit/grapes.mp3"
+    "soundPath": "sounds/fruit/grapes.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "fruit_008",
@@ -61,7 +68,8 @@
     "name": "KIWI",
     "nameVi": "Quả kiwi",
     "imagePath": "images/fruit/kiwi.jpeg",
-    "soundPath": "sounds/fruit/kiwi.mp3"
+    "soundPath": "sounds/fruit/kiwi.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_009",
@@ -69,7 +77,8 @@
     "name": "LEMON",
     "nameVi": "Quả chanh vàng",
     "imagePath": "images/fruit/lemon.jpeg",
-    "soundPath": "sounds/fruit/lemon.mp3"
+    "soundPath": "sounds/fruit/lemon.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_010",
@@ -77,7 +86,8 @@
     "name": "LIME",
     "nameVi": "Quả chanh xanh",
     "imagePath": "images/fruit/lime.jpeg",
-    "soundPath": "sounds/fruit/lime.mp3"
+    "soundPath": "sounds/fruit/lime.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_011",
@@ -85,7 +95,8 @@
     "name": "MANGO",
     "nameVi": "Quả xoài",
     "imagePath": "images/fruit/mango.jpeg",
-    "soundPath": "sounds/fruit/mango.mp3"
+    "soundPath": "sounds/fruit/mango.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_012",
@@ -93,7 +104,8 @@
     "name": "MELON",
     "nameVi": "Quả dưa lưới",
     "imagePath": "images/fruit/melon.jpeg",
-    "soundPath": "sounds/fruit/melon.mp3"
+    "soundPath": "sounds/fruit/melon.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_013",
@@ -101,7 +113,8 @@
     "name": "ORANGE",
     "nameVi": "Quả cam",
     "imagePath": "images/fruit/orange.jpeg",
-    "soundPath": "sounds/fruit/orange.mp3"
+    "soundPath": "sounds/fruit/orange.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_014",
@@ -109,7 +122,8 @@
     "name": "PAPAYA",
     "nameVi": "Quả đu đủ",
     "imagePath": "images/fruit/papaya.jpeg",
-    "soundPath": "sounds/fruit/papaya.mp3"
+    "soundPath": "sounds/fruit/papaya.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "fruit_015",
@@ -117,7 +131,8 @@
     "name": "PEACH",
     "nameVi": "Quả đào",
     "imagePath": "images/fruit/peach.jpeg",
-    "soundPath": "sounds/fruit/peach.mp3"
+    "soundPath": "sounds/fruit/peach.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "fruit_016",
@@ -125,7 +140,8 @@
     "name": "PEAR",
     "nameVi": "Quả lê",
     "imagePath": "images/fruit/pear.jpeg",
-    "soundPath": "sounds/fruit/pear.mp3"
+    "soundPath": "sounds/fruit/pear.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "fruit_017",
@@ -133,7 +149,8 @@
     "name": "PINEAPPLE",
     "nameVi": "Quả dứa",
     "imagePath": "images/fruit/pineapple.jpeg",
-    "soundPath": "sounds/fruit/pineapple.mp3"
+    "soundPath": "sounds/fruit/pineapple.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "fruit_018",
@@ -141,7 +158,8 @@
     "name": "PLUM",
     "nameVi": "Quả mận",
     "imagePath": "images/fruit/plum.jpeg",
-    "soundPath": "sounds/fruit/plum.mp3"
+    "soundPath": "sounds/fruit/plum.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "fruit_019",
@@ -149,7 +167,8 @@
     "name": "RASPBERRY",
     "nameVi": "Quả mâm xôi",
     "imagePath": "images/fruit/raspberry.jpeg",
-    "soundPath": "sounds/fruit/raspberry.mp3"
+    "soundPath": "sounds/fruit/raspberry.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "fruit_020",
@@ -157,7 +176,8 @@
     "name": "STRAWBERRY",
     "nameVi": "Quả dâu tây",
     "imagePath": "images/fruit/strawberry.jpeg",
-    "soundPath": "sounds/fruit/strawberry.mp3"
+    "soundPath": "sounds/fruit/strawberry.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "fruit_021",
@@ -165,6 +185,7 @@
     "name": "WATERMELON",
     "nameVi": "Quả dưa hấu",
     "imagePath": "images/fruit/watermelon.jpeg",
-    "soundPath": "sounds/fruit/watermelon.mp3"
+    "soundPath": "sounds/fruit/watermelon.mp3",
+    "lessonNumber": 3
   }
 ]

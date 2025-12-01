@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await // Cần import thư viện này
 
 // Lớp dữ liệu để đóng gói kết quả, giúp UI dễ xử lý hơn
 data class ProgressUiState(
@@ -25,7 +26,6 @@ class ProgressViewModel(
     val uiState: StateFlow<ProgressUiState> = _uiState
 
     fun loadProgress(topicId: String) {
-        // Lấy userId hiện tại
         val userId = auth.currentUser?.uid
         if (userId == null) {
             _uiState.value = ProgressUiState(isLoading = false) // Không có user, không có tiến độ
@@ -35,26 +35,27 @@ class ProgressViewModel(
         viewModelScope.launch {
             _uiState.value = ProgressUiState(isLoading = true)
 
-            // Lấy tổng số thẻ trong chủ đề
-            val cardsInTopic = repo.getFlashcardsByTopic(topicId)
-            val total = cardsInTopic.size
+            try {
+                // ✨ LOGIC ĐÃ SỬA LẠI: Đơn giản, hiệu quả và chính xác ✨
 
-            // ✨ LOGIC MỚI: Lấy tất cả tiến độ của user và lọc ra những thẻ thuộc chủ đề này
-            // Cần thêm hàm getAllProgressForUser vào DAO và Repository
-            val allUserProgress = repo.getAllProgressForUser(userId)
+                // 1. Lấy tổng số thẻ trong chủ đề (Cách làm của bạn đã đúng)
+                val total = repo.getFlashcardsByTopic(topicId).size
 
-            // Lọc ra các thẻ đã học (masteryLevel > 0) và thuộc chủ đề đang xem
-            val learned = allUserProgress.count { progress ->
-                // Kiểm tra xem thẻ trong bản ghi tiến độ có thuộc danh sách thẻ của chủ đề này không
-                cardsInTopic.any { card -> card.id.toString() == progress.flashcardId }
-                        && progress.masteryLevel > 0 // Và có masteryLevel > 0
+                // 2. Lấy số thẻ ĐÃ HỌC trong chủ đề này của ĐÚNG người dùng này
+                //    Hàm này cần được thêm vào Repository và DAO/Firestore service.
+                val learned = repo.getLearnedCardsCount(userId, topicId)
+
+                // 3. Cập nhật UI với dữ liệu chính xác
+                _uiState.value = ProgressUiState(
+                    totalCards = total,
+                    learnedCards = learned,
+                    isLoading = false
+                )
+            } catch (e: Exception) {
+                // Xử lý lỗi nếu có sự cố khi lấy dữ liệu
+                _uiState.value = _uiState.value.copy(isLoading = false)
+                // Bạn có thể thêm logic để hiển thị thông báo lỗi cho người dùng ở đây
             }
-
-            _uiState.value = ProgressUiState(
-                totalCards = total,
-                learnedCards = learned,
-                isLoading = false
-            )
         }
     }
 }

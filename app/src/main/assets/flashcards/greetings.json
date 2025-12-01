@@ -5,7 +5,8 @@
     "name": "HELLO",
     "nameVi": "Xin chào",
     "imagePath": "images/greetings/greetings_flashcard_hello.png",
-    "soundPath": "sounds/greetings/hello.mp3"
+    "soundPath": "sounds/greetings/hello.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "greeting_002",
@@ -13,7 +14,8 @@
     "name": "GOODBYE",
     "nameVi": "Tạm biệt",
     "imagePath": "images/greetings/greetings_flashcard_goodbye.png",
-    "soundPath": "sounds/greetings/goodbye.mp3"
+    "soundPath": "sounds/greetings/goodbye.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "greeting_003",
@@ -21,7 +23,8 @@
     "name": "GOOD MORNING",
     "nameVi": "Chào buổi sáng",
     "imagePath": "images/greetings/greetings_flashcard_goodmorning.png",
-    "soundPath": "sounds/greetings/good_morning.mp3"
+    "soundPath": "sounds/greetings/good_morning.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "greeting_004",
@@ -29,7 +32,8 @@
     "name": "GOOD NIGHT",
     "nameVi": "Chúc ngủ ngon",
     "imagePath": "images/greetings/greetings_flashcard_goodnight.png",
-    "soundPath": "sounds/greetings/goodnight.mp3"
+    "soundPath": "sounds/greetings/goodnight.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "greeting_005",
@@ -37,7 +41,8 @@
     "name": "GOOD AFTERNOON",
     "nameVi": "Chào buổi chiều",
     "imagePath": "images/greetings/greetings_flashcard_goodafternoon.png",
-    "soundPath": "sounds/greetings/good_afternoon.mp3"
+    "soundPath": "sounds/greetings/good_afternoon.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "greeting_006",
@@ -45,6 +50,7 @@
     "name": "GOOD EVENING",
     "nameVi": "Chào buổi tối",
     "imagePath": "images/greetings/greetings_flashcard_goodevening.png",
-    "soundPath": "sounds/greetings/good_evening.mp3"
+    "soundPath": "sounds/greetings/good_evening.mp3",
+    "lessonNumber": 1
   }
 ]

@@ -117,4 +117,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    //quiz
+    implementation("com.google.accompanist:accompanist-flowlayout:0.32.0")
 }

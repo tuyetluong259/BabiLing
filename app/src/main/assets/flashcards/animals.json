@@ -4,7 +4,8 @@
   "name": "ALLIGATOR",
   "nameVi": "Cá sấu",
   "imagePath": "images/animals/A.jpeg",
-  "soundPath": "sounds/animals/alligator.mp3"
+  "soundPath": "sounds/animals/alligator.mp3",
+  "lessonNumber": 1
 },
   {
     "id": "animal_002",
@@ -12,7 +13,8 @@
     "name": "BEAR",
     "nameVi": "Gấu",
     "imagePath": "images/animals/B.jpeg",
-    "soundPath": "sounds/animals/bear.mp3"
+    "soundPath": "sounds/animals/bear.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "animal_003",
@@ -20,7 +22,8 @@
     "name": "CAT",
     "nameVi": "Mèo",
     "imagePath": "images/animals/C.jpeg",
-    "soundPath": "sounds/animals/cat.mp3"
+    "soundPath": "sounds/animals/cat.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "animal_004",
@@ -28,7 +31,8 @@
     "name": "DOG",
     "nameVi": "Chó",
     "imagePath": "images/animals/D.jpeg",
-    "soundPath": "sounds/animals/dog.mp3"
+    "soundPath": "sounds/animals/dog.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "animal_005",
@@ -36,7 +40,8 @@
     "name": "ELEPHANT",
     "nameVi": "Voi",
     "imagePath": "images/animals/E.jpeg",
-    "soundPath": "sounds/animals/elephant.mp3"
+    "soundPath": "sounds/animals/elephant.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "animal_006",
@@ -44,7 +49,8 @@
     "name": "FROG",
     "nameVi": "Ếch",
     "imagePath": "images/animals/F.jpeg",
-    "soundPath": "sounds/animals/frog.mp3"
+    "soundPath": "sounds/animals/frog.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "animal_007",
@@ -52,7 +58,8 @@
     "name": "GOAT",
     "nameVi": "Dê",
     "imagePath": "images/animals/G.jpeg",
-    "soundPath": "sounds/animals/goat.mp3"
+    "soundPath": "sounds/animals/goat.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "animal_008",
@@ -60,7 +67,8 @@
     "name": "HORSE",
     "nameVi": "Ngựa",
     "imagePath": "images/animals/H.jpeg",
-    "soundPath": "sounds/animals/horse.mp3"
+    "soundPath": "sounds/animals/horse.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_009",
@@ -68,7 +76,8 @@
     "name": "IGUANA",
     "nameVi": "Kỳ nhông",
     "imagePath": "images/animals/I.jpeg",
-    "soundPath": "sounds/animals/iguana.mp3"
+    "soundPath": "sounds/animals/iguana.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_010",
@@ -76,7 +85,8 @@
     "name": "JELLYFISH",
     "nameVi": "Sứa",
     "imagePath": "images/animals/J.jpeg",
-    "soundPath": "sounds/animals/jellyfish.mp3"
+    "soundPath": "sounds/animals/jellyfish.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_011",
@@ -84,7 +94,8 @@
     "name": "KANGAROO",
     "nameVi": "Chuột túi",
     "imagePath": "images/animals/K.jpeg",
-    "soundPath": "sounds/animals/kangaroo.mp3"
+    "soundPath": "sounds/animals/kangaroo.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_012",
@@ -92,7 +103,8 @@
     "name": "LION",
     "nameVi": "Sư tử",
     "imagePath": "images/animals/L.jpeg",
-    "soundPath": "sounds/animals/lion.mp3"
+    "soundPath": "sounds/animals/lion.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_013",
@@ -100,7 +112,8 @@
     "name": "MONKEY",
     "nameVi": "Khỉ",
     "imagePath": "images/animals/M.jpeg",
-    "soundPath": "sounds/animals/monkey.mp3"
+    "soundPath": "sounds/animals/monkey.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_014",
@@ -108,7 +121,8 @@
     "name": "NARWHAL",
     "nameVi": "Cá voi một sừng",
     "imagePath": "images/animals/N.jpeg",
-    "soundPath": "sounds/animals/narwhal.mp3"
+    "soundPath": "sounds/animals/narwhal.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "animal_015",
@@ -116,7 +130,8 @@
     "name": "OCTOPUS",
     "nameVi": "Bạch tuộc",
     "imagePath": "images/animals/O.jpeg",
-    "soundPath": "sounds/animals/octopus.mp3"
+    "soundPath": "sounds/animals/octopus.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "animal_016",
@@ -124,7 +139,8 @@
     "name": "PIG",
     "nameVi": "Heo",
     "imagePath": "images/animals/P.jpeg",
-    "soundPath": "sounds/animals/pig.mp3"
+    "soundPath": "sounds/animals/pig.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "animal_017",
@@ -132,7 +148,8 @@
     "name": "QUAIL",
     "nameVi": "Chim cút",
     "imagePath": "images/animals/Q.jpeg",
-    "soundPath": "sounds/animals/quail.mp3"
+    "soundPath": "sounds/animals/quail.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "animal_018",
@@ -140,7 +157,8 @@
     "name": "RABBIT",
     "nameVi": "Thỏ",
     "imagePath": "images/animals/R.jpeg",
-    "soundPath": "sounds/animals/rabbit.mp3"
+    "soundPath": "sounds/animals/rabbit.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "animal_019",
@@ -148,7 +166,8 @@
     "name": "SNAKE",
     "nameVi": "Rắn",
     "imagePath": "images/animals/S.jpeg",
-    "soundPath": "sounds/animals/snake.mp3"
+    "soundPath": "sounds/animals/snake.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "animal_020",
@@ -156,7 +175,8 @@
     "name": "TIGER",
     "nameVi": "Hổ",
     "imagePath": "images/animals/T.jpeg",
-    "soundPath": "sounds/animals/tiger.mp3"
+    "soundPath": "sounds/animals/tiger.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "animal_021",
@@ -164,7 +184,8 @@
     "name": "URCHIN",
     "nameVi": "Nhím biển",
     "imagePath": "images/animals/U.jpeg",
-    "soundPath": "sounds/animals/urchin.mp3"
+    "soundPath": "sounds/animals/urchin.mp3",
+    "lessonNumber": 4
   },
   {
     "id": "animal_022",
@@ -172,7 +193,8 @@
     "name": "VULTURE",
     "nameVi": "Kền kền",
     "imagePath": "images/animals/V.jpeg",
-    "soundPath": "sounds/animals/vulture.mp3"
+    "soundPath": "sounds/animals/vulture.mp3",
+    "lessonNumber": 4
   },
   {
     "id": "animal_023",
@@ -180,7 +202,8 @@
     "name": "WHALE",
     "nameVi": "Cá voi",
     "imagePath": "images/animals/W.jpeg",
-    "soundPath": "sounds/animals/whale.mp3"
+    "soundPath": "sounds/animals/whale.mp3",
+    "lessonNumber": 4
   },
   {
     "id": "animal_024",
@@ -188,7 +211,8 @@
     "name": "FOX",
     "nameVi": "Cáo",
     "imagePath": "images/animals/F.jpeg",
-    "soundPath": "sounds/animals/fox.mp3"
+    "soundPath": "sounds/animals/fox.mp3",
+    "lessonNumber": 4
   },
   {
     "id": "animal_025",
@@ -196,7 +220,8 @@
     "name": "YAK",
     "nameVi": "Bò Tây Tạng",
     "imagePath": "images/animals/Y.jpeg",
-    "soundPath": "sounds/animals/yak.mp3"
+    "soundPath": "sounds/animals/yak.mp3",
+    "lessonNumber": 4
   },
   {
     "id": "animal_026",
@@ -204,6 +229,7 @@
     "name": "ZEBRA",
     "nameVi": "Ngựa vằn",
     "imagePath": "images/animals/Z.jpeg",
-    "soundPath": "sounds/animals/zebra.mp3"
+    "soundPath": "sounds/animals/zebra.mp3",
+    "lessonNumber": 4
   }
 ]

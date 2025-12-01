@@ -5,7 +5,8 @@
     "name": "BLACK",
     "nameVi": "Màu đen",
     "imagePath": "images/color/color_flashcard_black.jpg",
-    "soundPath": "sounds/color/black.mp3"
+    "soundPath": "sounds/color/black.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "color_002",
@@ -13,7 +14,8 @@
     "name": "BLUE",
     "nameVi": "Màu xanh dương",
     "imagePath": "images/color/color_flashcard_blue.jpeg",
-    "soundPath": "sounds/color/blue.mp3"
+    "soundPath": "sounds/color/blue.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "color_003",
@@ -21,7 +23,8 @@
     "name": "BROWN",
     "nameVi": "Màu nâu",
     "imagePath": "images/color/color_flashcard_brown.jpeg",
-    "soundPath": "sounds/color/brown.mp3"
+    "soundPath": "sounds/color/brown.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "color_004",
@@ -29,7 +32,8 @@
     "name": "GOLD",
     "nameVi": "Màu vàng kim",
     "imagePath": "images/color/color_flashcard_gold.jpeg",
-    "soundPath": "sounds/color/gold.mp3"
+    "soundPath": "sounds/color/gold.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "color_005",
@@ -37,7 +41,8 @@
     "name": "GREEN",
     "nameVi": "Màu xanh lá",
     "imagePath": "images/color/color_flashcard_green.jpeg",
-    "soundPath": "sounds/color/green.mp3"
+    "soundPath": "sounds/color/green.mp3",
+    "lessonNumber": 1
   },
   {
     "id": "color_006",
@@ -45,7 +50,8 @@
     "name": "GREY",
     "nameVi": "Màu xám",
     "imagePath": "images/color/color_flashcard_grey.jpeg",
-    "soundPath": "sounds/color/grey.mp3"
+    "soundPath": "sounds/color/grey.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "color_007",
@@ -53,7 +59,8 @@
     "name": "LILAC",
     "nameVi": "Màu tím hoa cà",
     "imagePath": "images/color/color_flashcard_lilac.jpeg",
-    "soundPath": "sounds/color/lilac.mp3"
+    "soundPath": "sounds/color/lilac.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "color_008",
@@ -61,7 +68,8 @@
     "name": "NAVY",
     "nameVi": "Màu xanh navy",
     "imagePath": "images/color/color_flashcard_navy.jpeg",
-    "soundPath": "sounds/color/navy.mp3"
+    "soundPath": "sounds/color/navy.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "color_009",
@@ -69,7 +77,8 @@
     "name": "ORANGE",
     "nameVi": "Màu cam",
     "imagePath": "images/color/color_flashcard_orange.jpeg",
-    "soundPath": "sounds/color/orange.mp3"
+    "soundPath": "sounds/color/orange.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "color_010",
@@ -77,7 +86,8 @@
     "name": "PINK",
     "nameVi": "Màu hồng",
     "imagePath": "images/color/color_flashcard_pink.jpeg",
-    "soundPath": "sounds/color/pink.mp3"
+    "soundPath": "sounds/color/pink.mp3",
+    "lessonNumber": 2
   },
   {
     "id": "color_011",
@@ -85,7 +95,8 @@
     "name": "PURPLE",
     "nameVi": "Màu tím",
     "imagePath": "images/color/color_flashcard_purple.jpeg",
-    "soundPath": "sounds/color/purple.mp3"
+    "soundPath": "sounds/color/purple.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "color_012",
@@ -93,7 +104,8 @@
     "name": "RED",
     "nameVi": "Màu đỏ",
     "imagePath": "images/color/color_flashcard_red.jpeg",
-    "soundPath": "sounds/color/red.mp3"
+    "soundPath": "sounds/color/red.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "color_013",
@@ -101,7 +113,8 @@
     "name": "SILVER",
     "nameVi": "Màu bạc",
     "imagePath": "images/color/color_flashcard_silver.jpeg",
-    "soundPath": "sounds/color/silver.mp3"
+    "soundPath": "sounds/color/silver.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "color_014",
@@ -109,7 +122,8 @@
     "name": "WHITE",
     "nameVi": "Màu trắng",
     "imagePath": "images/color/color_flashcard_white.jpeg",
-    "soundPath": "sounds/color/white.mp3"
+    "soundPath": "sounds/color/white.mp3",
+    "lessonNumber": 3
   },
   {
     "id": "color_015",
@@ -117,6 +131,7 @@
     "name": "YELLOW",
     "nameVi": "Màu vàng",
     "imagePath": "images/color/color_flashcard_yellow.jpeg",
-    "soundPath": "sounds/color/yellow.mp3"
+    "soundPath": "sounds/color/yellow.mp3",
+    "lessonNumber": 3
   }
 ]

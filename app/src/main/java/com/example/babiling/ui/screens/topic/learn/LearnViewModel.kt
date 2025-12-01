@@ -1,69 +1,102 @@
 package com.example.babiling.ui.screens.topic.learn
 
-import android.util.Log // <-- THÊM IMPORT NÀY
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.babiling.ServiceLocator
 import com.example.babiling.data.model.FlashcardEntity
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LearnViewModel() : ViewModel() {
+/**
+ * ViewModel cho màn hình LearnScreen, quản lý logic học theo từng bài.
+ * ✨ HOÀN THIỆN: Sử dụng SavedStateHandle để tự động nhận tham số từ Navigation.
+ */
+class LearnViewModel(
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    // Lấy repository một cách "lười biếng" (lazy) để tránh race condition khi khởi tạo
+    // Lấy repository thông qua ServiceLocator
     private val repo by lazy { ServiceLocator.provideRepository() }
 
+    // --- StateFlows công khai cho UI quan sát ---
+
+    // Chứa danh sách các thẻ của BÀI HỌC hiện tại.
     private val _cards = MutableStateFlow<List<FlashcardEntity>>(emptyList())
-    val cards: StateFlow<List<FlashcardEntity>> = _cards
+    val cards = _cards.asStateFlow()
 
+    // Chứa chỉ số (index) của thẻ đang được hiển thị.
     private val _index = MutableStateFlow(0)
-    val index: StateFlow<Int> = _index
+    val index = _index.asStateFlow()
 
-    fun load(topicId: String) {
-        // ✨ LOG 1: Kiểm tra topicId màn hình LearnScreen truyền vào là gì ✨
-        Log.d("BabiLing_Debug", "[ViewModel] Bắt đầu load dữ liệu cho topicId = '$topicId'")
+    // Cờ báo hiệu người dùng đã học xong thẻ cuối cùng của bài.
+    private val _isFinished = MutableStateFlow(false)
+    val isFinished = _isFinished.asStateFlow()
+
+    // ✨ HOÀN THIỆN: Tự động lấy topicId và lessonNumber từ arguments của navigation.
+    private val topicId: String = checkNotNull(savedStateHandle["topicId"])
+    private val lessonNumber: Int = savedStateHandle.get<String>("lessonNumber")?.toInt() ?: 0
+
+    /**
+     * Khối init sẽ được gọi ngay khi ViewModel được tạo.
+     * Chúng ta sẽ gọi hàm tải dữ liệu ngay tại đây.
+     */
+    init {
+        Log.d("BabiLing_Debug", "[ViewModel] Được khởi tạo với topicId='$topicId', lessonNumber=$lessonNumber")
+        loadData()
+    }
+
+    /**
+     * Tải dữ liệu cho một BÀI HỌC CỤ THỂ.
+     * Hàm này giờ là private vì nó được gọi tự động từ khối init.
+     */
+    private fun loadData() {
+        // Reset lại tất cả state mỗi khi tải bài mới để tránh hiển thị dữ liệu cũ
+        _cards.value = emptyList()
+        _index.value = 0
+        _isFinished.value = false
 
         viewModelScope.launch {
             try {
-                val result = repo.getFlashcardsByTopic(topicId)
-                // ✨ LOG 2: Kiểm tra Repository trả về bao nhiêu thẻ với topicId đó ✨
-                Log.d("BabiLing_Debug", "[ViewModel] Repository trả về ${result.size} thẻ cho topicId = '$topicId'")
+                // Sử dụng hàm mới từ Repository
+                val result = repo.getFlashcardsByLesson(topicId, lessonNumber)
+                Log.d("BabiLing_Debug", "[ViewModel] Repository trả về ${result.size} thẻ.")
 
                 _cards.value = result
-                _index.value = 0
+
             } catch (e: Exception) {
-                // ✨ LOG 3: Bắt lỗi nếu có sự cố bất ngờ ✨
-                Log.e("BabiLing_Debug", "[ViewModel] LỖI khi lấy thẻ từ repo!", e)
+                Log.e("BabiLing_Debug", "[ViewModel] LỖI khi lấy thẻ từ repo theo bài học!", e)
             }
         }
     }
 
+    /**
+     * Chuyển đến thẻ tiếp theo.
+     * Nếu đang ở thẻ cuối cùng, sẽ đánh dấu bài học đã hoàn thành.
+     */
     fun next() {
-        // Chỉ tăng index nếu nó chưa phải là thẻ cuối cùng
-        if (_index.value < _cards.value.size - 1) {
-            _index.value++
+        val currentIndex = _index.value
+        val totalCards = _cards.value.size
+
+        if (totalCards == 0) return
+
+        if (currentIndex < totalCards - 1) {
+            _index.update { it + 1 }
+        } else {
+            Log.d("BabiLing_Debug", "[ViewModel] Đã đến thẻ cuối cùng. Đánh dấu bài học hoàn thành.")
+            _isFinished.value = true
         }
     }
 
+    /**
+     * Quay lại thẻ trước đó.
+     */
     fun previous() {
-        // Chỉ giảm index nếu nó không phải là thẻ đầu tiên
         if (_index.value > 0) {
-            _index.value--
+            _index.update { it - 1 }
         }
     }
-
-    // Hàm onCardReviewed không còn cần thiết cho màn hình học đơn giản nữa.
-    /*
-    fun onCardReviewed(card: FlashcardEntity, wasCorrect: Boolean) {
-        viewModelScope.launch {
-            repo.recordProgress(
-                flashcardId = card.id.toString(),
-                newMasteryLevel = if (wasCorrect) 1 else 0,
-                newCorrectCountInRow = if (wasCorrect) 1 else 0
-            )
-            next()
-        }
-    }
-    */
 }

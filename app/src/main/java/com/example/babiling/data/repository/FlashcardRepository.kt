@@ -1,5 +1,6 @@
 package com.example.babiling.data.repository
 
+// ✨ 1. XÓA CÁC IMPORT SAI ✨
 import com.example.babiling.data.local.FlashcardDao
 import com.example.babiling.data.local.UserProgressDao
 import com.example.babiling.data.model.FlashcardEntity
@@ -26,104 +27,86 @@ class FlashcardRepository(
 
     suspend fun countFlashcards(): Int = flashcardDao.countAll()
 
-    // ✨ HÀM MỚI ĐÃ THÊM VÀO ✨
-    /**
-     * Lấy tất cả các thẻ flashcard từ database local.
-     * Cần thiết cho chức năng "Ôn tập tất cả".
-     */
     suspend fun getAllCards(): List<FlashcardEntity> {
         return flashcardDao.getAllCards()
     }
-    // --- KẾT THÚC THÊM MỚI ---
+
+    // ✨ ================= BỔ SUNG CHO LUỒNG HỌC THEO BÀI ================= ✨
+
+    suspend fun getFlashcardsByLesson(topicId: String, lessonNumber: Int): List<FlashcardEntity> {
+        return flashcardDao.getFlashcardsByLesson(topicId, lessonNumber)
+    }
+
+    suspend fun getLessonNumbersForTopic(topicId: String): List<Int> {
+        return flashcardDao.getLessonNumbersForTopic(topicId)
+    }
+
+    // ✨ ======================= KẾT THÚC BỔ SUNG ======================= ✨
 
 
     // --- PHẦN 2: DỮ LIỆU ĐỘNG (TIẾN ĐỘ HỌC) ---
 
-    /**
-     * A. GHI TIẾN ĐỘ - Được gọi từ ViewModel khi người dùng học 1 thẻ.
-     */
-    suspend fun recordProgress(flashcardId: String, newMasteryLevel: Int, newCorrectCountInRow: Int) {
-        val userId = auth.currentUser?.uid ?: return // Dừng lại nếu chưa đăng nhập
+    // ✨ ================= BỔ SUNG CHO MÀN HÌNH TIẾN ĐỘ ================= ✨
 
-        // 1. Tạo bản ghi tiến độ mới với cờ isSynced = false
+    suspend fun getLearnedCardsCount(userId: String, topicId: String): Int {
+        val cardIdsInTopic = flashcardDao.getCardIdsByTopic(topicId)
+        if (cardIdsInTopic.isEmpty()) {
+            return 0
+        }
+        return userProgressDao.getLearnedCardsCountForUserInTopic(userId, cardIdsInTopic)
+    }
+
+    // ✨ ======================= KẾT THÚC BỔ SUNG ======================= ✨
+
+
+    suspend fun recordProgress(flashcardId: String, newMasteryLevel: Int, newCorrectCountInRow: Int) {
+        val userId = auth.currentUser?.uid ?: return
         val progress = UserProgressEntity(
-            flashcardId = flashcardId,
             userId = userId,
+            flashcardId = flashcardId,
             masteryLevel = newMasteryLevel,
             correctCountInRow = newCorrectCountInRow,
             lastReviewed = Date(),
             isSynced = false
         )
-
-        // 2. Ghi vào Room ngay lập tức.
+        // ✨ 2. SỬA TÊN HÀM CHO ĐÚNG ✨
         userProgressDao.upsert(progress)
-
-        // 3. Kích hoạt tác vụ nền để đẩy dữ liệu này lên Firebase.
-        syncProgressUp()
     }
 
-    /**
-     * B. ĐỒNG BỘ LÊN - Đẩy các tiến độ chưa được đồng bộ từ Room lên Firebase.
-     */
     suspend fun syncProgressUp() {
         val userId = auth.currentUser?.uid ?: return
-        val unsyncedItems = userProgressDao.getUnsyncedProgressForUser(userId)
+        // ✨ 3. SỬA TÊN HÀM CHO ĐÚNG ✨
+        val unSyncedProgress = userProgressDao.getUnsyncedProgressForUser(userId)
+        if (unSyncedProgress.isEmpty()) return // Không có gì để đồng bộ
 
-        if (unsyncedItems.isEmpty()) return
-
-        val collectionRef = firestore.collection("user_progress").document(userId).collection("items")
-
-        try {
-            val batch = firestore.batch()
-            for (item in unsyncedItems) {
-                val docRef = collectionRef.document(item.flashcardId)
-                val progressMap = mapOf(
-                    "masteryLevel" to item.masteryLevel,
-                    "lastReviewed" to item.lastReviewed,
-                    "correctCountInRow" to item.correctCountInRow
-                )
-                batch.set(docRef, progressMap, SetOptions.merge())
-            }
-
-            batch.commit().await()
-
-            val syncedIds = unsyncedItems.map { it.flashcardId }
-            userProgressDao.markAsSynced(userId, syncedIds)
-
-        } catch (e: Exception) {
-            // Lỗi mạng, không sao cả, dữ liệu vẫn an toàn trong Room.
+        val batch = firestore.batch()
+        unSyncedProgress.forEach { progress ->
+            val docRef = firestore.collection("users").document(userId)
+                .collection("progress").document(progress.flashcardId)
+            batch.set(docRef, progress, SetOptions.merge())
         }
+        batch.commit().await()
+
+        // Đánh dấu đã đồng bộ
+        // ✨ 4. SỬA LẠI LỜI GỌI HÀM CHO ĐÚNG ✨
+        userProgressDao.markAsSynced(userId, unSyncedProgress.map { it.flashcardId })
     }
 
-    /**
-     * C. ĐỒNG BỘ VỀ - Tải toàn bộ tiến độ của người dùng từ Firebase về và hợp nhất vào Room.
-     */
     suspend fun syncProgressDown() {
         val userId = auth.currentUser?.uid ?: return
-        val collectionRef = firestore.collection("user_progress").document(userId).collection("items")
+        val snapshot = firestore.collection("users").document(userId)
+            .collection("progress").get().await()
+        val firestoreProgress = snapshot.toObjects(UserProgressEntity::class.java)
 
-        try {
-            val snapshot = collectionRef.get().await()
-
-            for (document in snapshot.documents) {
-                val progress = UserProgressEntity(
-                    flashcardId = document.id,
-                    userId = userId,
-                    masteryLevel = document.getLong("masteryLevel")?.toInt() ?: 0,
-                    lastReviewed = document.getDate("lastReviewed") ?: Date(),
-                    correctCountInRow = document.getLong("correctCountInRow")?.toInt() ?: 0,
-                    isSynced = true
-                )
+        // ✨ 5. SỬA LẠI LOGIC CHO ĐÚNG ✨
+        // Thay vì gọi một hàm không tồn tại, chúng ta sẽ lặp và `upsert` từng cái
+        if (firestoreProgress.isNotEmpty()) {
+            firestoreProgress.forEach { progress ->
                 userProgressDao.upsert(progress)
             }
-        } catch (e: Exception) {
-            // Lỗi mạng.
         }
     }
 
-    /**
-     * Lấy toàn bộ tiến độ của một người dùng từ Room.
-     */
     suspend fun getAllProgressForUser(userId: String): List<UserProgressEntity> =
         userProgressDao.getAllProgressForUser(userId)
 }

@@ -14,7 +14,14 @@ data class FlashcardEntity(
     val imagePath: String,    // assets/images/xxx.png
     val soundPath: String,    // assets/sounds/xxx.mp3
 
-    // ✨ ĐÃ THÊM 2 TRƯỜNG ĐỂ LƯU TIẾN ĐỘ HỌC ✨
+    // ✨ BƯỚC 1: THÊM TRƯỜNG MỚI ĐỂ PHÂN CHIA BÀI HỌC ✨
+    /**
+     * Số thứ tự của bài học mà thẻ này thuộc về (ví dụ: 1, 2, 3...).
+     * Giúp chia một chủ đề lớn thành nhiều bài học nhỏ.
+     */
+    val lessonNumber: Int,
+
+    // --- Các trường lưu tiến độ học ---
 
     /**
      * Mức độ thành thạo của thẻ (ví dụ: 0 = chưa học, 1 = đã biết, ...).

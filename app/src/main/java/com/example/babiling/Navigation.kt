@@ -18,31 +18,42 @@ sealed class Screen(val route: String) {
 
     // --- CÁC ROUTE VÀ HÀM DÙNG CHUNG ---
     companion object {
-        // --- Hằng số cho Learn và Progress (không đổi) ---
-        const val LearnRoute = "learn_screen/{topicId}"
-        const val ProgressRoute = "progress_screen/{topicId}"
 
-        fun learnWithTopic(topicId: String) = "learn_screen/$topicId"
+        // ================== LUỒNG HỌC MỚI ==================
+
+        // 1. Route cho màn hình CHỌN BÀI HỌC (Lesson Selection)
+        const val LessonSelectRoute = "lesson_select_screen/{topicId}"
+        fun lessonSelectWithTopic(topicId: String) = "lesson_select_screen/$topicId"
+
+        // 2. Route cho màn hình HỌC (Learn)
+        const val LearnRoute = "learn_screen/{topicId}/{lessonNumber}"
+        fun learnWithLesson(topicId: String, lessonNumber: Int) = "learn_screen/$topicId/$lessonNumber"
+
+        // 3. Route cho màn hình TIẾN ĐỘ (Progress)
+        const val ProgressRoute = "progress_screen/{topicId}"
         fun progressWithTopic(topicId: String) = "progress_screen/$topicId"
 
+        // ================== KẾT THÚC LUỒNG HỌC MỚI ==================
 
-        // ✨ ================== SỬA ĐỔI PHẦN QUIZ ================== ✨
 
-        // 1. Route CƠ SỞ cho Quiz
-        private const val QUIZ_ROUTE_BASE = "quiz_screen"
-
-        // 2. Route dùng để ĐỊNH NGHĨA trong NavHost, với tham số topicId là TÙY CHỌN
-        const val QuizRoute = "$QUIZ_ROUTE_BASE?topicId={topicId}"
-
-        // 3. Route dùng khi muốn "ÔN TẬP TẤT CẢ" (không có tham số)
-        const val QuizRouteWithoutArgs = QUIZ_ROUTE_BASE
+        // ✨ ================== SỬA LỖI CHO QUIZ ================== ✨
 
         /**
-         * 4. Hàm trợ giúp để điều hướng đến Quiz CÓ chủ đề cụ thể.
-         * Nó sẽ tạo ra route dạng: "quiz_screen?topicId=animals"
+         * Route DUY NHẤT cho màn hình Quiz.
+         * `topicId` là một tham số tùy chọn (optional parameter, có thể null).
+         * - Nếu không có topicId -> Chế độ ôn tập tất cả.
+         * - Nếu có topicId -> Chế độ ôn tập theo chủ đề.
          */
-        fun quizWithTopic(topicId: String) = "$QUIZ_ROUTE_BASE?topicId=$topicId"
+        const val QuizRoute = "quiz_screen?topicId={topicId}"
 
-        // ✨ ================== KẾT THÚC SỬA ĐỔI ================== ✨
+        /**
+         * Hàm trợ giúp để điều hướng đến màn hình Quiz CÓ KÈM theo topicId.
+         * Tạo ra route dạng: "quiz_screen?topicId=animals"
+         */
+        fun quizWithTopic(topicId: String) = "quiz_screen?topicId=$topicId"
+
+        // `QuizRouteWithoutArgs` đã được XÓA BỎ để tránh nhầm lẫn.
+
+        // ✨ =================== KẾT THÚC SỬA LỖI =================== ✨
     }
 }

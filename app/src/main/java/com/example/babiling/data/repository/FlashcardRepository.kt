@@ -18,7 +18,7 @@ class FlashcardRepository(
     private val firestore = Firebase.firestore
     private val auth = FirebaseAuth.getInstance()
 
-    // --- PHẦN 1: DỮ LIỆU TĨNH (FLASHCARD) - Giữ nguyên, đã tốt ---
+    // --- PHẦN 1: DỮ LIỆU TĨNH (FLASHCARD) ---
     suspend fun getFlashcardsByTopic(topicId: String): List<FlashcardEntity> =
         flashcardDao.getFlashcardsByTopic(topicId)
 
@@ -26,11 +26,21 @@ class FlashcardRepository(
 
     suspend fun countFlashcards(): Int = flashcardDao.countAll()
 
-    // --- PHẦN 2: DỮ LIỆU ĐỘNG (TIẾN ĐỘ HỌC) - NÂNG CẤP TOÀN DIỆN ---
+    // ✨ HÀM MỚI ĐÃ THÊM VÀO ✨
+    /**
+     * Lấy tất cả các thẻ flashcard từ database local.
+     * Cần thiết cho chức năng "Ôn tập tất cả".
+     */
+    suspend fun getAllCards(): List<FlashcardEntity> {
+        return flashcardDao.getAllCards()
+    }
+    // --- KẾT THÚC THÊM MỚI ---
+
+
+    // --- PHẦN 2: DỮ LIỆU ĐỘNG (TIẾN ĐỘ HỌC) ---
 
     /**
      * A. GHI TIẾN ĐỘ - Được gọi từ ViewModel khi người dùng học 1 thẻ.
-     * Đây là hàm chính thay thế cho upsertProgress cũ.
      */
     suspend fun recordProgress(flashcardId: String, newMasteryLevel: Int, newCorrectCountInRow: Int) {
         val userId = auth.currentUser?.uid ?: return // Dừng lại nếu chưa đăng nhập
@@ -41,28 +51,26 @@ class FlashcardRepository(
             userId = userId,
             masteryLevel = newMasteryLevel,
             correctCountInRow = newCorrectCountInRow,
-            lastReviewed = Date(), // Ghi lại thời điểm hiện tại
-            isSynced = false       // QUAN TRỌNG: Luôn là false khi mới ghi vào Room
+            lastReviewed = Date(),
+            isSynced = false
         )
 
-        // 2. Ghi vào Room ngay lập tức, UI sẽ cập nhật tức thì.
+        // 2. Ghi vào Room ngay lập tức.
         userProgressDao.upsert(progress)
 
-        // 3. Kích hoạt một tác vụ nền để đẩy dữ liệu này lên Firebase.
+        // 3. Kích hoạt tác vụ nền để đẩy dữ liệu này lên Firebase.
         syncProgressUp()
     }
 
     /**
      * B. ĐỒNG BỘ LÊN - Đẩy các tiến độ chưa được đồng bộ từ Room lên Firebase.
-     * Tác vụ này sẽ được kích hoạt sau mỗi lần ghi tiến độ hoặc sau khi đăng nhập.
      */
     suspend fun syncProgressUp() {
         val userId = auth.currentUser?.uid ?: return
         val unsyncedItems = userProgressDao.getUnsyncedProgressForUser(userId)
 
-        if (unsyncedItems.isEmpty()) return // Không có gì để làm.
+        if (unsyncedItems.isEmpty()) return
 
-        // Cấu trúc chuẩn: /user_progress/{userId}/items/{flashcardId}
         val collectionRef = firestore.collection("user_progress").document(userId).collection("items")
 
         try {
@@ -74,25 +82,21 @@ class FlashcardRepository(
                     "lastReviewed" to item.lastReviewed,
                     "correctCountInRow" to item.correctCountInRow
                 )
-                // Dùng SetOptions.merge() để không ghi đè dữ liệu khác trên server (nếu có).
                 batch.set(docRef, progressMap, SetOptions.merge())
             }
 
-            batch.commit().await() // Gửi toàn bộ lên server
+            batch.commit().await()
 
-            // Nếu gửi thành công, cập nhật lại cờ isSynced trong Room.
             val syncedIds = unsyncedItems.map { it.flashcardId }
             userProgressDao.markAsSynced(userId, syncedIds)
 
         } catch (e: Exception) {
-            // Lỗi mạng hoặc server. Dữ liệu vẫn an toàn trong Room với isSynced = false.
-            // Lần tới khi hàm này được gọi, nó sẽ thử lại.
+            // Lỗi mạng, không sao cả, dữ liệu vẫn an toàn trong Room.
         }
     }
 
     /**
      * C. ĐỒNG BỘ VỀ - Tải toàn bộ tiến độ của người dùng từ Firebase về và hợp nhất vào Room.
-     * Tác vụ này nên được gọi ngay sau khi người dùng đăng nhập thành công.
      */
     suspend fun syncProgressDown() {
         val userId = auth.currentUser?.uid ?: return
@@ -102,27 +106,23 @@ class FlashcardRepository(
             val snapshot = collectionRef.get().await()
 
             for (document in snapshot.documents) {
-                // TODO: Triển khai logic Hợp nhất (Merge) nâng cao hơn nếu cần.
-                // Hiện tại, chúng ta ưu tiên dữ liệu từ server và ghi đè vào Room.
                 val progress = UserProgressEntity(
                     flashcardId = document.id,
                     userId = userId,
                     masteryLevel = document.getLong("masteryLevel")?.toInt() ?: 0,
                     lastReviewed = document.getDate("lastReviewed") ?: Date(),
                     correctCountInRow = document.getLong("correctCountInRow")?.toInt() ?: 0,
-                    isSynced = true // Dữ liệu từ server luôn được coi là đã đồng bộ
+                    isSynced = true
                 )
                 userProgressDao.upsert(progress)
             }
         } catch (e: Exception) {
-            // Lỗi mạng, không thể tải dữ liệu. Ứng dụng vẫn dùng dữ liệu đang có trong Room.
+            // Lỗi mạng.
         }
     }
 
-    // ✨ HÀM MỚI BẠN CẦN THÊM VÀO ✨
     /**
      * Lấy toàn bộ tiến độ của một người dùng từ Room.
-     * Hàm này là một "cầu nối" đơn giản, gọi thẳng đến hàm tương ứng trong DAO.
      */
     suspend fun getAllProgressForUser(userId: String): List<UserProgressEntity> =
         userProgressDao.getAllProgressForUser(userId)

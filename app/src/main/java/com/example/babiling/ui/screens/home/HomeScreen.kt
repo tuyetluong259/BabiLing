@@ -1,8 +1,8 @@
 package com.example.babiling.ui.screens.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,18 +20,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.babiling.R
+import com.example.babiling.Screen
 import com.example.babiling.ui.theme.BalooThambiFamily
 import com.example.babiling.ui.theme.BabiLingTheme
 
-// <-- CÁC IMPORT ĐƯỢC THÊM VÀO -->
-import androidx.compose.foundation.clickable
-import com.example.babiling.Screen
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    // Bỏ NavController, thay bằng các hàm lambda để tách biệt logic
+    onNavigateToTopicSelect: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
+    onNavigateToGame: () -> Unit, // Thêm lambda cho nút Trò chơi
+    onNavigateToSettings: () -> Unit,
+    onNavigateToProfile: () -> Unit
+) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -48,7 +51,10 @@ fun HomeScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
         ) {
 
-            HeaderSection()
+            HeaderSection(
+                onSettingsClick = onNavigateToSettings,
+                onProfileClick = onNavigateToProfile
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -58,20 +64,20 @@ fun HomeScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                // ======== THAY ĐỔI Ở ĐÂY ========
+                // Card "Chọn chủ đề"
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(IntrinsicSize.Min)
-                        .clickable { // <-- DÒNG 1: THÊM HÀNH ĐỘNG CLICK
-                            navController.navigate(Screen.TopicSelect.route) // <-- DÒNG 2: ĐIỀU HƯỚNG
-                        },
+                        .clickable { onNavigateToTopicSelect() }, // Gọi lambda
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(4.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp, horizontal = 24.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -92,16 +98,21 @@ fun HomeScreen(navController: NavController) {
                         )
                     }
                 }
-                // ======== KẾT THÚC THAY ĐỔI ========
 
+                // Card "Trò chơi"
                 Card(
-                    modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .clickable { onNavigateToGame() }, // Gọi lambda
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(4.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp, horizontal = 24.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -123,14 +134,20 @@ fun HomeScreen(navController: NavController) {
                     }
                 }
 
+                // Card "Ôn tập"
                 Card(
-                    modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .clickable { onNavigateToQuiz() }, // Gọi lambda
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(4.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp, horizontal = 24.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -159,7 +176,10 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun HeaderSection() {
+fun HeaderSection(
+    onSettingsClick: () -> Unit,
+    onProfileClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -170,19 +190,24 @@ fun HeaderSection() {
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Cài đặt",
-                tint = Color.White,
-                modifier = Modifier.size(28.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Hồ sơ",
-                tint = Color.White,
-                modifier = Modifier.size(28.dp)
-            )
+            // Sử dụng IconButton để có hiệu ứng nhấn tốt hơn
+            IconButton(onClick = onSettingsClick) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Cài đặt",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp)) // Giảm khoảng cách
+            IconButton(onClick = onProfileClick) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Hồ sơ",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -190,7 +215,7 @@ fun HeaderSection() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Chào mừng đến với\n \n BabiLing!!!",
+                text = "Chào mừng đến với\nBabiLing!!!", // Xóa \n thừa
                 fontFamily = BalooThambiFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
@@ -229,12 +254,17 @@ fun AdsSection() {
     }
 }
 
-// === HÀM PREVIEW (Giữ nguyên) ===
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     BabiLingTheme {
-        val fakeNavController = rememberNavController()
-        HomeScreen(navController = fakeNavController)
+        // Cập nhật Preview để truyền các hàm lambda rỗng
+        HomeScreen(
+            onNavigateToTopicSelect = {},
+            onNavigateToQuiz = {},
+            onNavigateToGame = {},
+            onNavigateToSettings = {},
+            onNavigateToProfile = {}
+        )
     }
 }

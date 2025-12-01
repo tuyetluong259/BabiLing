@@ -18,18 +18,31 @@ sealed class Screen(val route: String) {
 
     // --- CÁC ROUTE VÀ HÀM DÙNG CHUNG ---
     companion object {
-        // Hằng số chứa route gốc với placeholder
+        // --- Hằng số cho Learn và Progress (không đổi) ---
         const val LearnRoute = "learn_screen/{topicId}"
-        const val QuizRoute = "quiz_screen/{topicId}"
         const val ProgressRoute = "progress_screen/{topicId}"
 
-        /**
-         * Các hàm này giúp tạo ra route hoàn chỉnh một cách an toàn và có thể gọi trực tiếp từ lớp Screen.
-         * Ví dụ: thay vì viết "learn_screen/animals", bạn sẽ gọi Screen.learnWithTopic("animals").
-         * Chúng được đặt trong companion object để hoạt động giống như các hàm tĩnh (static) trong Java. [2, 3]
-         */
         fun learnWithTopic(topicId: String) = "learn_screen/$topicId"
-        fun quizWithTopic(topicId: String) = "quiz_screen/$topicId"
         fun progressWithTopic(topicId: String) = "progress_screen/$topicId"
+
+
+        // ✨ ================== SỬA ĐỔI PHẦN QUIZ ================== ✨
+
+        // 1. Route CƠ SỞ cho Quiz
+        private const val QUIZ_ROUTE_BASE = "quiz_screen"
+
+        // 2. Route dùng để ĐỊNH NGHĨA trong NavHost, với tham số topicId là TÙY CHỌN
+        const val QuizRoute = "$QUIZ_ROUTE_BASE?topicId={topicId}"
+
+        // 3. Route dùng khi muốn "ÔN TẬP TẤT CẢ" (không có tham số)
+        const val QuizRouteWithoutArgs = QUIZ_ROUTE_BASE
+
+        /**
+         * 4. Hàm trợ giúp để điều hướng đến Quiz CÓ chủ đề cụ thể.
+         * Nó sẽ tạo ra route dạng: "quiz_screen?topicId=animals"
+         */
+        fun quizWithTopic(topicId: String) = "$QUIZ_ROUTE_BASE?topicId=$topicId"
+
+        // ✨ ================== KẾT THÚC SỬA ĐỔI ================== ✨
     }
 }

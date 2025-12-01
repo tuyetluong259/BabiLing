@@ -44,3 +44,5 @@ val IndigoBlue = Color(0xFF485FDA)
 // Màu #47A570 (Xanh Lục Bảo Đậm/Xanh Rêu)
 val ForestGreen = Color(0xFF47A570)
 val Learn = Color(0x0700BCD4)
+val CorrectGreen = Color(0xFF4CAF50) // Màu xanh lá cây cho câu trả lời đúng
+val IncorrectRed = Color(0xFFF44336)

@@ -1,60 +1,94 @@
 package com.example.babiling
 
 import android.content.Context
-import android.util.Log // 1. THÊM IMPORT NÀY
-import androidx.room.Room
 import com.example.babiling.data.local.AppDatabase
 import com.example.babiling.data.repository.FlashcardRepository
 import com.example.babiling.data.seed.Seeder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+/**
+ * ServiceLocator hoạt động như một "trung tâm điều phối" duy nhất.
+ * Nó đảm bảo rằng Database và Repository chỉ được tạo MỘT LẦN và được tái sử dụng
+ * trong suốt vòng đời của ứng dụng.
+ */
 object ServiceLocator {
-    private var db: AppDatabase? = null
-    private var repo: FlashcardRepository? = null
 
-    // Hàm này sẽ được gọi trên luồng nền
-    fun initDB(context: Context) {
-        if (db == null) {
-            // Log trước khi thực hiện tác vụ nặng
-            Log.d("BabiLing_Debug", "ServiceLocator: Chuẩn bị build database...")
-            db = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java, "babiling.db"
-            ).fallbackToDestructiveMigration().build()
-            // Log ngay sau khi tác vụ nặng hoàn thành
-            Log.d("BabiLing_Debug", "ServiceLocator: Build database XONG.")
-        } else {
-            Log.d("BabiLing_Debug", "ServiceLocator: Database đã được khởi tạo trước đó.")
+    // Sử dụng @Volatile để đảm bảo các thay đổi được ghi vào bộ nhớ chính ngay lập tức,
+    // an toàn cho việc truy cập từ nhiều luồng.
+    @Volatile
+    private var database: AppDatabase? = null
+    @Volatile
+    private var repository: FlashcardRepository? = null
+
+    /**
+     * Hàm chính để lấy Repository. Đây là hàm duy nhất mà các ViewModel sẽ gọi đến.
+     * Nó sẽ tự động kiểm tra và khởi tạo Database nếu cần.
+     * `synchronized` đảm bảo rằng khối code này chỉ được một luồng thực thi tại một thời điểm,
+     * ngăn chặn việc tạo ra nhiều instance của Repository.
+     */
+    fun provideRepository(context: Context): FlashcardRepository {
+        // Nếu repository đã được tạo, trả về ngay lập tức (Double-Checked Locking).
+        val currentRepo = repository
+        if (currentRepo != null) {
+            return currentRepo
         }
-    }
 
-    // Hàm này khởi tạo repo sau khi DB đã sẵn sàng
-    fun initRepo() {
-        if (repo == null) {
-            // Dùng try-catch để phòng trường hợp db vẫn còn là null (lỗi logic đâu đó)
-            try {
-                repo = FlashcardRepository(db!!.flashcardDao(), db!!.userProgressDao())
-                Log.d("BabiLing_Debug", "ServiceLocator: Khởi tạo repository XONG.")
-            } catch (e: NullPointerException) {
-                Log.e("BabiLing_Debug", "LỖI: Cố gắng khởi tạo Repo trong khi DB vẫn là null!", e)
+        // Nếu chưa, khóa luồng và kiểm tra lại để đảm bảo an toàn.
+        synchronized(this) {
+            // Kiểm tra lại lần nữa sau khi đã khóa luồng.
+            val synchronizedRepo = repository
+            if (synchronizedRepo != null) {
+                return synchronizedRepo
             }
-        } else {
-            Log.d("BabiLing_Debug", "ServiceLocator: Repository đã được khởi tạo trước đó.")
+
+            // Khởi tạo Database
+            val db = getDatabase(context)
+
+            // ✨✨✨ SỬA LỖI QUAN TRỌNG NHẤT TẠI ĐÂY ✨✨✨
+            // Khởi tạo Repository với ĐẦY ĐỦ CẢ 3 DAO.
+            val newRepo = FlashcardRepository(
+                flashcardDao = db.flashcardDao(),
+                userProgressDao = db.userProgressDao(),
+                topicDao = db.topicDao() // <-- TRUYỀN `topicDao` CÒN THIẾU VÀO ĐÂY
+            )
+            repository = newRepo
+
+            // Sau khi Repository đã sẵn sàng, tiến hành khởi tạo dữ liệu nền.
+            seedDataIfNeeded(context, newRepo)
+
+            return newRepo
         }
     }
 
-    // Hàm này phải được gọi sau khi initRepo đã chạy
-    fun provideRepository(): FlashcardRepository {
-        if (repo == null) {
-            // Đây là một tình huống lỗi nghiêm trọng, cần phải ghi log lại
-            Log.e("BabiLing_Debug", "LỖI NGHIÊM TRỌNG: provideRepository() được gọi trước khi initRepo() hoàn tất!")
-            // Dù sẽ crash, nhưng việc khởi tạo tạm thời có thể giúp thấy lỗi rõ hơn
-            initRepo()
+    /**
+     * Hàm private để khởi tạo Database.
+     * Cũng sử dụng Double-Checked Locking để đảm bảo chỉ tạo một instance duy nhất.
+     */
+    private fun getDatabase(context: Context): AppDatabase {
+        val currentDb = database
+        if (currentDb != null) {
+            return currentDb
         }
-        return repo!!
+        synchronized(this) {
+            val synchronizedDb = database
+            if (synchronizedDb != null) {
+                return synchronizedDb
+            }
+            val newDb = AppDatabase.getInstance(context) // Gọi hàm getInstance từ AppDatabase
+            database = newDb
+            return newDb
+        }
     }
 
-    suspend fun seedIfNeeded(context: Context) {
-        // Hàm này không cần Log bên trong, vì chúng ta sẽ thêm Log vào Seeder.kt
-        Seeder.seedIfNeeded(context, provideRepository())
+    /**
+     * Hàm private để chạy tiến trình seed data (thêm dữ liệu mẫu) trên một luồng nền (IO).
+     * Điều này ngăn chặn việc block luồng chính (UI Thread).
+     */
+    private fun seedDataIfNeeded(context: Context, repo: FlashcardRepository) {
+        CoroutineScope(Dispatchers.IO).launch {
+            Seeder.seedIfNeeded(context, repo)
+        }
     }
 }

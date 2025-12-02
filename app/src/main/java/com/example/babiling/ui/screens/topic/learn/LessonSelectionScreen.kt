@@ -12,6 +12,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,10 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.babiling.R
-import com.example.babiling.ui.theme.* // ✨ IMPORT TẤT CẢ CÁC MÀU ✨
+import com.example.babiling.ui.theme.*
+import androidx.compose.ui.platform.LocalContext
 
-// ✨ GỌI CÁC MÀU TỪ Color.kt THAY VÌ HARDCODE ✨
+// Danh sách màu có thể được giữ ở đây để không cần tạo lại mỗi lần recompose
 private val lessonColors = listOf(
     LessonBlue,
     LessonGreen,
@@ -40,16 +44,37 @@ private val lessonColors = listOf(
 @Composable
 fun LessonSelectionScreen(
     topicId: String,
-    // viewModel: LessonViewModel = viewModel(),
-    lessons: List<Int>,
-    completedLessons: Set<Int>,
     onLessonSelected: (topicId: String, lessonNumber: Int) -> Unit,
+    onNavigateBack: () -> Unit,
+    // ✨ 1. Khởi tạo ViewModel với Factory tương ứng ✨
+// ✨ SỬA LỖI: Truyền cả `context` và `topicId` vào Factory theo đúng thứ tự ✨
+    viewModel: LessonViewModel = viewModel(
+        factory = LessonViewModelFactory(LocalContext.current, topicId)
+    )
+) {
+    // ✨ 2. Lấy danh sách bài học từ StateFlow mới là `lessonsUiState` ✨
+    val lessons by viewModel.lessonsUiState.collectAsState()
+
+    // ✨ 3. Tách phần UI ra một hàm riêng để dễ quản lý và preview ✨
+    LessonSelectionScreenContent(
+        lessons = lessons, // Truyền vào danh sách bài học
+        onLessonSelected = { lessonNumber ->
+            onLessonSelected(topicId, lessonNumber)
+        },
+        onNavigateBack = onNavigateBack
+    )
+}
+
+@Composable
+private fun LessonSelectionScreenContent(
+    // ✨ 4. Thay đổi tham số: nhận trực tiếp một List<LessonUiState> ✨
+    lessons: List<LessonUiState>,
+    onLessonSelected: (lessonNumber: Int) -> Unit,
     onNavigateBack: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            // ✨ SỬ DỤNG MÀU ĐÃ ĐỊNH NGHĨA ✨
             .background(LightBlueBackground)
     ) {
         IconButton(
@@ -62,11 +87,11 @@ fun LessonSelectionScreen(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Quay lại",
                 modifier = Modifier.size(32.dp),
-                // ✨ SỬ DỤNG MÀU ĐÃ ĐỊNH NGHĨA ✨
                 tint = DarkGreyIcon
             )
         }
 
+        // Các Image trang trí giữ nguyên
         Image(
             painter = painterResource(id = R.drawable.decor7),
             contentDescription = null,
@@ -75,7 +100,6 @@ fun LessonSelectionScreen(
                 .padding(top = 24.dp, end = 24.dp)
                 .size(60.dp)
         )
-
         Image(
             painter = painterResource(id = R.drawable.decor9),
             contentDescription = null,
@@ -95,28 +119,33 @@ fun LessonSelectionScreen(
                 text = "Chọn bài học",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                // ✨ SỬ DỤNG MÀU ĐÃ ĐỊNH NGHĨA ✨
                 color = BrownRedTitle,
                 modifier = Modifier.padding(top = 80.dp, bottom = 30.dp),
                 textAlign = TextAlign.Center
             )
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 150.dp)
-            ) {
-                itemsIndexed(lessons) { index, lessonNumber ->
-                    val color = lessonColors[index % lessonColors.size]
-                    val isCompleted = completedLessons.contains(lessonNumber)
+            // ✨ 5. Hiển thị vòng xoay loading nếu danh sách bài học rỗng ✨
+            // (ViewModel cung cấp initialValue là emptyList)
+            if (lessons.isEmpty()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(bottom = 150.dp)
+                ) {
+                    // ✨ 6. Sử dụng dữ liệu trực tiếp từ `lessons` ✨
+                    itemsIndexed(lessons) { index, lesson -> // lesson bây giờ là LessonUiState
+                        val color = lessonColors[index % lessonColors.size]
 
-                    LessonItem(
-                        lessonNumber = lessonNumber,
-                        color = color,
-                        isCompleted = isCompleted,
-                        onClick = {
-                            onLessonSelected(topicId, lessonNumber)
-                        }
-                    )
+                        LessonItem(
+                            lessonNumber = lesson.number, // Lấy từ lesson.number
+                            color = color,
+                            isCompleted = lesson.isCompleted, // Lấy từ lesson.isCompleted
+                            onClick = {
+                                onLessonSelected(lesson.number)
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -149,7 +178,6 @@ fun LessonItem(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Đã hoàn thành",
                     modifier = Modifier.size(36.dp),
-                    // ✨ SỬ DỤNG MÀU ĐÃ ĐỊNH NGHĨA ✨
                     tint = DarkGreenCheck
                 )
             }
@@ -175,16 +203,19 @@ fun LessonItem(
     }
 }
 
-// Preview không thay đổi
+// ✨ 7. Cập nhật Preview để sử dụng hàm Content mới và dữ liệu giả theo cấu trúc mới ✨
 @Preview(showBackground = true, widthDp = 360, heightDp = 740)
 @Composable
 private fun LessonSelectionScreenPreview() {
     BabiLingTheme {
-        LessonSelectionScreen(
-            topicId = "animals",
-            lessons = listOf(1, 2, 3, 4, 5),
-            completedLessons = setOf(1, 3),
-            onLessonSelected = { _, _ -> },
+        LessonSelectionScreenContent(
+            lessons = listOf(
+                LessonUiState(number = 1, isCompleted = true, totalCards = 10),
+                LessonUiState(number = 2, isCompleted = false, totalCards = 12),
+                LessonUiState(number = 3, isCompleted = true, totalCards = 8),
+                LessonUiState(number = 4, isCompleted = false, totalCards = 15),
+            ),
+            onLessonSelected = { _ -> },
             onNavigateBack = {}
         )
     }
@@ -192,13 +223,11 @@ private fun LessonSelectionScreenPreview() {
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 740)
 @Composable
-private fun LessonSelectionScreenSinglePreview() {
+private fun LessonSelectionScreenLoadingPreview() {
     BabiLingTheme {
-        LessonSelectionScreen(
-            topicId = "greetings",
-            lessons = listOf(1),
-            completedLessons = emptySet(),
-            onLessonSelected = { _, _ -> },
+        LessonSelectionScreenContent(
+            lessons = emptyList(), // Trạng thái loading tương ứng với danh sách rỗng
+            onLessonSelected = { _ -> },
             onNavigateBack = {}
         )
     }

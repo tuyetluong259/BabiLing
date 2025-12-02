@@ -53,7 +53,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 
     packaging {
@@ -117,7 +117,8 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
     //quiz
-    implementation("com.google.accompanist:accompanist-flowlayout:0.32.0")
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+
 }

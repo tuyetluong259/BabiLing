@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="greetings_text">#D32F2F</color>
+    <color name="body_text">#1976D2</color>
+    <color name="colors_text">#388E3C</color>
+    <color name="fruit_text">#FBC02D</color>
+    <color name="animals_text">#E64A19</color>
+    <color name="toys_text">#7B1FA2</color>
 </resources>

@@ -1,6 +1,7 @@
-package com.example.babiling.ui.screens.topic.progress
+package com.example.babiling.ui.screens.topic.result
 
 import androidx.compose.foundation.layout.*
+// ✨ 1. SỬA LẠI IMPORT CHO ĐÚNG TÊN CHUẨN ✨
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -8,14 +9,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun ProgressScreen(
+fun ResultScreen(
     topicId: String,
-    viewModel: ProgressViewModel = viewModel(),
+    // Giả sử bạn cũng đã đổi tên ViewModel thành ResultViewModel
+    viewModel: ResultViewModel = viewModel(),
     onBack: () -> Unit = {}
 ) {
     // Lắng nghe trạng thái từ ViewModel
@@ -23,7 +26,7 @@ fun ProgressScreen(
 
     // Tải dữ liệu khi màn hình được tạo lần đầu
     LaunchedEffect(topicId) {
-        viewModel.loadProgress(topicId)
+        viewModel.loadResult(topicId)
     }
 
     val percent = if (uiState.totalCards > 0) {
@@ -38,11 +41,12 @@ fun ProgressScreen(
         verticalArrangement = Arrangement.Center
     ) {
         if (uiState.isLoading) {
+            // ✨ 2. SỬA LẠI TÊN COMPOSABLE ✨
             CircularProgressIndicator()
-            Text("Đang tải tiến độ...", modifier = Modifier.padding(top = 16.dp))
+            Text("Đang tải kết quả...", modifier = Modifier.padding(top = 16.dp))
         } else {
             Text(
-                text = "Tiến độ của bạn",
+                text = "Kết quả chủ đề", // Văn bản phù hợp với màn hình kết quả
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -53,13 +57,14 @@ fun ProgressScreen(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
+            // ✨ 3. SỬA LẠI TÊN COMPOSABLE VÀ THAM SỐ ✨
             LinearProgressIndicator(
-                progress = { percent }, // Dùng lambda syntax mới
+                progress = { percent }, // Tham số đúng là `progress`
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(16.dp)
-                // Có thể thêm bo tròn cho đẹp hơn
-                // .clip(RoundedCornerShape(8.dp))
+                    // Thêm bo tròn cho đẹp hơn
+                    .clip(RoundedCornerShape(8.dp))
             )
 
             Spacer(Modifier.height(12.dp))

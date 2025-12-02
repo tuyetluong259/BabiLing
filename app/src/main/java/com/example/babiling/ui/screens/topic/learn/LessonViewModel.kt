@@ -3,54 +3,51 @@ package com.example.babiling.ui.screens.topic.learn
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.babiling.ServiceLocator
 import com.example.babiling.data.repository.FlashcardRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+
+/**
+ * Data class đại diện cho một bài học trên UI
+ */
+data class LessonUiState(
+    val number: Int,
+    val isCompleted: Boolean,
+    val totalCards: Int
+)
 
 /**
  * ViewModel cho màn hình LessonSelectionScreen.
- * Nhiệm vụ chính là lấy danh sách các bài học có sẵn cho một chủ đề.
+ * ✨ HOÀN THIỆN: Sử dụng kiến trúc Flow để tự động cập nhật trạng thái "isCompleted".
  */
-class LessonViewModel : ViewModel() {
+class LessonViewModel(
+    private val topicId: String,
+    private val repo: FlashcardRepository
+) : ViewModel() {
 
-    // Lấy repository thông qua ServiceLocator
-    private val repository: FlashcardRepository by lazy { ServiceLocator.provideRepository() }
+    val lessonsUiState: StateFlow<List<LessonUiState>> =
+        repo.getCompletedLessonsFlow(topicId)
+            .map { completedLessonsSet ->
+                Log.d("BabiLing_Debug", "[LessonViewModel] Dữ liệu thay đổi! Các bài đã hoàn thành: $completedLessonsSet")
 
-    // StateFlow chứa danh sách các số thứ tự của bài học (ví dụ: [1, 2, 3])
-    private val _lessons = MutableStateFlow<List<Int>>(emptyList())
-    val lessons = _lessons.asStateFlow()
+                // ✨ SỬA LỖI: Đổi tên hàm cho đúng với hàm đã tạo trong Repository
+                val allLessonNumbers = repo.getLessonNumbersForTopic(topicId)
 
-    // StateFlow chứa danh sách các bài học đã hoàn thành (ví dụ: [1, 3])
-    // TODO: Tạm thời hardcode, sẽ lấy từ DB trong tương lai
-    private val _completedLessons = MutableStateFlow<Set<Int>>(setOf(1, 3)) // Dữ liệu giả
-    val completedLessons = _completedLessons.asStateFlow()
-
-    /**
-     * Tải danh sách các số bài học cho một chủ đề cụ thể.
-     * @param topicId ID của chủ đề cần lấy bài học (ví dụ: "animals").
-     */
-    fun loadLessons(topicId: String) {
-        // Reset lại danh sách mỗi khi tải chủ đề mới
-        _lessons.value = emptyList()
-
-        viewModelScope.launch {
-            try {
-                // Gọi hàm đã tạo trong Repository để lấy danh sách các số lessonNumber
-                val lessonNumbers = repository.getLessonNumbersForTopic(topicId)
-                _lessons.value = lessonNumbers
-
-                Log.d("BabiLing_Debug", "[LessonViewModel] Đã tải ${lessonNumbers.size} bài học cho chủ đề '$topicId'")
-
-                // TODO: Ở đây, trong tương lai bạn sẽ gọi một hàm khác từ repository
-                // để lấy tiến độ học của người dùng cho chủ đề này và cập nhật _completedLessons.
-                // Ví dụ: val completed = repository.getCompletedLessonsForTopic(userId, topicId)
-                // _completedLessons.value = completed
-
-            } catch (e: Exception) {
-                Log.e("BabiLing_Debug", "[LessonViewModel] LỖI khi tải danh sách bài học!", e)
+                // Biến đổi danh sách tất cả số bài học thành danh sách LessonUiState
+                allLessonNumbers.map { lessonNumber ->
+                    LessonUiState(
+                        number = lessonNumber,
+                        // Một bài học được coi là hoàn thành nếu số của nó có trong Set đã hoàn thành
+                        isCompleted = completedLessonsSet.contains(lessonNumber),
+                        totalCards = 0 // Bạn có thể thêm logic để lấy số thẻ nếu cần
+                    )
+                }.sortedBy { it.number } // Sắp xếp lại cho đúng thứ tự
             }
-        }
-    }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
 }

@@ -11,8 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,10 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.babiling.R
+import com.example.babiling.ui.screens.progress.ProgressScreen
+import com.example.babiling.ui.screens.topic.quiz.QuizScreen
 import com.example.babiling.ui.theme.*
 
 // Enum để quản lý các mục trong Bottom Nav
@@ -31,56 +30,102 @@ enum class HomeNavItems {
     Home, Rank, Learn, Settings
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    currentScreen: HomeNavItems,
     onNavigateToTopicSelect: () -> Unit,
-    onNavigateToQuiz: () -> Unit,
+    // ✨ 1. SỬA CHỮ KÝ HÀM TẠI ĐÂY ✨
+    onNavigateToQuiz: (topicId: String) -> Unit,
     onNavigateToGame: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+    onBottomNavItemSelected: (HomeNavItems) -> Unit
 ) {
-    var currentScreen by remember { mutableStateOf(HomeNavItems.Home) }
-
     Scaffold(
-        containerColor = PrimaryPink,
         bottomBar = {
             HomeBottomNavBar(
                 currentScreen = currentScreen,
-                onScreenSelected = { screen -> currentScreen = screen }
+                onScreenSelected = { selectedScreen ->
+                    if (selectedScreen == HomeNavItems.Settings) {
+                        onNavigateToSettings()
+                    } else {
+                        onBottomNavItemSelected(selectedScreen)
+                    }
+                }
             )
         }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
-        ) {
-            item {
-                Column {
-                    HomeHeader(
-                        onSettingsClick = onNavigateToSettings,
-                        onProfileClick = onNavigateToProfile
-                    )
-                    // Các thẻ chức năng
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp)
-                            .offset(y = (-10).dp), // Điều chỉnh vị trí của cụm thẻ
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        TopicCard(onClick = onNavigateToTopicSelect)
-                        GameCard(onClick = onNavigateToGame)
-                        ReviewCard(onClick = onNavigateToQuiz)
+    ) { innerPadding ->
+        when (currentScreen) {
+            HomeNavItems.Home -> {
+                HomeScreenContent(
+                    paddingValues = innerPadding,
+                    onNavigateToSettings = onNavigateToSettings,
+                    onNavigateToProfile = onNavigateToProfile,
+                    onNavigateToTopicSelect = onNavigateToTopicSelect,
+                    onNavigateToGame = onNavigateToGame,
+                    onNavigateToQuiz = onNavigateToQuiz // Truyền hàm đã được sửa xuống
+                )
+            }
+            HomeNavItems.Rank -> {
+                ProgressScreen(paddingValues = innerPadding)
+            }
+            HomeNavItems.Learn -> {
+                QuizScreen(
+                    paddingValues = innerPadding,
+                    topicId = null, // Chế độ ôn tập chung
+                    onNavigateBack = {
+                        onBottomNavItemSelected(HomeNavItems.Home)
                     }
-                    // quảng cáo
-                    AdsCard(modifier = Modifier.offset(y = (30).dp))
+                )
+            }
+            HomeNavItems.Settings -> { /* No-op */ }
+        }
+    }
+}
+
+@Composable
+fun HomeScreenContent(
+    paddingValues: PaddingValues,
+    onNavigateToSettings: () -> Unit,
+    onNavigateToProfile: () -> Unit,
+    onNavigateToTopicSelect: () -> Unit,
+    onNavigateToGame: () -> Unit,
+    // ✨ 2. SỬA CHỮ KÝ HÀM Ở ĐÂY NỮA ✨
+    onNavigateToQuiz: (topicId: String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(PrimaryPink)
+            .padding(bottom = paddingValues.calculateBottomPadding())
+    ) {
+        item {
+            Column {
+                HomeHeader(
+                    onSettingsClick = onNavigateToSettings,
+                    onProfileClick = onNavigateToProfile
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .offset(y = (-10).dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    TopicCard(onClick = onNavigateToTopicSelect)
+                    GameCard(onClick = onNavigateToGame)
+                    // ✨ 3. CẬP NHẬT CÁCH GỌI Ở ĐÂY ✨
+                    // Khi nhấn vào thẻ "Ôn tập", gọi hàm với topicId là "all"
+                    ReviewCard(onClick = { onNavigateToQuiz("all") })
                 }
+                AdsCard(modifier = Modifier.offset(y = (30).dp))
             }
         }
     }
 }
+
+// --- CÁC HÀM COMPOSABLE KHÁC GIỮ NGUYÊN ---
+// (HomeHeader, TopicCard, GameCard, ReviewCard, AdsCard, HomeBottomNavBar, BottomNavItem...)
 
 @Composable
 fun HomeHeader(onSettingsClick: () -> Unit, onProfileClick: () -> Unit) {
@@ -217,7 +262,7 @@ fun GameCard(onClick: () -> Unit) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
                 color = Color.Black,
-                modifier = androidx . compose . ui . Modifier.weight(1f)
+                modifier = androidx.compose.ui.Modifier.weight(1f)
             )
             Image(
                 painter = painterResource(id = R.drawable.trochoiminhhoa),
@@ -351,41 +396,26 @@ fun BottomNavItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (isSelected) Color(0xFFD32F2F) else Color(0xFFFE6E6E)
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable(onClick = onClick)
+    Card(
+        modifier = Modifier
+            .size(64.dp)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) Color(0xFFFF8A80) else Color.Transparent
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 4.dp else 0.dp)
     ) {
         Box(
-            modifier = Modifier
-                .size(56.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(backgroundColor),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = painterResource(id = iconRes),
                 contentDescription = screen.name,
-                tint = Color.Unspecified,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp)
+                tint = Color.Unspecified, // Sử dụng màu gốc của icon
+                modifier = Modifier.size(36.dp)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    BabiLingTheme {
-        HomeScreen(
-            onNavigateToTopicSelect = {},
-            onNavigateToQuiz = {},
-            onNavigateToGame = {},
-            onNavigateToSettings = {},
-            onNavigateToProfile = {}
-        )
     }
 }

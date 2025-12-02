@@ -92,25 +92,25 @@ fun SettingsScreen(navController: NavController) {
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = "Chỉnh sửa hồ sơ",
-                        onClick = { navController.navigate(Screen.EditProfile.route) } // <-- ĐIỀU HƯỚNG: Chỉnh sửa hồ sơ
+                        onClick = { navController.navigate(Screen.EditProfile.route) } // Giữ nguyên
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.Shield,
                         title = "Bảo vệ",
-                        onClick = { /* TODO: navController.navigate(Screen.Security.route) */ }
+                        onClick = { navController.navigate(Screen.Security.route) } // ĐÃ HOÀN THIỆN
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.Notifications,
                         title = "Thông báo",
-                        onClick = { /* TODO: navController.navigate(Screen.Notifications.route) */ }
+                        onClick = { navController.navigate(Screen.Notifications.route) } // ĐÃ HOÀN THIỆN
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.Lock,
                         title = "Đổi mật khẩu",
-                        onClick = { /* TODO: navController.navigate(Screen.ChangePassword.route) */ }
+                        onClick = { /* TODO: navController.navigate(Screen.ChangePassword.route) */ } // Giữ nguyên TODO
                     )
                 }
             }
@@ -135,13 +135,14 @@ fun SettingsScreen(navController: NavController) {
                     SettingsItem(
                         icon = Icons.Default.Flag,
                         title = "Báo cáo sự cố",
-                        onClick = { /* TODO: navController.navigate(Screen.ReportIssue.route) */ }
+                        // HOÀN THIỆN: Điều hướng đến màn hình Báo cáo sự cố
+                        onClick = { navController.navigate(Screen.ReportIssue.route) }
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.PersonAdd,
                         title = "Thêm tài khoản",
-                        onClick = { /* TODO: navController.navigate(Screen.AddAccount.route) */ }
+                        onClick = { /* TODO: navController.navigate(Screen.AddAccount.route) */ } // Giữ nguyên TODO
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
@@ -160,6 +161,7 @@ fun SettingsScreen(navController: NavController) {
     }
 }
 
+// ... (Hàm SettingsItem và SettingsScreenPreview giữ nguyên)
 @Composable
 fun SettingsItem(
     icon: ImageVector,

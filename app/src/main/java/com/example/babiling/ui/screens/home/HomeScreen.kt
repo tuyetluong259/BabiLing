@@ -314,6 +314,92 @@ fun ReviewCard(onClick: () -> Unit) {
                     )
                 }
             }
+                Card(
+                    modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(4.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Ôn tập",
+                            fontFamily = BalooThambiFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                            color = Color(0xFF460000)
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.option3),
+                            contentDescription = "Ôn tập",
+                            modifier = Modifier
+                                .height(65.dp)
+                                .clip(RoundedCornerShape(12.dp)),
+                            contentScale = ContentScale.Fit
+                        )
+                    }
+                }
+            }
+
+            AdsSection()
+        }
+    }
+}
+
+@Composable
+fun HeaderSection(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 32.dp, start = 24.dp, end = 24.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Cài đặt",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+                        navController.navigate(Screen.Settings.route)
+                    }
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = "Hồ sơ",
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+                    .clickable {
+                        navController.navigate(Screen.Profile.route)
+                    }
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Chào mừng đến với\n \n BabiLing!!!",
+                fontFamily = BalooThambiFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp,
+                color = Color(0xFFFFF5BE),
+                modifier = Modifier.weight(1f)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo",
+                modifier = Modifier.size(90.dp)
+            )
         }
     }
 }

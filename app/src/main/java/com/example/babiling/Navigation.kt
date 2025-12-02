@@ -13,8 +13,8 @@ sealed class Screen(val route: String) {
 
     // --- Các màn hình CÀI ĐẶT & HỒ SƠ ---
     object Settings : Screen("settings_screen")
-    // CẬP NHẬT: EditProfile sử dụng route phân cấp
-    object EditProfile : Screen("settings/account/edit_profile")
+    object Profile : Screen("profile_screen")
+    object EditProfile : Screen("edit_profile_screen")
     object Rating : Screen("rating_screen")
 
     // 🔒 CÁC MÀN HÌNH CÀI ĐẶT CON (THÊM MỚI)

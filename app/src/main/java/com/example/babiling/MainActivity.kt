@@ -31,9 +31,11 @@ import com.example.babiling.ui.screens.settings.SettingsScreen
 // THÊM IMPORTS CHO CÁC MÀN HÌNH CÀI ĐẶT CON
 import com.example.babiling.ui.screens.settings.account.SecurityScreen
 import com.example.babiling.ui.screens.settings.account.NotificationsScreen
-// import com.example.babiling.ui.screens.settings.account.ChangePasswordScreen // Giả định
- import com.example.babiling.ui.screens.settings.actions.ReportIssueScreen
-// import com.example.babiling.ui.screens.settings.actions.AddAccountScreen // Giả định
+import com.example.babiling.ui.screens.settings.actions.ReportIssueScreen
+
+// THÊM IMPORTS CHO CÁC MÀN HÌNH PROFILE
+import com.example.babiling.ui.screens.profile.ProfileScreen
+import com.example.babiling.ui.screens.profile.EditProfileScreen
 
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.google.firebase.FirebaseApp
@@ -181,9 +183,39 @@ fun AppNavigation() {
         composable(Screen.Notifications.route) {
             NotificationsScreen(navController = navController)
         }
+
         // Màn hình Báo cáo sự cố (ReportIssueScreen)
         composable(Screen.ReportIssue.route) {
             ReportIssueScreen(navController = navController)
+        }
+
+        // =======================================================
+        // THÊM CÁC MÀN HÌNH PROFILE (PROFILE SCREENS)
+        // =======================================================
+
+        // Màn hình Profile
+        composable(Screen.Profile.route) {
+            ProfileScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onEditClick = {
+                    navController.navigate(Screen.EditProfile.route)
+                }
+            )
+        }
+
+        // Màn hình Edit Profile
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onSaveClick = {
+                    // Lưu thông tin và quay lại màn hình Profile
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

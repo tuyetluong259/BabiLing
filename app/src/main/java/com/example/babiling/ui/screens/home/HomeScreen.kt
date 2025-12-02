@@ -178,6 +178,9 @@ fun HeaderSection(navController: NavController) {
                 contentDescription = "Hồ sơ",
                 tint = Color.White,
                 modifier = Modifier.size(28.dp)
+                    .clickable {
+                        navController.navigate(Screen.Profile.route)
+                    }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))

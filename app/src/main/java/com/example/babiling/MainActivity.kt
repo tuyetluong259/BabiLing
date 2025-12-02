@@ -27,6 +27,14 @@ import com.example.babiling.ui.screens.topic.quiz.QuizScreen
 import com.example.babiling.ui.screens.topic.learn.LearnScreen
 import com.example.babiling.ui.screens.rating.RatingScreen
 import com.example.babiling.ui.screens.settings.SettingsScreen
+
+// THÊM IMPORTS CHO CÁC MÀN HÌNH CÀI ĐẶT CON
+import com.example.babiling.ui.screens.settings.account.SecurityScreen
+import com.example.babiling.ui.screens.settings.account.NotificationsScreen
+// import com.example.babiling.ui.screens.settings.account.ChangePasswordScreen // Giả định
+ import com.example.babiling.ui.screens.settings.actions.ReportIssueScreen
+// import com.example.babiling.ui.screens.settings.actions.AddAccountScreen // Giả định
+
 import com.example.babiling.ui.theme.BabiLingTheme
 import com.google.firebase.FirebaseApp
 
@@ -158,6 +166,24 @@ fun AppNavigation() {
 
         composable(Screen.Settings.route) {
             SettingsScreen(navController = navController)
+        }
+
+        // =======================================================
+        // THÊM CÁC MÀN HÌNH CÀI ĐẶT CON (SETUP SCREENS)
+        // =======================================================
+
+        // Màn hình Bảo vệ (SecurityScreen)
+        composable(Screen.Security.route) {
+            SecurityScreen(navController = navController)
+        }
+
+        // Màn hình Thông báo (NotificationsScreen)
+        composable(Screen.Notifications.route) {
+            NotificationsScreen(navController = navController)
+        }
+        // Màn hình Báo cáo sự cố (ReportIssueScreen)
+        composable(Screen.ReportIssue.route) {
+            ReportIssueScreen(navController = navController)
         }
     }
 }

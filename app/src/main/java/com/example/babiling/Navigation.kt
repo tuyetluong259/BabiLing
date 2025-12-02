@@ -13,21 +13,27 @@ sealed class Screen(val route: String) {
 
     // --- Các màn hình CÀI ĐẶT & HỒ SƠ ---
     object Settings : Screen("settings_screen")
-    object EditProfile : Screen("edit_profile_screen")
+    // CẬP NHẬT: EditProfile sử dụng route phân cấp
+    object EditProfile : Screen("settings/account/edit_profile")
     object Rating : Screen("rating_screen")
+
+    // 🔒 CÁC MÀN HÌNH CÀI ĐẶT CON (THÊM MỚI)
+    // Các route này tương ứng với các mục trong SettingsScreen.kt
+    object Security : Screen("settings/account/security")
+    object Notifications : Screen("settings/account/notifications")
+    object ChangePassword : Screen("settings/account/change_password")
+
+    // ⚙️ CÁC MÀN HÌNH ACTIONS (THÊM MỚI)
+    object ReportIssue : Screen("settings/actions/report_issue")
+    object AddAccount : Screen("settings/actions/add_account")
+
 
     // --- CÁC ROUTE VÀ HÀM DÙNG CHUNG ---
     companion object {
-        // Hằng số chứa route gốc với placeholder
         const val LearnRoute = "learn_screen/{topicId}"
         const val QuizRoute = "quiz_screen/{topicId}"
         const val ProgressRoute = "progress_screen/{topicId}"
 
-        /**
-         * Các hàm này giúp tạo ra route hoàn chỉnh một cách an toàn và có thể gọi trực tiếp từ lớp Screen.
-         * Ví dụ: thay vì viết "learn_screen/animals", bạn sẽ gọi Screen.learnWithTopic("animals").
-         * Chúng được đặt trong companion object để hoạt động giống như các hàm tĩnh (static) trong Java. [2, 3]
-         */
         fun learnWithTopic(topicId: String) = "learn_screen/$topicId"
         fun quizWithTopic(topicId: String) = "quiz_screen/$topicId"
         fun progressWithTopic(topicId: String) = "progress_screen/$topicId"

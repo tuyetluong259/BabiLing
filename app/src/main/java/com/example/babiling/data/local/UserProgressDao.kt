@@ -4,40 +4,58 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-// import androidx.room.Transaction // ✨ BỎ IMPORT NÀY ✨
-// import com.example.babiling.data.model.TopicWithProgress // ✨ BỎ IMPORT NÀY ✨
+import androidx.room.Upsert // Sử dụng @Upsert thay cho @Insert(onConflict) để rõ ràng hơn
 import com.example.babiling.data.model.UserProgressEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
  * DAO cho việc truy cập dữ liệu tiến độ người dùng.
- * ✨ PHIÊN BẢN HOÀN THIỆN - Đã đơn giản hóa ✨
+ * ✨ PHIÊN BẢN HOÀN THIỆN - Đã sửa lỗi tên cột và tối ưu ✨
  */
 @Dao
 interface UserProgressDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /**
+     * Chèn hoặc cập nhật một danh sách các bản ghi tiến độ.
+     * Sử dụng @Upsert cho mục đích này là chuẩn nhất.
+     */
+    @Upsert
     suspend fun upsertAll(progressList: List<UserProgressEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /**
+     * Chèn hoặc cập nhật một bản ghi tiến độ duy nhất.
+     */
+    @Upsert
     suspend fun upsert(progress: UserProgressEntity)
 
-    @Query("SELECT * FROM user_progress WHERE userId = :userId AND isSynced = 0")
+    /**
+     * Lấy tất cả các bản ghi tiến độ chưa được đồng bộ của người dùng.
+     */
+    @Query("SELECT * FROM user_progress WHERE userId = :userId AND synced = 0")
     suspend fun getUnsyncedProgressForUser(userId: String): List<UserProgressEntity>
 
-    @Query("UPDATE user_progress SET isSynced = 1 WHERE userId = :userId AND flashcardId IN (:ids)")
+    /**
+     * Đánh dấu các bản ghi đã được đồng bộ thành công.
+     */
+    @Query("UPDATE user_progress SET synced = 1 WHERE userId = :userId AND flashcardId IN (:ids)")
     suspend fun markAsSynced(userId: String, ids: List<String>)
 
     /**
-     * Lấy TẤT CẢ các bản ghi tiến độ của một người dùng.
-     * ViewModel sẽ dùng hàm này để lấy dữ liệu thô và tự xử lý.
+     * Lấy TẤT CẢ các bản ghi tiến độ của một người dùng (hàm tĩnh).
      */
     @Query("SELECT * FROM user_progress WHERE userId = :userId")
     suspend fun getAllProgressForUser(userId: String): List<UserProgressEntity>
 
+    // ✅ HÀM FLOW MỚI CHO ProgressViewModel
+    /**
+     * Lấy TẤT CẢ các bản ghi tiến độ của một người dùng dưới dạng Flow.
+     * Hàm này được dùng trong ProgressViewModel để tự động cập nhật UI khi có thay đổi trong Room.
+     */
+    @Query("SELECT * FROM user_progress WHERE userId = :userId")
+    fun getAllProgressFlowForUser(userId: String): Flow<List<UserProgressEntity>>
+
     /**
      * Lấy một Flow chứa danh sách các số của bài học đã hoàn thành cho một user và một topic.
-     * Dùng cho màn hình LessonSelectionScreen.
      */
     @Query("""
         SELECT DISTINCT T1.lessonNumber
@@ -46,7 +64,4 @@ interface UserProgressDao {
         WHERE T2.userId = :userId AND T1.id IN (:cardIdsInTopic) AND T2.masteryLevel > 0
     """)
     fun getCompletedLessonsFlowForUser(userId: String, cardIdsInTopic: List<String>): Flow<List<Int>>
-
-    // ✨✨✨ XÓA BỎ HOÀN TOÀN CÂU TRUY VẤN PHỨC TẠP `getAllTopicsWithProgress` ✨✨✨
-    // Chúng ta không cần nó nữa vì ViewModel sẽ tự xử lý logic này.
 }

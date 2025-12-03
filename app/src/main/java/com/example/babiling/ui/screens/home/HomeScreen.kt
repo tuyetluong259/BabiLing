@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.babiling.R
@@ -34,11 +38,14 @@ enum class HomeNavItems {
 fun HomeScreen(
     currentScreen: HomeNavItems,
     onNavigateToTopicSelect: () -> Unit,
-    // ✨ 1. SỬA CHỮ KÝ HÀM TẠI ĐÂY ✨
     onNavigateToQuiz: (topicId: String) -> Unit,
     onNavigateToGame: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToProfile: () -> Unit,
+
+    // ✅ THÊM THAM SỐ ĐIỀU HƯỚNG BỊ THIẾU TỪ MainActivity
+    onNavigateToProgress: () -> Unit,
+
     onBottomNavItemSelected: (HomeNavItems) -> Unit
 ) {
     Scaffold(
@@ -46,6 +53,7 @@ fun HomeScreen(
             HomeBottomNavBar(
                 currentScreen = currentScreen,
                 onScreenSelected = { selectedScreen ->
+                    // Phân luồng: Nếu là Settings thì điều hướng riêng, còn lại thì đổi màn hình chính
                     if (selectedScreen == HomeNavItems.Settings) {
                         onNavigateToSettings()
                     } else {
@@ -55,6 +63,7 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
+        // Dựa vào `currentScreen` để hiển thị nội dung tương ứng
         when (currentScreen) {
             HomeNavItems.Home -> {
                 HomeScreenContent(
@@ -63,21 +72,26 @@ fun HomeScreen(
                     onNavigateToProfile = onNavigateToProfile,
                     onNavigateToTopicSelect = onNavigateToTopicSelect,
                     onNavigateToGame = onNavigateToGame,
-                    onNavigateToQuiz = onNavigateToQuiz // Truyền hàm đã được sửa xuống
+                    onNavigateToQuiz = onNavigateToQuiz
                 )
             }
             HomeNavItems.Rank -> {
+                // Màn hình Xếp hạng (Tiến trình)
                 ProgressScreen(paddingValues = innerPadding)
             }
             HomeNavItems.Learn -> {
+                // Màn hình Ôn tập chung
                 QuizScreen(
                     paddingValues = innerPadding,
-                    topicId = null, // Chế độ ôn tập chung
+                    topicId = null,
+                    // ✅ SỬA LỖI: Cần một hành động để xử lý khi QuizScreen hoàn tất (onNavigateBack)
                     onNavigateBack = {
+                        // Quay về tab Home sau khi ôn tập xong
                         onBottomNavItemSelected(HomeNavItems.Home)
                     }
                 )
             }
+            // Không cần xử lý HomeNavItems.Settings ở đây vì nó đã được xử lý ở bottomBar
             HomeNavItems.Settings -> { /* No-op */ }
         }
     }
@@ -90,14 +104,12 @@ fun HomeScreenContent(
     onNavigateToProfile: () -> Unit,
     onNavigateToTopicSelect: () -> Unit,
     onNavigateToGame: () -> Unit,
-    // ✨ 2. SỬA CHỮ KÝ HÀM Ở ĐÂY NỮA ✨
     onNavigateToQuiz: (topicId: String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(PrimaryPink)
-            .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
         item {
             Column {
@@ -105,52 +117,50 @@ fun HomeScreenContent(
                     onSettingsClick = onNavigateToSettings,
                     onProfileClick = onNavigateToProfile
                 )
+                // Các thẻ chức năng
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
-                        .offset(y = (-10).dp),
+                        .offset(y = (-10).dp), // Kéo các thẻ lên một chút để đè lên header
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     TopicCard(onClick = onNavigateToTopicSelect)
                     GameCard(onClick = onNavigateToGame)
-                    // ✨ 3. CẬP NHẬT CÁCH GỌI Ở ĐÂY ✨
-                    // Khi nhấn vào thẻ "Ôn tập", gọi hàm với topicId là "all"
+                    // Khi nhấn vào thẻ "Ôn tập", gọi hàm với topicId đặc biệt là "all" (hoặc null tùy logic của bạn)
                     ReviewCard(onClick = { onNavigateToQuiz("all") })
                 }
-                AdsCard(modifier = Modifier.offset(y = (30).dp))
+                AdsCard(modifier = Modifier.offset(y = 30.dp)) // Thẻ quảng cáo
             }
+        }
+        item {
+            Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding() + 40.dp))
         }
     }
 }
 
-// --- CÁC HÀM COMPOSABLE KHÁC GIỮ NGUYÊN ---
-// (HomeHeader, TopicCard, GameCard, ReviewCard, AdsCard, HomeBottomNavBar, BottomNavItem...)
+// ... (Các Composable HomeHeader, TopicCard, GameCard, ReviewCard, AdsCard, HomeBottomNavBar, BottomNavItem giữ nguyên) ...
 
 @Composable
 fun HomeHeader(onSettingsClick: () -> Unit, onProfileClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp) // Chiều cao cố định cho header
+            .height(300.dp)
     ) {
-        // 1. Nền xanh lượn sóng
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = "Header Background",
             modifier = Modifier
                 .matchParentSize()
-                .offset(y = (-110).dp),
+                .offset(y = (-130).dp), // Đã bỏ offset(y = (-130).dp) để hình nền không bị cắt
             contentScale = ContentScale.FillBounds
         )
-
-        // 2. Các nút Cài đặt và Hồ sơ ở trên cùng
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = (-30).dp)
                 .align(Alignment.TopCenter)
-                .padding(top = 48.dp, end = 24.dp),
+                .padding(top = 20.dp, end = 20.dp), // Thêm padding top an toàn
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(onClick = onSettingsClick) {
@@ -160,8 +170,6 @@ fun HomeHeader(onSettingsClick: () -> Unit, onProfileClick: () -> Unit) {
                 Icon(Icons.Default.Person, "Hồ sơ", tint = Color.White)
             }
         }
-
-        // 3. Dòng chữ "Chào mừng..."
         Text(
             text = "Chào mừng đến với\nBabiLing!!!",
             fontFamily = BalooThambiFamily,
@@ -171,33 +179,27 @@ fun HomeHeader(onSettingsClick: () -> Unit, onProfileClick: () -> Unit) {
             lineHeight = 40.sp,
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .offset(y = (-30).dp)
-                .padding(top = 100.dp, start = 24.dp)
+                .padding(top = 60.dp, start = 24.dp)
         )
-
-        // Logo
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 24.dp, bottom = 20.dp)
+                .padding(end = 24.dp, bottom = 40.dp)
                 .size(110.dp)
         )
-
-        // 5. Cây nấm trang trí
         Image(
             painter = painterResource(id = R.drawable.decor4),
             contentDescription = "Trang trí",
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(y = (30).dp)
+                .offset(y = 30.dp)
                 .padding(start = 32.dp, bottom = 40.dp)
                 .size(90.dp)
         )
     }
 }
-
 
 @Composable
 fun TopicCard(onClick: () -> Unit) {
@@ -212,7 +214,7 @@ fun TopicCard(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp) // ✨ Đặt chiều cao cố định
+                .height(72.dp)
                 .padding(horizontal = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -252,7 +254,7 @@ fun GameCard(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp) // ✨ Đặt chiều cao cố định
+                .height(72.dp)
                 .padding(horizontal = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -262,7 +264,7 @@ fun GameCard(onClick: () -> Unit) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
                 color = Color.Black,
-                modifier = androidx.compose.ui.Modifier.weight(1f)
+                modifier = Modifier.weight(1f)
             )
             Image(
                 painter = painterResource(id = R.drawable.trochoiminhhoa),
@@ -290,7 +292,7 @@ fun ReviewCard(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp) // ✨ Đặt chiều cao cố định
+                .height(72.dp)
                 .padding(horizontal = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -314,194 +316,116 @@ fun ReviewCard(onClick: () -> Unit) {
                     )
                 }
             }
-                Card(
-                    modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    elevation = CardDefaults.cardElevation(4.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Ôn tập",
-                            fontFamily = BalooThambiFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
-                            color = Color(0xFF460000)
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.option3),
-                            contentDescription = "Ôn tập",
-                            modifier = Modifier
-                                .height(65.dp)
-                                .clip(RoundedCornerShape(12.dp)),
-                            contentScale = ContentScale.Fit
-                        )
-                    }
-                }
-            }
-
-            AdsSection()
-        }
-    }
-}
-
-@Composable
-fun HeaderSection(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 32.dp, start = 24.dp, end = 24.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Cài đặt",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable {
-                        navController.navigate(Screen.Settings.route)
-                    }
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Hồ sơ",
-                tint = Color.White,
-                modifier = Modifier.size(28.dp)
-                    .clickable {
-                        navController.navigate(Screen.Profile.route)
-                    }
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Chào mừng đến với\n \n BabiLing!!!",
-                fontFamily = BalooThambiFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp,
-                color = Color(0xFFFFF5BE),
-                modifier = Modifier.weight(1f)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier.size(90.dp)
-            )
         }
     }
 }
 
 @Composable
 fun AdsCard(modifier: Modifier = Modifier) {
-    Card(
+    Image(        painter = painterResource(id = R.drawable.ads),
+        contentDescription = "Quảng cáo",
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ads),
-            contentDescription = "Quảng cáo",
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
-        )
-    }
+            .padding(horizontal = 24.dp)
+            .clip(RoundedCornerShape(16.dp)),
+        contentScale = ContentScale.FillWidth
+    )
 }
+
 
 @Composable
 fun HomeBottomNavBar(
     currentScreen: HomeNavItems,
     onScreenSelected: (HomeNavItems) -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
-        contentAlignment = Alignment.Center
+    NavigationBar(
+        containerColor = TextHome,
+        modifier = Modifier.height(80.dp)
     ) {
-        Card(
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF5BE)),
-            elevation = CardDefaults.cardElevation(8.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BottomNavItem(
-                    iconRes = R.drawable.home1,
-                    screen = HomeNavItems.Home,
-                    isSelected = currentScreen == HomeNavItems.Home,
-                    onClick = { onScreenSelected(HomeNavItems.Home) }
-                )
-                BottomNavItem(
-                    iconRes = R.drawable.home2,
-                    screen = HomeNavItems.Rank,
-                    isSelected = currentScreen == HomeNavItems.Rank,
-                    onClick = { onScreenSelected(HomeNavItems.Rank) }
-                )
-                BottomNavItem(
-                    iconRes = R.drawable.home3,
-                    screen = HomeNavItems.Learn,
-                    isSelected = currentScreen == HomeNavItems.Learn,
-                    onClick = { onScreenSelected(HomeNavItems.Learn) }
-                )
-                BottomNavItem(
-                    iconRes = R.drawable.home4,
-                    screen = HomeNavItems.Settings,
-                    isSelected = currentScreen == HomeNavItems.Settings,
-                    onClick = { onScreenSelected(HomeNavItems.Settings) }
-                )
-            }
-        }
+        BottomNavItem(
+            label = "Trang chủ",
+            iconRes = R.drawable.home1,
+            isSelected = currentScreen == HomeNavItems.Home,
+            onClick = { onScreenSelected(HomeNavItems.Home) }
+        )
+        BottomNavItem(
+            label = "Tiến độ",
+            iconRes = R.drawable.home2,
+            isSelected = currentScreen == HomeNavItems.Rank,
+            onClick = { onScreenSelected(HomeNavItems.Rank) }
+        )
+        BottomNavItem(
+            label = "Ôn tập",
+            iconRes = R.drawable.home3,
+            isSelected = currentScreen == HomeNavItems.Learn,
+            onClick = { onScreenSelected(HomeNavItems.Learn) }
+        )
+        BottomNavItem(
+            label = "Cài đặt",
+            iconRes = R.drawable.home4,
+            isSelected = currentScreen == HomeNavItems.Settings,
+            onClick = { onScreenSelected(HomeNavItems.Settings) }
+        )
     }
 }
 
 @Composable
-fun BottomNavItem(
-    @DrawableRes iconRes: Int,
-    screen: HomeNavItems,
-    isSelected: Boolean,
-    onClick: () -> Unit
+fun RowScope.BottomNavItem(    label: String,
+                               @DrawableRes iconRes: Int,
+                               isSelected: Boolean,
+                               onClick: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .size(64.dp)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) Color(0xFFFF8A80) else Color.Transparent
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 4.dp else 0.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
+    NavigationBarItem(
+        selected = isSelected,
+        onClick = onClick,
+        label = { Text(label, fontSize = 12.sp, fontFamily = BalooThambiFamily) },
+        icon = {
             Icon(
                 painter = painterResource(id = iconRes),
-                contentDescription = screen.name,
-                tint = Color.Unspecified, // Sử dụng màu gốc của icon
-                modifier = Modifier.size(36.dp)
+                contentDescription = label,
+                modifier = Modifier.size(28.dp),
+                // Thêm dòng này để Icon hiển thị đúng màu gốc của ảnh
+                tint = Color.Unspecified
             )
-        }
+        },
+        colors = NavigationBarItemDefaults.colors(
+            // Các màu này giờ sẽ chỉ áp dụng cho chữ (Text) và màu nền khi được chọn (indicator)
+            selectedTextColor = IndigoBlue,
+            unselectedTextColor = Color.Gray,
+            indicatorColor = BrightGreen
+        )
+    )
+}
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    // Trạng thái giả để chạy Preview
+    var currentScreen by remember { mutableStateOf(HomeNavItems.Home) }
+
+    BabiLingTheme { // Bọc trong Theme của bạn để có style đúng
+        HomeScreen(
+            currentScreen = currentScreen,
+            onNavigateToTopicSelect = { },
+            onNavigateToQuiz = { },
+            onNavigateToGame = { },
+            onNavigateToSettings = { },
+            onNavigateToProfile = { },
+            // Cung cấp tham số mới
+            onNavigateToProgress = { },
+            onBottomNavItemSelected = { newScreen ->
+                currentScreen = newScreen
+            }
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun BottomNavPreview() {
+    BabiLingTheme {
+        HomeBottomNavBar(
+            currentScreen = HomeNavItems.Home,
+            onScreenSelected = {}
+        )
     }
 }

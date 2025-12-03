@@ -120,5 +120,8 @@ dependencies {
     //quiz
     implementation("androidx.media3:media3-exoplayer:1.3.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-
+    //notification
+    val work_version = "2.9.0"
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }

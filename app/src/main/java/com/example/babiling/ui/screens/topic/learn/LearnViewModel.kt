@@ -1,28 +1,27 @@
 package com.example.babiling.ui.screens.topic.learn
 
-import android.content.Context // ✨ THÊM IMPORT NÀY ✨
+import android.content.Context
 import android.util.Log
-import androidx.compose.foundation.layout.size
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider // ✨ THÊM IMPORT NÀY ✨
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.babiling.ServiceLocator // ✨ THÊM IMPORT NÀY ✨
+import com.example.babiling.ServiceLocator
 import com.example.babiling.data.model.FlashcardEntity
+import com.example.babiling.data.model.UserProgressEntity // Quan trọng: import để sử dụng
 import com.example.babiling.data.repository.FlashcardRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Date // Quan trọng: import để sử dụng
 
 /**
- * ✨ BƯỚC 1: HOÀN THIỆN LẠI VIEWMODELFACTORY ✨
- * Lớp này có nhiệm vụ "dạy" cho hệ thống cách tạo ra LearnViewModel
- * vì nó có các tham số đặc biệt (repo, topicId, lessonNumber) trong constructor.
+ * Factory này "dạy" cho hệ thống cách tạo ra LearnViewModel
+ * vì nó có các tham số đặc biệt trong constructor.
+ * Đây là một phần bắt buộc phải có để ứng dụng không bị crash.
  */
-
 /**
  * ViewModel cho màn hình LearnScreen, quản lý logic học theo từng bài.
- * ✨ PHIÊN BẢN HOÀN HẢO - Không cần sửa thêm ✨
  */
 class LearnViewModel(
     private val repo: FlashcardRepository,
@@ -54,9 +53,6 @@ class LearnViewModel(
 
         viewModelScope.launch {
             try {
-                // Bạn đã sử dụng hàm getFlashcardsForLesson trong các file trước đó
-                // nên tôi sẽ dùng lại nó cho nhất quán. Nếu bạn đã đổi tên hàm trong repo
-                // thành getFlashcardsByLesson thì hãy sửa lại ở đây.
                 val result = repo.getFlashcardsForLesson(topicId, lessonNumber)
                 Log.d("BabiLing_Debug", "[LearnViewModel] Repository trả về ${result.size} thẻ.")
                 _cards.value = result
@@ -76,8 +72,7 @@ class LearnViewModel(
     }
 
     /**
-     * Ghi nhận việc hoàn thành bài học vào Room và đồng bộ lên Firebase.
-     * Logic này đã rất tốt, không cần thay đổi.
+     * Ghi nhận việc hoàn thành bài học vào Room VÀ đánh dấu chúng là cần được đồng bộ.
      */
     private fun recordLessonCompletionAndSync() {
         viewModelScope.launch {
@@ -88,13 +83,26 @@ class LearnViewModel(
                 return@launch
             }
 
-            Log.d("BabiLing_Learn", "Bắt đầu ghi nhận tiến độ cho '${_cards.value.size}' thẻ vào Room DB.")
+            Log.d("BabiLing_Learn", "Chuẩn bị ghi nhận tiến độ cho '${_cards.value.size}' thẻ vào Room DB.")
             try {
-                // 1. Ghi đè tiến độ cho TẤT CẢ các thẻ trong bài học này vào Room
-                repo.recordMultipleProgress(_cards.value)
+                // 1. Tạo danh sách tiến độ mới với `synced = false`
+                val progressListToUpsert = _cards.value.map { card ->
+                    UserProgressEntity(
+                        userId = userId,
+                        flashcardId = card.id,
+                        topicId = card.topicId,
+                        masteryLevel = 1, // Đặt mức thành thạo ban đầu là 1
+                        correctCountInRow = 1,
+                        lastReviewed = Date(),
+                        synced = false // ✨ ĐÁNH DẤU LÀ "CẦN ĐỒNG BỘ" ✨
+                    )
+                }
+
+                // 2. Ghi đè tiến độ vào Room bằng hàm upsert (cập nhật nếu đã có, chèn nếu chưa)
+                repo.upsertMultipleProgress(progressListToUpsert)
                 Log.d("BabiLing_Learn", "Ghi tiến độ hàng loạt vào Room thành công.")
 
-                // 2. KÍCH HOẠT ĐỒNG BỘ LÊN FIREBASE
+                // 3. KÍCH HOẠT ĐỒNG BỘ LÊN FIREBASE
                 Log.d("BabiLing_Sync", "Bắt đầu quá trình đồng bộ (sync up) sau khi học xong...")
                 repo.syncProgressUp()
                 Log.d("BabiLing_Sync", "Đồng bộ (sync up) hoàn tất.")
@@ -102,7 +110,7 @@ class LearnViewModel(
             } catch (e: Exception) {
                 Log.e("BabiLing_Sync", "LỖI khi ghi nhận hoặc đồng bộ tiến độ!", e)
             } finally {
-                // 3. Báo hiệu cho UI biết là bài học đã kết thúc
+                // 4. Báo hiệu cho UI biết là bài học đã kết thúc
                 _isFinished.value = true
             }
         }

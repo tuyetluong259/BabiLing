@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 // -------------------------------------------------------------
-// ✅ Navigation State
+// ✅ Navigation State (Giữ nguyên)
 // -------------------------------------------------------------
 sealed class LoginNavigationState {
     object Idle : LoginNavigationState()
@@ -24,7 +24,7 @@ sealed class LoginNavigationState {
 class LoginViewModel : ViewModel() {
 
     private val auth = FirebaseAuth.getInstance()
-    private val firestore = FirebaseFirestore.getInstance()
+    private val firestore = FirebaseFirestore.getInstance() // Giữ lại nếu cần truy vấn dữ liệu hồ sơ
 
     private val _navigationState =
         MutableStateFlow<LoginNavigationState>(LoginNavigationState.Idle)
@@ -32,17 +32,14 @@ class LoginViewModel : ViewModel() {
 
 
     // -------------------------------------------------------------
-    // ✅ Login bằng Google
+    // ✅ Login bằng Google (Giữ nguyên)
     // -------------------------------------------------------------
     fun signInWithGoogleCredential(credential: AuthCredential) {
         viewModelScope.launch {
-
             _navigationState.update { LoginNavigationState.Loading }
-
             try {
                 auth.signInWithCredential(credential).await()
                 _navigationState.update { LoginNavigationState.NavigateToHome }
-
             } catch (e: Exception) {
                 _navigationState.update {
                     LoginNavigationState.Error(
@@ -55,7 +52,7 @@ class LoginViewModel : ViewModel() {
 
 
     // -------------------------------------------------------------
-    // ✅ Login bằng username + password Firestore
+    // ✅ SỬA LỖI: Login bằng Username/Password sử dụng Firebase Auth
     // -------------------------------------------------------------
     fun signInWithUsername(username: String, password: String) {
 
@@ -69,37 +66,26 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             _navigationState.update { LoginNavigationState.Loading }
 
+            // Bước 1: Chuyển đổi Username thành Email ảo
+            val finalEmail = if ("@" in username) username else "$username@babiling.app"
+
             try {
-                val querySnapshot = firestore.collection("users")
-                    .whereEqualTo("username", username)
-                    .get()
-                    .await()
+                // Bước 2: SỬ DỤNG FIREBASE AUTH ĐỂ XÁC THỰC
+                auth.signInWithEmailAndPassword(finalEmail, password).await()
 
-                if (querySnapshot.isEmpty) {
-                    _navigationState.update {
-                        LoginNavigationState.Error("Tài khoản không tồn tại")
-                    }
-                    return@launch
-                }
-
-                val userDoc = querySnapshot.documents.first()
-                val savedPassword = userDoc.getString("password")
-
-                if (savedPassword != password) {
-                    _navigationState.update {
-                        LoginNavigationState.Error("Sai mật khẩu!")
-                    }
-                    return@launch
-                }
-
-                // ✅ Đúng → điều hướng Home
+                // Bước 3: Đăng nhập thành công, điều hướng Home
                 _navigationState.update { LoginNavigationState.NavigateToHome }
 
             } catch (e: Exception) {
+                // Xử lý các lỗi xác thực từ Firebase Auth
+                val errorMessage = when (e) {
+                    is com.google.firebase.auth.FirebaseAuthInvalidUserException -> "Tài khoản không tồn tại."
+                    is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "Tên đăng nhập hoặc mật khẩu không đúng."
+                    else -> e.message ?: "Đăng nhập thất bại."
+                }
+
                 _navigationState.update {
-                    LoginNavigationState.Error(
-                        e.message ?: "Đăng nhập thất bại."
-                    )
+                    LoginNavigationState.Error(errorMessage)
                 }
             }
         }
@@ -107,7 +93,7 @@ class LoginViewModel : ViewModel() {
 
 
     // -------------------------------------------------------------
-    // ✅ Reset mỗi khi vào LoginScreen
+    // ✅ Reset mỗi khi vào LoginScreen (Giữ nguyên)
     // -------------------------------------------------------------
     fun resetNavigationState() {
         _navigationState.update { LoginNavigationState.Idle }

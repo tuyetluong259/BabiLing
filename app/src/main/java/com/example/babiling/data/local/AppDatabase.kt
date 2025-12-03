@@ -23,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun topicDao(): TopicDao
 
     companion object {
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 4
         private const val DATABASE_NAME = "babiling.db"
 
         @Volatile private var INSTANCE: AppDatabase? = null

@@ -9,7 +9,7 @@ import com.example.babiling.data.model.FlashcardEntity
 /**
  * Data Access Object (DAO) cho bảng 'flashcards'.
  * Chịu trách nhiệm cho các tác vụ truy vấn liên quan đến Flashcard.
- * ✨ PHIÊN BẢN HOÀN THIỆN - Đã thêm hàm getCardCountForTopic ✨
+ * ✨ PHIÊN BẢN HOÀN THIỆN - Đã thêm hàm getCardCountPerLessonFromDb ✨
  */
 @Dao
 interface FlashcardDao {
@@ -53,6 +53,25 @@ interface FlashcardDao {
     @Query("SELECT DISTINCT lessonNumber FROM flashcards WHERE topicId = :topicId ORDER BY lessonNumber ASC")
     suspend fun getLessonNumbersForTopic(topicId: String): List<Int>
 
+    // ✨ ================================================================ ✨
+    // ✨    PHẦN CÒN THIẾU ĐƯỢC BỔ SUNG ĐỂ SỬA LỖI `Unresolved reference`   ✨
+    // ✨ ================================================================ ✨
+    /**
+     * Data class trung gian để chứa kết quả từ câu truy vấn GROUP BY.
+     */
+    data class LessonCardCount(
+        val lessonNumber: Int,
+        val cardCount: Int
+    )
+
+    /**
+     * Truy vấn để đếm số thẻ trong mỗi bài học (lessonNumber) của một chủ đề (topicId).
+     * Được gọi bởi FlashcardRepository.getCardCountPerLesson.
+     */
+    @Query("SELECT lessonNumber, COUNT(id) as cardCount FROM flashcards WHERE topicId = :topicId GROUP BY lessonNumber")
+    suspend fun getCardCountPerLessonFromDb(topicId: String): List<LessonCardCount>
+    // ✨ ========================== KẾT THÚC ============================ ✨
+
     // ================= BỔ SUNG CHO MÀN HÌNH TIẾN ĐỘ =================
 
     /**
@@ -67,7 +86,6 @@ interface FlashcardDao {
     @Query("SELECT * FROM flashcards WHERE id IN (:ids)")
     suspend fun getFlashcardsByIds(ids: List<String>): List<FlashcardEntity>
 
-    // ✨ ================= HÀM CÒN THIẾU ĐƯỢC THÊM VÀO ĐÂY ================= ✨
     /**
      * Đếm tổng số thẻ của một chủ đề cụ thể.
      * Dùng cho ProgressViewModel để tính toán phần trăm tiến độ.

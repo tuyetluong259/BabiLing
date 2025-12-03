@@ -2,11 +2,13 @@ package com.example.babiling
 
 import android.app.Application
 import android.util.Log
+import com.example.babiling.ServiceLocator
 
 /**
  * điểm khởi đầu của ứng dụng.
  * Được sử dụng để thực hiện các tác vụ khởi tạo toàn cục.
- */class App : Application() {
+ */
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d("BabiLing_App", "Application.onCreate: Bắt đầu khởi tạo toàn cục.")
@@ -14,6 +16,7 @@ import android.util.Log
         // tự động khởi tạo Database, Repository và chạy seed data
         // trên một luồng nền mà không làm treo giao diện người dùng.
         try {
+            // ServiceLocator đã được nhận diện sau khi import
             ServiceLocator.provideRepository(this)
             Log.d("BabiLing_App", "Application.onCreate: Yêu cầu khởi tạo Repository thành công.")
         } catch (e: Exception) {

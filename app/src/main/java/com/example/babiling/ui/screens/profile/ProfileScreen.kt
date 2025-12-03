@@ -14,13 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale // ✨ IMPORT CHO AVATAR ✨
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel // ✨ IMPORT CẦN THIẾT ✨
+import coil.compose.rememberAsyncImagePainter // ✨ IMPORT CHO AVATAR URL ✨
+import androidx.navigation.compose.rememberNavController
 import com.example.babiling.R
+import com.example.babiling.ui.screens.auth.AuthViewModel // ✨ IMPORT CẦN THIẾT ✨
 import com.example.babiling.ui.theme.BalooThambi2Family
+import com.example.babiling.ui.theme.BabiLingTheme // Giả định BabiLingTheme
 
 private val BackgroundColor = Color(0xFFB1E8C4)
 private val HeaderColor = Color(0xFF717086)
@@ -30,11 +36,24 @@ private val PlaceholderIconColor = Color(0xFFE57373)
 
 @Composable
 fun ProfileScreen(
+    authViewModel: AuthViewModel,
     onBackClick: () -> Unit = {},
     onEditClick: () -> Unit = {},
-    onLogoutClick: () -> Unit = {}
+    onLogoutClick: () -> Unit = {},
+    // ✅ THÊM THAM SỐ THEME (nếu bạn muốn cho phép chuyển đổi)
+    isDarkTheme: Boolean = false,
+    onToggleTheme: (Boolean) -> Unit = {}
 ) {
-    var isInterfaceEnabled by remember { mutableStateOf(false) }
+    // ✅ LẤY VIEWMODEL ĐỂ CÓ DỮ LIỆU USER VÀ THEME STATE
+    val currentUser by authViewModel.currentUser.collectAsState()
+
+    // Lấy thông tin user
+    val displayName = currentUser?.displayName ?: "Bạn ơi"
+    val userEmail = currentUser?.email ?: "chưa có email"
+    val photoUrl = currentUser?.photoUrl?.toString()
+
+    // Trạng thái cho Switch (dùng cho theme)
+    var isInterfaceEnabled by remember { mutableStateOf(isDarkTheme) }
 
     Box(
         modifier = Modifier
@@ -66,22 +85,35 @@ fun ProfileScreen(
                     modifier = Modifier
                         .size(120.dp)
                         .clip(CircleShape)
-                        .background(Color.White),
+                        .background(Color.White)
+                        .border(4.dp, Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = android.R.drawable.ic_menu_gallery),
-                        contentDescription = "Avatar",
-                        modifier = Modifier.size(80.dp),
-                        tint = PlaceholderIconColor
-                    )
+                    // ✅ HIỂN THỊ AVATAR THỰC
+                    if (photoUrl != null) {
+                        Image(
+                            painter = rememberAsyncImagePainter(photoUrl),
+                            contentDescription = "User Avatar",
+                            modifier = Modifier.matchParentSize().clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        // Placeholder
+                        Icon(
+                            painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+                            contentDescription = "Avatar Placeholder",
+                            modifier = Modifier.size(80.dp),
+                            tint = PlaceholderIconColor
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // ✅ DÒNG 1: "Hello [Display Name]"
             Text(
-                text = "User 123",
+                text = "Hello, ${displayName.substringBefore(' ')}!", // Chỉ lấy từ đầu tiên của tên hiển thị
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = BalooThambi2Family,
@@ -89,8 +121,9 @@ fun ProfileScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
+            // ✅ DÒNG 2: "@[Username/Email]"
             Text(
-                text = "@user1234567",
+                text = "@${userEmail.substringBefore('@')}", // Sử dụng phần trước @ của email làm username
                 fontSize = 14.sp,
                 fontFamily = BalooThambi2Family,
                 color = Color.Gray,
@@ -144,8 +177,8 @@ fun ProfileScreen(
                     )
 
                     Switch(
-                        checked = isInterfaceEnabled,
-                        onCheckedChange = { isInterfaceEnabled = it },
+                        checked = isDarkTheme, // Sử dụng tham số theme
+                        onCheckedChange = onToggleTheme, // Gọi hàm chuyển đổi theme
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = Color.White,
                             checkedTrackColor = Color(0xFF18C07A),
@@ -179,6 +212,8 @@ fun ProfileScreen(
         }
     }
 }
+
+// ... (Các Composable ProfileInfoCard và ProfileActionCard giữ nguyên) ...
 
 @Composable
 private fun ProfileInfoCard(title: String, fontFamily: androidx.compose.ui.text.font.FontFamily) {
@@ -223,11 +258,4 @@ private fun ProfileActionCard(title: String, onClick: () -> Unit, fontFamily: an
                 .padding(16.dp)
         )
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    ProfileScreen()
 }

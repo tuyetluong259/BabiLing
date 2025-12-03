@@ -38,8 +38,7 @@ import com.example.babiling.utils.rememberBitmapFromAssets
 @Composable
 fun LearnScreen(
     onBack: () -> Unit,
-    onLessonComplete: () -> Unit,
-    // ✨ 2. ĐÂY LÀ PHẦN SỬA QUAN TRỌNG NHẤT ✨
+    onLessonComplete: (topicId: String) -> Unit,
     // ViewModel sẽ được tạo ở đây, sử dụng Factory mà chúng ta đã làm.
     // Các giá trị topicId và lessonNumber phải được truyền vào từ NavHost.
     topicId: String,
@@ -72,7 +71,7 @@ fun LearnScreen(
 
     LaunchedEffect(isFinished) {
         if (isFinished) {
-            onLessonComplete()
+            onLessonComplete(topicId)
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.babiling.ui.screens.profile
 
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,12 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
 import com.example.babiling.R
+import com.example.babiling.ui.screens.auth.AuthViewModel
 import com.example.babiling.ui.theme.BalooThambi2Family
 
 private val BackgroundColor = Color(0xFFB1E8C4)
@@ -26,20 +32,49 @@ private val DeleteColor = Color(0xFFE57373)
 private val SaveButtonTextColor = Color(0xFFFF6B6B)
 private val PlaceholderIconColor = Color(0xFFE57373)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
+    authViewModel: AuthViewModel = viewModel(),
     onBackClick: () -> Unit = {},
     onSaveClick: () -> Unit = {},
+    // ✅ SỬA ĐỔI: HÀM NÀY SẼ BÁO TOAST
     onDeleteAccount: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
-    var accountName by remember { mutableStateOf("User 123") }
-    var username by remember { mutableStateOf("user123@") }
+    val context = LocalContext.current
+    val uiState by authViewModel.uiState.collectAsState()
+    val currentUser by authViewModel.currentUser.collectAsState()
+
+    // 1. Khởi tạo giá trị từ currentUser
+    var accountName by remember(currentUser) { mutableStateOf(currentUser?.displayName ?: "User 123") }
+    var username by remember(currentUser) { mutableStateOf(currentUser?.email?.substringBefore('@') ?: "user123") }
+
+    val photoUrl = currentUser?.photoUrl
 
     // Trạng thái cho Dialog
     var showDeleteDialog by remember { mutableStateOf(false) }
-    var showLogoutDialog by remember { mutableStateOf(false) }
-    var showSaveDialog by remember { mutableStateOf(false) } 
+    var showSaveDialog by remember { mutableStateOf(false) }
+
+    // ✅ LẮNG NGHE MESSAGES VÀ XỬ LÝ TOAST/ĐIỀU HƯỚNG
+    LaunchedEffect(uiState) {
+        uiState.successMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            authViewModel.clearMessages()
+            onSaveClick() // Điều hướng về ProfileScreen sau khi lưu thành công
+        }
+        uiState.errorMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            authViewModel.clearMessages()
+        }
+    }
+
+    // ✅ ĐỊNH NGHĨA HÀM TOAST CHO TÍNH NĂNG CHƯA PHÁT TRIỂN
+    val showDevelopingToast: () -> Unit = {
+        Toast.makeText(context, "Tính năng đang được phát triển!", Toast.LENGTH_SHORT).show()
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,6 +103,7 @@ fun EditProfileScreen(
             Box(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
+                // VÙNG HIỂN THỊ AVATAR
                 Box(
                     modifier = Modifier
                         .size(120.dp)
@@ -76,22 +112,31 @@ fun EditProfileScreen(
                         .border(4.dp, Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = android.R.drawable.ic_menu_gallery),
-                        contentDescription = "Avatar",
-                        modifier = Modifier.size(80.dp),
-                        tint = PlaceholderIconColor
-                    )
+                    if (photoUrl != null) {
+                        Image(
+                            painter = rememberAsyncImagePainter(photoUrl),
+                            contentDescription = "User Avatar",
+                            modifier = Modifier.matchParentSize().clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+                            contentDescription = "Avatar Placeholder",
+                            modifier = Modifier.size(80.dp),
+                            tint = PlaceholderIconColor
+                        )
+                    }
                 }
 
-                // Edit icon
+                // Edit icon (KÍCH HOẠT CHỌN ẢNH)
                 Box(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape)
                         .background(HeaderColor)
                         .align(Alignment.BottomEnd)
-                        .clickable { /* Handle change avatar */ },
+                        .clickable { showDevelopingToast() /* Tạm thời báo Toast */ },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -105,9 +150,9 @@ fun EditProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Username
+            // Tên hiển thị hiện tại (DISPLAY NAME)
             Text(
-                text = "User 123",
+                text = currentUser?.displayName ?: "User 123",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = BalooThambi2Family,
@@ -115,9 +160,9 @@ fun EditProfileScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            // User ID
+            // Email/UserID hiện tại (Static Display)
             Text(
-                text = "@user1234567",
+                text = currentUser?.email ?: "@user1234567",
                 fontSize = 14.sp,
                 fontFamily = BalooThambi2Family,
                 color = Color(0xFF5A7C4A),
@@ -126,9 +171,9 @@ fun EditProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Tên tài khoản
+            // Tên hiển thị (Editable)
             EditableProfileField(
-                label = "Tên tài khoản: User 123",
+                label = "Tên hiển thị",
                 value = accountName,
                 onValueChange = { accountName = it },
                 fontFamily = BalooThambi2Family,
@@ -137,9 +182,9 @@ fun EditProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Tên đăng nhập
+            // Tên đăng nhập (Editable)
             EditableProfileField(
-                label = "Tên đăng nhập: user123@",
+                label = "Tên đăng nhập",
                 value = username,
                 onValueChange = { username = it },
                 fontFamily = BalooThambi2Family,
@@ -148,9 +193,9 @@ fun EditProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Xóa tài khoản button - CẬP NHẬT ONCLICK
+            // Xóa tài khoản button
             Button(
-                onClick = { showDeleteDialog = true }, // KÍCH HOẠT DIALOG XÓA
+                onClick = { showDeleteDialog = true },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White
@@ -168,13 +213,12 @@ fun EditProfileScreen(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-
-
             Spacer(modifier = Modifier.weight(1f))
 
             // Chỉnh sửa button (Lưu)
             Button(
-                onClick = { showSaveDialog = true }, // ✅ KÍCH HOẠT DIALOG LƯU
+                onClick = { showSaveDialog = true },
+                enabled = !uiState.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
@@ -183,14 +227,18 @@ fun EditProfileScreen(
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text(
-                    text = "Chỉnh sửa",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = BalooThambi2Family,
-                    color = SaveButtonTextColor,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(color = SaveButtonTextColor, modifier = Modifier.size(24.dp))
+                } else {
+                    Text(
+                        text = "Chỉnh sửa",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = BalooThambi2Family,
+                        color = SaveButtonTextColor,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
             }
         }
     }
@@ -205,21 +253,24 @@ fun EditProfileScreen(
             confirmColor = DeleteColor,
             onConfirm = {
                 showDeleteDialog = false
-                onDeleteAccount() // Thực hiện hành động xóa
+                showDevelopingToast() // ✅ BÁO TOAST THAY VÌ XÓA
             },
             onDismiss = { showDeleteDialog = false }
         )
     }
-    // ✅ THÊM LOGIC CHO DIALOG LƯU/CHỈNH SỬA
+
     if (showSaveDialog) {
         ConfirmationDialog(
             title = "Xác nhận chỉnh sửa",
-            body = "Xác nhận chỉnh sửa",
+            body = "Xác nhận lưu các thay đổi?",
             confirmText = "Lưu",
             dismissText = "Hủy",
             confirmColor = SaveButtonTextColor,
             onConfirm = {
-                onSaveClick() // Thực hiện hành động lưu
+                authViewModel.saveProfileChanges(
+                    newUsername = username,
+                    newAccountName = accountName
+                )
                 showSaveDialog = false
             },
             onDismiss = { showSaveDialog = false }
@@ -227,7 +278,7 @@ fun EditProfileScreen(
     }
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EditableProfileField(
     label: String,
@@ -236,39 +287,42 @@ private fun EditableProfileField(
     fontFamily: androidx.compose.ui.text.font.FontFamily,
     labelColor: Color
 ) {
-    Card(
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        label = {
             Text(
-                text = label,
-                fontSize = 16.sp,
+                label,
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.SemiBold,
-                color = labelColor,
-                modifier = Modifier.weight(1f)
+                color = labelColor
             )
-
+        },
+        trailingIcon = {
             Icon(
                 painter = painterResource(id = android.R.drawable.ic_menu_edit),
                 contentDescription = "Edit",
                 tint = Color(0xFF888888),
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable { /* Handle edit */ }
+                modifier = Modifier.size(24.dp)
             )
-        }
-    }
+        },
+        singleLine = true,
+        shape = RoundedCornerShape(12.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            focusedIndicatorColor = Color(0xFF888888),
+            unfocusedIndicatorColor = Color.LightGray,
+            cursorColor = Color(0xFFE57373)
+        ),
+        textStyle = LocalTextStyle.current.copy(
+            fontSize = 16.sp,
+            fontFamily = fontFamily,
+            color = Color(0xFF2D2D2D),
+            fontWeight = FontWeight.SemiBold
+        )
+    )
 }
 @Composable
 fun ConfirmationDialog(
@@ -317,10 +371,4 @@ fun ConfirmationDialog(
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EditProfileScreenPreview() {
-    EditProfileScreen()
 }

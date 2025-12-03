@@ -52,6 +52,7 @@ fun QuizScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     topicId: String?,
     onNavigateBack: () -> Unit,
+    // ✨ BỎ `onFinish` ĐI, CHỈ DÙNG `onNavigateBack` ✨
     viewModel: QuizViewModel = viewModel(
         factory = QuizViewModelFactory(
             LocalContext.current.applicationContext as Application
@@ -72,7 +73,7 @@ fun QuizScreen(
             TopAppBar(
                 title = {
                     Text(
-                        if (topicId.isNullOrEmpty()) "Ôn tập tổng hợp" else "Ôn tập: ${topicId.replaceFirstChar { it.uppercase() }}",
+                        if (topicId.isNullOrEmpty() || topicId == "all") "Ôn tập tổng hợp" else "Ôn tập: ${topicId.replaceFirstChar { it.uppercase() }}",
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF3D5AFE)
                     )
@@ -101,6 +102,7 @@ fun QuizScreen(
                 onSubmitAnswer = { card, isCorrect ->
                     viewModel.submitAnswer(card, isCorrect)
                 },
+                // ✨ CHỈ CẦN TRUYỀN onNavigateBack XUỐNG ✨
                 onBack = onNavigateBack,
                 viewModel = viewModel
             )
@@ -114,7 +116,7 @@ private fun QuizContentContainer(
     modifier: Modifier = Modifier,
     questions: List<QuizQuestion>,
     onSubmitAnswer: (FlashcardEntity, Boolean) -> Unit,
-    onBack: () -> Unit,
+    onBack: () -> Unit, // ✨ CHỈ CẦN THAM SỐ onBack ✨
     viewModel: QuizViewModel
 ) {
     var score by remember { mutableStateOf(0) }
@@ -122,6 +124,8 @@ private fun QuizContentContainer(
     val currentQuestion = questions.getOrNull(currentQuestionIndex)
 
     if (currentQuestion == null) {
+        // ✨ GỌI onBack KHI HOÀN THÀNH ✨
+        // Logic điều hướng sẽ được xử lý ở NavGraph, cách làm này vẫn đúng!
         QuizCompleted(modifier = modifier, score = score, totalQuestions = questions.size, onBack = onBack)
     } else {
         when (currentQuestion) {
@@ -152,7 +156,40 @@ private fun QuizContentContainer(
     }
 }
 
-// ✨✨✨ LOGIC MỚI CHO TRẮC NGHIỆM ĐƯỢC CẬP NHẬT Ở ĐÂY ✨✨✨
+// ✨✨✨ MÀN HÌNH TỔNG KẾT QUIZ ✨✨✨
+@Composable
+fun QuizCompleted(
+    modifier: Modifier = Modifier,
+    score: Int,
+    totalQuestions: Int,
+    onBack: () -> Unit // ✨ DÙNG LẠI onBack, KHÔNG CẦN onFinish ✨
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("HOÀN THÀNH!", style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.Bold, color = Color(0xFF4CAF50))
+        Spacer(Modifier.height(16.dp))
+        Text("Kết quả của bạn:", style = MaterialTheme.typography.headlineMedium)
+        Text("$score / $totalQuestions", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.SemiBold)
+        Spacer(Modifier.height(48.dp))
+        Button(
+            onClick = onBack, // ✨ GỌI onBack KHI NHẤN NÚT ✨
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .height(56.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3D5AFE))
+        ) {
+            Text("TIẾP TỤC", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+
 @Composable
 fun MultipleChoiceQuestionUI(
     modifier: Modifier = Modifier,
@@ -291,7 +328,7 @@ fun FillInWordQuestionUI(
                 ) {
                     Text("What is this?", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(16.dp))
-                    val bitmap = com.example.babiling.utils.rememberBitmapFromAssets(imagePath = question.card.imagePath)
+                    val bitmap = rememberBitmapFromAssets(imagePath = question.card.imagePath)
                     if (bitmap != null) {
                         Image(bitmap = bitmap.asImageBitmap(), contentDescription = question.card.name, modifier = Modifier.size(120.dp))
                     } else {
@@ -338,61 +375,106 @@ fun FillInWordQuestionUI(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp),
+                .padding(bottom = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (userAnswerState != null) {
-                if (userAnswerState == true) {
-                    Text("Chính xác!", color = CorrectGreen, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                } else {
-                    Text("Đáp án đúng là: ${question.card.name}", color = IncorrectRed, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                }
-            }
-        }
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
             if (isAnswered) {
-                Button(onClick = onNext, modifier = Modifier.fillMaxWidth().height(56.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3D5AFE))) {
+                Button(
+                    onClick = onNext,
+                    modifier = Modifier.fillMaxWidth(0.9f).height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3D5AFE))
+                ) {
                     Text("TIẾP TỤC", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 }
             } else {
                 Button(
                     onClick = {
-                        val userAnswer = answerChars.joinToString("")
-                        val isCorrect = userAnswer.equals(question.card.name, ignoreCase = true)
-                        userAnswerState = isCorrect
+                        val isCorrect = answerChars.joinToString("") == question.card.name
                         onAnswered(isCorrect)
+                        userAnswerState = isCorrect
                         isAnswered = true
                     },
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
-                    enabled = answerChars.all { it != null },
+                    enabled = answerChars.none { it == null },
+                    modifier = Modifier.fillMaxWidth(0.9f).height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFDD835), disabledContainerColor = Color(0xFFFDD835).copy(alpha = 0.5f))
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFDD835),
+                        disabledContainerColor = Color(0xFFFDD835).copy(alpha = 0.5f)
+                    )
                 ) {
-                    Text("KIỂM TRA", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
+                    Text("XÁC NHẬN", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
                 }
             }
         }
     }
 }
 
+
+@Composable
+fun OptionButton(
+    text: String,
+    isSelected: Boolean,
+    isCorrect: Boolean,
+    isConfirmed: Boolean,
+    onClick: () -> Unit
+) {
+    val borderColor by animateColorAsState(
+        targetValue = when {
+            isConfirmed && isCorrect && isSelected -> Color(0xFF4CAF50) // Đúng và được chọn
+            isConfirmed && isSelected && !isCorrect -> Color(0xFFF44336) // Sai và được chọn
+            isConfirmed && isCorrect -> Color(0xFF4CAF50) // Đáp án đúng (không được chọn)
+            isSelected -> Color(0xFF3D5AFE) // Đang được chọn (chưa xác nhận)
+            else -> Color.Gray.copy(alpha = 0.3f)
+        },
+        animationSpec = tween(500), label = ""
+    )
+
+    val backgroundColor by animateColorAsState(
+        targetValue = when {
+            isConfirmed && isCorrect && isSelected -> Color(0xFFE8F5E9)
+            isConfirmed && isSelected && !isCorrect -> Color(0xFFFFEBEE)
+            isConfirmed && isCorrect -> Color(0xFFE8F5E9)
+            else -> Color.White
+        },
+        animationSpec = tween(500), label = ""
+    )
+
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .border(
+                width = 2.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(12.dp)
+            ),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor,
+            contentColor = Color.Black
+        ),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+    ) {
+        Text(text, fontSize = 16.sp)
+    }
+}
+
+
 @Composable
 fun AnswerBox(char: Char?, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(50.dp, 60.dp)
+            .size(48.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.White)
-            .border(1.dp, Color(0xFFCEE6FF), RoundedCornerShape(8.dp))
+            .background(if (char != null) Color.White else Color(0xFFE0E0E0))
+            .border(1.dp, Color.Gray.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         if (char != null) {
-            Text(char.uppercase(), fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text(text = char.toString().uppercase(), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -403,161 +485,23 @@ fun CharacterChip(char: Char, onClick: () -> Unit) {
         modifier = Modifier
             .size(48.dp)
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(2.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(char.uppercase(), fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = char.toString().uppercase(), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
 
-// ✨✨✨ LOGIC MỚI CHO VIỀN VÀ MÀU NỀN CỦA OPTIONBUTTON ✨✨✨
-@Composable
-fun OptionButton(
-    text: String,
-    isSelected: Boolean,
-    isCorrect: Boolean,
-    isConfirmed: Boolean,
-    onClick: () -> Unit
-) {
-    val defaultColor = Color(0xFFCEE6FF) // Màu nền xanh nhạt mặc định
-
-    // Màu nền thay đổi sau khi xác nhận
-    val containerColor by animateColorAsState(
-        targetValue = if (!isConfirmed) {
-            defaultColor // Trước khi xác nhận, luôn là màu mặc định
-        } else {
-            when {
-                isCorrect -> CorrectGreen // Đáp án đúng -> Xanh
-                isSelected && !isCorrect -> IncorrectRed // Chọn sai -> Đỏ
-                else -> defaultColor.copy(alpha = 0.5f) // Các đáp án khác -> Mờ đi
-            }
-        },
-        animationSpec = tween(500), label = "option container color"
-    )
-
-    // Màu viền để thể hiện lựa chọn trước khi xác nhận
-    val borderColor by animateColorAsState(
-        targetValue = if (isSelected && !isConfirmed) {
-            Color(0xFF3D5AFE) // Viền xanh đậm khi được chọn
-        } else {
-            Color.Transparent // Không có viền
-        },
-        animationSpec = tween(200), label = "option border color"
-    )
-
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(2.dp, borderColor, RoundedCornerShape(12.dp)), // Thêm viền
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = Color.Black
-        ),
-        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
-    ) {
-        Text(text, fontSize = 18.sp, modifier = Modifier.padding(vertical = 8.dp))
-    }
-}
-
-
-@Composable
-fun QuizCompleted(
-    modifier: Modifier = Modifier,
-    score: Int,
-    totalQuestions: Int,
-    onBack: () -> Unit
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Chúc mừng!",
-            style = MaterialTheme.typography.headlineMedium,
-            color = IncorrectRed
-        )
-        Spacer(Modifier.height(16.dp))
-        Text(
-            text = "Bạn đã hoàn thành bài ôn tập!",
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-            color = LessonOrange
-        )
-        Spacer(Modifier.height(32.dp))
-        Text(
-            text = "Kết quả của bạn:",
-            style = MaterialTheme.typography.titleLarge
-        )
-        Text(
-            text = "$score / $totalQuestions",
-            style = MaterialTheme.typography.displayMedium,
-            fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colorScheme.primary
-        )
-        Spacer(Modifier.height(48.dp))
-        Button(
-            onClick = onBack,
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.fillMaxWidth(0.7f),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = IncorrectRed
-            )
-        )
-        {
-            Text("Quay về", fontSize = 18.sp)
-        }
-    }
-}
-
-// --- Preview Section ---
-private class FakeQuizViewModel(application: Application) : QuizViewModel(application) {
-    override fun load(topicId: String?) { /* Do nothing in preview */ }
-    override fun playSound(soundPath: String) { /* Do nothing in preview, just log */ }
-}
-
-@Preview(showBackground = true, name = "QuizScreen Multiple Choice")
-@Composable
-private fun QuizScreenPreview() {
-    val context = LocalContext.current
-    BabiLingTheme {
-        QuizScreen(
-            topicId = "fruits",
-            onNavigateBack = {},
-            viewModel = FakeQuizViewModel(context.applicationContext as Application)
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Quiz FillInWord Preview")
-@Composable
-private fun QuizFillInWordPreview() {
-    BabiLingTheme {
-        FillInWordQuestionUI(
-            question = QuizQuestion.FillInWord(
-                card = FlashcardEntity(
-                    id = "1", topicId = "body", name = "shoulder", nameVi = "Vai",
-                    imagePath = "", soundPath = "", lessonNumber = 1
-                ),
-                scrambledChars = "relduoshas".toList()
-            ),
-            onAnswered = {},
-            onNext = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Quiz Completed Preview")
+// Preview cho màn hình hoàn thành
+@Preview(showBackground = true, name = "QuizCompleted Preview")
 @Composable
 private fun QuizCompletedPreview() {
     BabiLingTheme {
-        QuizCompleted(score = 8, totalQuestions = 10, onBack = {})
+        Surface(color = Color(0xFFFEF3E0)) {
+            QuizCompleted(score = 8, totalQuestions = 10, onBack = {})
+        }
     }
 }

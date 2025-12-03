@@ -1,7 +1,7 @@
 package com.example.babiling.ui.screens.topic.result
 
 import androidx.compose.foundation.layout.*
-// ✨ 1. SỬA LẠI IMPORT CHO ĐÚNG TÊN CHUẨN ✨
+import androidx.compose.material3.Button // ✨ THÊM IMPORT NÀY
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -17,9 +17,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun ResultScreen(
     topicId: String,
-    // Giả sử bạn cũng đã đổi tên ViewModel thành ResultViewModel
     viewModel: ResultViewModel = viewModel(),
-    onBack: () -> Unit = {}
+    // ✨ THÊM MỘT CALLBACK ĐỂ ĐÓNG MÀN HÌNH NÀY ✨
+    onFinish: () -> Unit
 ) {
     // Lắng nghe trạng thái từ ViewModel
     val uiState by viewModel.uiState.collectAsState()
@@ -37,17 +37,16 @@ fun ResultScreen(
 
     Column(
         Modifier.fillMaxSize().padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, // Căn giữa theo chiều ngang
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         if (uiState.isLoading) {
-            // ✨ 2. SỬA LẠI TÊN COMPOSABLE ✨
             CircularProgressIndicator()
-            Text("Đang tải kết quả...", modifier = Modifier.padding(top = 16.dp))
+            Text("Đang đồng bộ và tải kết quả...", modifier = Modifier.padding(top = 16.dp))
         } else {
             Text(
-                text = "Kết quả chủ đề", // Văn bản phù hợp với màn hình kết quả
-                style = MaterialTheme.typography.headlineSmall,
+                text = "Tổng kết",
+                style = MaterialTheme.typography.headlineLarge, // Dùng headlineLarge cho nổi bật
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
@@ -57,13 +56,11 @@ fun ResultScreen(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            // ✨ 3. SỬA LẠI TÊN COMPOSABLE VÀ THAM SỐ ✨
             LinearProgressIndicator(
-                progress = { percent }, // Tham số đúng là `progress`
+                progress = { percent },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(16.dp)
-                    // Thêm bo tròn cho đẹp hơn
                     .clip(RoundedCornerShape(8.dp))
             )
 
@@ -74,6 +71,16 @@ fun ResultScreen(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            // ✨ THÊM NÚT "HOÀN THÀNH" ✨
+            Spacer(Modifier.height(32.dp))
+
+            Button(
+                onClick = onFinish, // Gọi callback khi người dùng nhấn nút
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("HOÀN THÀNH")
+            }
         }
     }
 }

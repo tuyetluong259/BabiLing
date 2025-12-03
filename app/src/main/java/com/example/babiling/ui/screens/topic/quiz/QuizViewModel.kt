@@ -6,22 +6,25 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.babiling.ServiceLocator
 import com.example.babiling.data.model.FlashcardEntity
 import com.example.babiling.data.repository.FlashcardRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
+// --- Các enum và data class giữ nguyên, chúng đã rất tốt ---
 enum class QuestionType {
     MULTIPLE_CHOICE,
     FILL_IN_WORD
 }
-
 sealed class QuizQuestion(val type: QuestionType, val flashcard: FlashcardEntity) {
     data class MultipleChoice(
         val card: FlashcardEntity,
@@ -33,21 +36,37 @@ sealed class QuizQuestion(val type: QuestionType, val flashcard: FlashcardEntity
         val scrambledChars: List<Char>
     ) : QuizQuestion(QuestionType.FILL_IN_WORD, card)
 }
-
 data class QuizUiState(
     val questions: List<QuizQuestion> = emptyList(),
     val isLoading: Boolean = true
 )
+// --- ---
 
+/**
+ * ViewModel cho màn hình Quiz.
+ * ✨ PHIÊN BẢN HOÀN THIỆN - Đã thêm các kiểm tra an toàn và tối ưu ✨
+ */
 open class QuizViewModel(
     application: Application,
-    private val repo: FlashcardRepository = ServiceLocator.provideRepository(application)) : AndroidViewModel(application)
-{
+    private val repo: FlashcardRepository = ServiceLocator.provideRepository(application)
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(QuizUiState())
     val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
 
     private var player: ExoPlayer? = ExoPlayer.Builder(getApplication()).build()
+
+    init {
+        // ✨ Cải tiến 1: Thêm listener để tự động giải phóng tài nguyên khi hết bài ✨
+        player?.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_ENDED) {
+                    player?.stop()
+                    player?.clearMediaItems()
+                }
+            }
+        })
+    }
 
 
     open fun load(topicId: String?) {
@@ -55,12 +74,15 @@ open class QuizViewModel(
             _uiState.update { it.copy(isLoading = true) }
 
             try {
-                val allCards = if (topicId.isNullOrEmpty()) {
-                    Log.d("BabiLing_Debug", "[QuizViewModel] Đang tải TẤT CẢ thẻ.")
-                    repo.getAllCards()
-                } else {
-                    Log.d("BabiLing_Debug", "[QuizViewModel] Đang tải thẻ cho chủ đề: $topicId.")
-                    repo.getFlashcardsByTopic(topicId)
+                // Chạy các tác vụ nặng trên background thread
+                val allCards = withContext(Dispatchers.IO) {
+                    if (topicId.isNullOrEmpty() || topicId == "all") {
+                        Log.d("BabiLing_Debug", "[QuizViewModel] Đang tải TẤT CẢ thẻ.")
+                        repo.getAllCards()
+                    } else {
+                        Log.d("BabiLing_Debug", "[QuizViewModel] Đang tải thẻ cho chủ đề: $topicId.")
+                        repo.getFlashcardsByTopic(topicId)
+                    }
                 }.shuffled().take(10)
 
                 if (allCards.isEmpty()) {
@@ -70,7 +92,8 @@ open class QuizViewModel(
                 }
 
                 val quizQuestions = allCards.map { card ->
-                    if (Random.nextBoolean() && allCards.size >= 4) {
+                    // ✨ Cải tiến 2: Tạo câu hỏi trắc nghiệm khi từ có 1 ký tự để tránh lỗi điền từ rỗng ✨
+                    if ((Random.nextBoolean() && allCards.size >= 4) || card.name.length <= 1) {
                         val wrongOptions = allCards
                             .filter { it.id != card.id }
                             .shuffled()
@@ -100,29 +123,31 @@ open class QuizViewModel(
 
     open fun playSound(soundPath: String) {
         if (soundPath.isBlank()) {
-            Log.w("BabiLing_Sound", "Sound path is empty, cannot play sound.")
+            Log.w("BabiLing_Sound", "Sound path rỗng, không thể phát âm thanh.")
             return
         }
         try {
             val assetPath = "file:///android_asset/$soundPath"
             val mediaItem = MediaItem.fromUri(Uri.parse(assetPath))
-            player?.setMediaItem(mediaItem)
-            player?.prepare()
-            player?.play()
-            Log.d("BabiLing_Sound", "Playing sound from: $assetPath")
+            player?.apply {
+                stop() // Dừng âm thanh đang phát (nếu có)
+                setMediaItem(mediaItem)
+                prepare()
+                play()
+            }
+            Log.d("BabiLing_Sound", "Đang phát âm thanh từ: $assetPath")
         } catch (e: Exception) {
-            Log.e("BabiLing_Sound", "Error playing sound from path: $soundPath", e)
+            Log.e("BabiLing_Sound", "Lỗi khi phát âm thanh từ: $soundPath", e)
         }
     }
 
 
     fun submitAnswer(card: FlashcardEntity, isCorrect: Boolean) {
         Log.d("BabiLing_Quiz", "Người dùng trả lời câu hỏi '${card.name}': ${if (isCorrect) "ĐÚNG" else "SAI"}")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) { // Chuyển việc ghi DB sang background thread
             val newMasteryLevel = if (isCorrect) 1 else 0
             val newCorrectCountInRow = if (isCorrect) 1 else 0
 
-            // ✨ SỬA LỖI Ở ĐÂY: Đổi tên hàm cho đúng với Repository ✨
             repo.recordSingleProgress(
                 flashcardId = card.id,
                 topicId = card.topicId,
@@ -136,6 +161,6 @@ open class QuizViewModel(
         super.onCleared()
         player?.release()
         player = null
-        Log.d("BabiLing_Sound", "ExoPlayer has been released.")
+        Log.d("BabiLing_Sound", "ExoPlayer đã được giải phóng.")
     }
 }

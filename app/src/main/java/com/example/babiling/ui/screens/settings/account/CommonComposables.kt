@@ -23,14 +23,15 @@ fun ConfirmationDialog(
                 text = titleText,
                 fontFamily = BalooThambi2Family,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFFf5f5f5)
+                color = Color(0xFF03A9F4)
             )
         },
         text = {
             Text(
                 text = bodyText,
                 fontFamily = BalooThambi2Family,
-                color = Color(0xFFf5f5f5)
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF2196F3)
             )
         },
         confirmButton = {

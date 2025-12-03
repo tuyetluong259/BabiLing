@@ -1,5 +1,7 @@
 package com.example.babiling.ui.screens.settings
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext // ✨ IMPORT CẦN THIẾT ✨
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.babiling.R
-import com.example.babiling.Screen // <-- ĐÃ THÊM IMPORT
+import com.example.babiling.Screen
 import com.example.babiling.ui.theme.BalooThambi2Family
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +38,14 @@ fun SettingsScreen(navController: NavController) {
     val cardColor = Color.White
     val primaryColor = Color(0xFF6395EE)
     val textColor = Color(0xFF2D2D2D)
+
+    // ✨ LẤY CONTEXT ĐỂ SỬ DỤNG TOAST ✨
+    val context = LocalContext.current
+
+    // Định nghĩa hàm Toast
+    val showDevelopingToast: () -> Unit = {
+        Toast.makeText(context, "Tính năng đang được phát triển!", Toast.LENGTH_SHORT).show()
+    }
 
     Scaffold(
         topBar = {
@@ -92,25 +103,25 @@ fun SettingsScreen(navController: NavController) {
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = "Chỉnh sửa hồ sơ",
-                        onClick = { navController.navigate(Screen.EditProfile.route) } // Giữ nguyên
+                        onClick = { navController.navigate(Screen.EditProfile.route) }
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.Shield,
                         title = "Bảo vệ",
-                        onClick = { navController.navigate(Screen.Security.route) } // ĐÃ HOÀN THIỆN
+                        onClick = { navController.navigate(Screen.Security.route) }
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.Notifications,
                         title = "Thông báo",
-                        onClick = { navController.navigate(Screen.Notifications.route) } // ĐÃ HOÀN THIỆN
+                        onClick = { navController.navigate(Screen.Notifications.route) }
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.Lock,
                         title = "Đổi mật khẩu",
-                        onClick = { /* TODO: navController.navigate(Screen.ChangePassword.route) */ } // Giữ nguyên TODO
+                        onClick = showDevelopingToast // ✨ SỬ DỤNG TOAST MỚI ✨
                     )
                 }
             }
@@ -135,21 +146,19 @@ fun SettingsScreen(navController: NavController) {
                     SettingsItem(
                         icon = Icons.Default.Flag,
                         title = "Báo cáo sự cố",
-                        // HOÀN THIỆN: Điều hướng đến màn hình Báo cáo sự cố
-                        onClick = { navController.navigate(Screen.ReportIssue.route) }
+                        onClick = { navController.navigate(Screen.Support.route) }
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.Default.PersonAdd,
                         title = "Thêm tài khoản",
-                        onClick = { /* TODO: navController.navigate(Screen.AddAccount.route) */ } // Giữ nguyên TODO
+                        onClick = showDevelopingToast // ✨ SỬ DỤNG TOAST MỚI ✨
                     )
                     HorizontalDivider(color = backgroundColor, thickness = 1.dp)
                     SettingsItem(
                         icon = Icons.AutoMirrored.Filled.ExitToApp,
                         title = "Đăng xuất",
                         onClick = {
-                            // ĐIỀU HƯỚNG: Đăng xuất, về màn hình Login và xóa hết các màn hình trước đó
                             navController.navigate(Screen.Login.route) {
                                 popUpTo(navController.graph.startDestinationId) { inclusive = true }
                             }

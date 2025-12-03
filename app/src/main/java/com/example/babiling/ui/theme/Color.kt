@@ -31,7 +31,7 @@ val WarmOrange = Color(0xFFEF993A)
 val SkyBlue = Color(0xFF66E1FF)
 
 // Màu #09BC18 (Xanh Lá Cây Sáng/Lục Bảo)
-val BrightGreen = Color(0xFF09BC18)
+val BrightGreen = Color(0xFF2BCB9A)
 
 // Màu #ED1616 (Đỏ Tươi/Đỏ Cảnh Báo)
 val AlertRed = Color(0xFFED1616)

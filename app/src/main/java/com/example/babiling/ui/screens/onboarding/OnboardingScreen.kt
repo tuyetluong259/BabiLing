@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -36,6 +38,11 @@ import androidx.compose.ui.text.font.FontStyle
 fun OnboardingScreen(navController: NavController) {
 
     val pagerState = rememberPagerState(pageCount = { 3 })
+    // Màu sắc cho nút "Bắt đầu"
+    val startButtonColor = Color(0xFFEF3349) // Màu đỏ/hồng tươi
+    val indicatorActiveColor = Color(0xFF0D47A1) // Màu xanh đậm cho dấu chấm active
+    val indicatorInactiveColor = Color(0xFFE0E0E0) // Màu xám nhạt cho dấu chấm inactive
+    val skipTextColor = Color(0xFF28BAEE) // Màu xanh nhạt cho nút Skip
 
     Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
 
@@ -50,7 +57,7 @@ fun OnboardingScreen(navController: NavController) {
             }
         }
 
-        // Skip
+        // --- Nút Skip ---
         TextButton(
             onClick = {
                 navController.navigate(Screen.Login.route) {
@@ -63,33 +70,84 @@ fun OnboardingScreen(navController: NavController) {
         ) {
             Text(
                 text = "Skip",
-                color = Color(0xFF28BAEE),
+                color = skipTextColor,
                 fontSize = 16.sp,
                 fontFamily = BalooThambi2Family
             )
         }
 
-        // Dấu chấm
-        Row(
-            Modifier
-                .wrapContentHeight()
-                .fillMaxWidth()
+        // --- Dấu chấm (Pager Indicator) và Nút "Bắt đầu" ---
+        Column(
+            modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 32.dp),
-            horizontalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            repeat(pagerState.pageCount) { iteration ->
-                val color = if (pagerState.currentPage == iteration) Color(0xFF0D47A1) else Color(0xFFE0E0E0)
-                Box(
+
+            // Dấu chấm - CHỈ HIỂN THỊ NẾU KHÔNG PHẢI TRANG CUỐI (currentPage != 2)
+            if (pagerState.currentPage != 2) {
+                Row(
                     modifier = Modifier
-                        .padding(4.dp)
-                        .background(color, shape = CircleShape)
-                        .size(12.dp)
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(pagerState.pageCount) { iteration ->
+                        val color = if (pagerState.currentPage == iteration) indicatorActiveColor else indicatorInactiveColor
+                        Box(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .background(color, shape = CircleShape)
+                                .size(12.dp)
+                        )
+                    }
+                }
+            }
+
+            // Nút "Bắt đầu" - Chỉ hiển thị ở trang cuối cùng (index 2)
+            if (pagerState.currentPage == 2) {
+                // Sử dụng Spacer để tạo khoảng cách thống nhất với vị trí của dấu chấm ở các trang trước
+                // Nếu dấu chấm bị ẩn, ta cần spacer để đẩy nút Bắt đầu lên một chút
+                Spacer(modifier = Modifier.height(24.dp))
+
+                StartButton(
+                    onClick = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(Screen.Onboarding.route) { inclusive = true }
+                        }
+                    },
+                    buttonColor = startButtonColor
                 )
             }
         }
     }
 }
+
+// Composable cho nút "Bắt đầu"
+@Composable
+fun StartButton(onClick: () -> Unit, buttonColor: Color) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 48.dp) // Căn giữa và thêm padding
+            .height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
+        shape = CircleShape
+    ) {
+        Text(
+            text = "BẮT ĐẦU",
+            fontFamily = BalooThambi2Family,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+    }
+}
+// ------------------------------------------------------------------
+// Các hàm Page1Content(), Page2Content(), Page3Content() và Preview giữ nguyên
+// ------------------------------------------------------------------
+
 @Composable
 fun Page1Content() {
     Box(
@@ -254,10 +312,17 @@ fun Page2Preview() {
     }
 }
 
-@Preview(showBackground = true, name = "Page 3 Content")
+@Preview(showBackground = true, name = "Page 3 Content - Có nút Bắt đầu")
 @Composable
 fun Page3Preview() {
     BabiLingTheme {
-        Page3Content()
+        Column(modifier = Modifier.fillMaxSize()) {
+            Page3Content()
+            Spacer(modifier = Modifier.weight(1f)) // Đẩy nút xuống dưới cùng
+            // Dấu chấm đã bị xóa, chỉ còn nút BẮT ĐẦU
+            Spacer(modifier = Modifier.height(24.dp))
+            StartButton(onClick = {}, buttonColor = Color(0xFFEF3349))
+            Spacer(modifier = Modifier.height(32.dp)) // Padding dưới cùng
+        }
     }
 }

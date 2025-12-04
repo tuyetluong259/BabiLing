@@ -205,16 +205,13 @@ fun ProfileScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = BalooThambi2Family,
-                    color = InfoTextColor,
+                    color = Color(0xFFED1616),
                     modifier = Modifier.padding(16.dp)
                 )
             }
         }
     }
 }
-
-// ... (Các Composable ProfileInfoCard và ProfileActionCard giữ nguyên) ...
-
 @Composable
 private fun ProfileInfoCard(title: String, fontFamily: androidx.compose.ui.text.font.FontFamily) {
     Card(

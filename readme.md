@@ -1,6 +1,6 @@
 # BabiLing - Ứng Dụng Học Ngôn Ngữ Cho Trẻ Em
-<p align="center"><img src="app/src/main/res/drawable/logo.png" alt="Logo BabiLing" width="200"/>
-</p>
+<p align="center"><img src="app/src/main/res/drawable/logo.png" alt="Logo BabiLing" width="200"/></p>
+
 * BabiLing là một ứng dụng di động học ngôn ngữ được thiết kế đặc biệt cho trẻ em, xây dựng hoàn toàn bằng công nghệ hiện đại của Android. Với giao diện thân thiện, nội dung học tập phong phú và các hoạt động tương tác, BabiLing giúp trẻ em tiếp cận ngôn ngữ mới một cách tự nhiên và hiệu quả.Dự án được xây dựng bằng Kotlin và Jetpack Compose, tuân thủ theo kiến trúc MVVM (Model-View-ViewModel) để đảm bảo mã nguồn dễ dàng bảo trì, mở rộng và kiểm thử.
 # ✨ Các Chức Năng Chính
 - Học qua Chủ đề: Bài học được phân loại theo các chủ đề gần gũi với trẻ em như động vật, trái cây, phương tiện giao thông, giúp việc học trở nên thú vị và dễ liên tưởng.
@@ -71,5 +71,4 @@ git clone [(https://github.com/tuyetluong259/BabiLing.git)]
 - Nhấn nút Run 'app' (▶️) trên thanh công cụ của Android Studio.
 **Để cài đặt về điện thoại:**
 - Quét mã qr và tải xuống
-<p align="center"><img src="app/src/main/res/drawable/qrcode_babiling.png" alt="Logo BabiLing" width="200"/>
-</p>
+<p align="center"><img src="app/src/main/res/drawable/qrcode_babiling.png" alt="Logo BabiLing" width="400"/></p>

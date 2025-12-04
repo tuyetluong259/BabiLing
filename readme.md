@@ -45,15 +45,15 @@
 ├── build.gradle.kts                  # File build của toàn dự án
 └── gradle/libs.versions.toml         # Version Catalog để quản lý thư viện 
 ```
-* # 🚀 Cài Đặt và Chạy Thử
+# 🚀 Cài Đặt và Chạy Thử
 **Để build và chạy thử dự án, bạn cần thực hiện các bước sau:**
-_Yêu cầu:_
-Android Studio Iguana | 2023.2.1 hoặc mới hơn.
-JDK 17.Các bước cài đặt:
-**_1.Clone Repository:_**
-git clone [(https://github.com/tuyetluong259/BabiLing.git)]
-* cd BabiLing
-**_2.Kết nối với Firebase:_**
+**_- Yêu cầu:_**
+- Android Studio Iguana | 2023.2.1 hoặc mới hơn.
+- JDK 17.Các bước cài đặt:
+***1.Clone Repository:***
+- git clone [(https://github.com/tuyetluong259/BabiLing.git)]
+- cd BabiLing
+***2.Kết nối với Firebase:***
 - Truy cập Firebase Console.
 - Tạo một dự án Firebase mới.
 - Thêm một ứng dụng Android vào dự án Firebase với package name là com.example.babiling.
@@ -62,13 +62,13 @@ git clone [(https://github.com/tuyetluong259/BabiLing.git)]
   - Authentication: Bật phương thức đăng nhập bằng Email/Password và Google.
   - Firestore Database: Tạo một database ở chế độ production.
   - Storage: (Nếu cần) Tạo một bucket lưu trữ.
-**_3.Build Dự Án:_**
+***3.Build Dự Án:***
 - Mở dự án bằng Android Studio.
 - Android Studio sẽ tự động đồng bộ Gradle. Quá trình này có thể mất vài phút.
 - Nếu gặp lỗi org.gradle.java.home, hãy vào File -> Settings -> Build, Execution, Deployment -> Build Tools -> Gradle và chọn một Gradle JDK là jbr-17 hoặc Embedded JDK 17.
-**_4.Chạy Ứng Dụng:_**
+***4.Chạy Ứng Dụng:***
 - Kết nối một thiết bị Android thật hoặc khởi động một máy ảo (Emulator).
 - Nhấn nút Run 'app' (▶️) trên thanh công cụ của Android Studio.
-**Để cài đặt về điện thoại:**
+***Để cài đặt về điện thoại:***
 - Quét mã qr và tải xuống
 <p align="center"><img src="app/src/main/res/drawable/qrcode_babiling.png" alt="Logo BabiLing" width="400"/></p>

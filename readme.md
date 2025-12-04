@@ -43,8 +43,8 @@
 │   │   └── res/                      # Tài nguyên (drawable, font, string...)
 │   └── build.gradle.kts              # File build của module app
 ├── build.gradle.kts                  # File build của toàn dự án
-└── gradle/libs.versions.toml         # Version Catalog để quản lý thư viện'''
-
+└── gradle/libs.versions.toml         # Version Catalog để quản lý thư viện 
+```
 * # 🚀 Cài Đặt và Chạy Thử
 **Để build và chạy thử dự án, bạn cần thực hiện các bước sau:**
 _Yêu cầu:_

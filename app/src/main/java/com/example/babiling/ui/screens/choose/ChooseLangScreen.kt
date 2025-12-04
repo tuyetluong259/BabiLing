@@ -1,5 +1,6 @@
 package com.example.babiling.ui.screens.choose
 
+import android.widget.Toast // ✅ Cần import Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext // ✅ Cần import LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +34,13 @@ import com.example.babiling.ui.theme.BabiLingTheme
 fun ChooseLangScreen(
     onNavigateToChooseAge: () -> Unit = {}
 ) {
+    // ✅ 1. Lấy Context để hiển thị Toast
+    val context = LocalContext.current
+
+    // ✅ 2. Định nghĩa hành động cho nút đang phát triển
+    val onDevelopingClick = {
+        Toast.makeText(context, "Chức năng Tiếng Nhật đang được phát triển!", Toast.LENGTH_SHORT).show()
+    }
 
     val titleColor = Color(0xFF0D47A1)
     val titleColor2 = Color(0xFFE25939)
@@ -51,7 +60,7 @@ fun ChooseLangScreen(
             contentScale = ContentScale.Crop
         )
 
-        //main (ĐÃ SỬA LẠI LAYOUT BẰNG WEIGHT)
+        //main
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -59,13 +68,11 @@ fun ChooseLangScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // === CẦN GẠT 1: Đẩy tiêu đề xuống ===
-            // Tăng/giảm số 1.0f để đẩy tiêu đề xuống/lên
             Spacer(modifier = Modifier.weight(1.0f))
             // ===================================
 
             Text(
-                text = "Chọn ngôn ngữ",
+                text = "Chọn ngôn ngữ học",
                 fontFamily = BalooThambiFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
@@ -80,7 +87,6 @@ fun ChooseLangScreen(
             )
 
             Spacer(modifier = Modifier.weight(0.8f))
-            // =================================================
 
             // choosen
             Card(
@@ -98,11 +104,13 @@ fun ChooseLangScreen(
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    // ✅ TIẾNG NHẬT: Thay đổi onClick thành onDevelopingClick
                     LanguageCard(
                         imageRes = R.drawable.flag_japan,
                         text = "Tiếng Nhật",
-                        onClick = onNavigateToChooseAge
+                        onClick = onDevelopingClick
                     )
+                    // TIẾNG ANH: Giữ nguyên, chuyển đến ChooseAgeScreen
                     LanguageCard(
                         imageRes = R.drawable.flag_my,
                         text = "Tiếng Anh",
@@ -111,15 +119,18 @@ fun ChooseLangScreen(
                 }
             }
 
-            // === CẦN GẠT 3: Khoảng cách giữa Ô chọn và Nút ===
             Spacer(modifier = Modifier.weight(1.0f))
             // ============================================
 
-            // 4. NÚT BẮT ĐẦU
+            // NÚT BẮT ĐẦU
+            // LƯU Ý: Nút "Bắt đầu" hiện đang gọi onNavigateToChooseAge.
+            // Nếu không có ngôn ngữ nào được chọn, hành vi này có thể gây nhầm lẫn.
+            // Trong luồng này, ta vẫn giữ nguyên chức năng này, nhưng trong thực tế,
+            // bạn nên vô hiệu hóa nút "Bắt đầu" trừ khi một ngôn ngữ (vd: Tiếng Anh) đã được chọn.
             Button(
                 onClick = onNavigateToChooseAge,
                 modifier = Modifier
-                    .fillMaxWidth(0.9f) // Hơi nhỏ hơn 1 chút
+                    .fillMaxWidth(0.9f)
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -135,13 +146,12 @@ fun ChooseLangScreen(
                 )
             }
 
-            // Thêm 1 khoảng trống nhỏ ở dưới cùng cho đẹp
             Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
 
-// (Hàm LanguageCard và Preview giữ nguyên, không sửa)
+// Hàm LanguageCard và Preview giữ nguyên
 @Composable
 fun LanguageCard(
     imageRes: Int,

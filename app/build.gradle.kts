@@ -1,3 +1,15 @@
+import java.util.Properties
+import java.nio.charset.StandardCharsets
+val signingProperties = Properties()
+val signingFile = rootProject.file("signing.properties")
+
+if (signingFile.exists()) {
+    // Đã thêm cách đọc mạnh mẽ để khắc phục lỗi I/O
+    signingFile.reader(StandardCharsets.UTF_8).use { reader ->
+        signingProperties.load(reader)
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -20,11 +32,16 @@ android {
     }
 
     signingConfigs {
-        create("releaseConfig") {
+        create("releaseConfig"){
             storeFile = file("D:/Android_Keys/babiling/babiling_keys")
-            storePassword = "123456"
+
+            storePassword = signingProperties.getProperty("KEYSTORE_STORE_PASSWORD")
+                ?: throw GradleException("KEYSTORE_STORE_PASSWORD not found in signing.properties")
+
             keyAlias = "key0"
-            keyPassword = "123456"
+
+            keyPassword = signingProperties.getProperty("KEYSTORE_KEY_PASSWORD")
+                ?: throw GradleException("KEYSTORE_KEY_PASSWORD not found in signing.properties")
         }
     }
 
@@ -64,8 +81,6 @@ android {
 }
 
 dependencies {
-    // ---- THỐNG NHẤT VỀ VERSION CATALOG ----
-
     // Compose BOM (Quản lý phiên bản cho các thư viện Compose)
     implementation(platform(libs.androidx.compose.bom))
 
@@ -120,6 +135,7 @@ dependencies {
     //quiz
     implementation("androidx.media3:media3-exoplayer:1.3.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     //notification
     val work_version = "2.9.0"
     implementation("androidx.work:work-runtime-ktx:$work_version")

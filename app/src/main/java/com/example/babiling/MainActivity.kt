@@ -8,13 +8,17 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.CircularProgressIndicator // Thêm CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect // Cần thiết cho Async
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
@@ -48,11 +52,11 @@ import com.example.babiling.ui.screens.topic.quiz.QuizScreen
 import com.example.babiling.ui.screens.topic.result.ResultScreen
 import com.example.babiling.ui.theme.BabiLingTheme
 import kotlinx.coroutines.launch
-
+import androidx.compose.runtime.rememberCoroutineScope
 // ------------------------------
 // MARK: MainViewModel
 // ------------------------------
-
+// (Giữ nguyên)
 class MainViewModel(private val repository: FlashcardRepository) : ViewModel() {
     fun syncDown() {
         viewModelScope.launch {
@@ -82,7 +86,7 @@ class MainViewModel(private val repository: FlashcardRepository) : ViewModel() {
 // ------------------------------
 // MARK: MainActivity
 // ------------------------------
-
+// (Giữ nguyên)
 class MainActivity : ComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels {
@@ -133,8 +137,8 @@ fun AppNavigation() {
     val context = LocalContext.current
 
     val authRepository = remember { ServiceLocator.provideAuthRepository(context) }
-    // ✅ AuthViewModel được tạo bằng Factory (Cần thiết)
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(context))
+    val composableScope = rememberCoroutineScope()
 
     val googleSignInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -147,15 +151,39 @@ fun AppNavigation() {
         }
     }
 
-    val startDestination = if (authRepository.getCurrentUser() != null) {
-        Screen.Home.route
-    } else {
-        Screen.Splash.route
+    // ✅ KHẮC PHỤC LỖI TRẠNG THÁI: Sử dụng State để lưu đích đến sau khi kiểm tra Async
+    val currentUser = authRepository.getCurrentUser()
+    var currentStartDestination by remember { mutableStateOf<String?>(null) } // Null = Đang tải
+    val isLoading = currentStartDestination == null
+
+    // ✅ LaunchedEffect kiểm tra trạng thái setup từ Firestore
+    LaunchedEffect(currentUser) {
+        if (currentUser == null) {
+            currentStartDestination = Screen.Splash.route // Chưa đăng nhập
+        } else {
+            // Lấy trạng thái setup BỀN BỈ từ Firestore
+            val isSetupComplete = authRepository.fetchIsProfileSetupComplete()
+
+            currentStartDestination = if (isSetupComplete) {
+                Screen.Home.route
+            } else {
+                Screen.ChooseLang.route
+            }
+        }
     }
+
+    // Hiển thị loading nếu đang chờ kiểm tra Firestore
+    if (isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return // Dừng Compose cho đến khi có đích đến
+    }
+
 
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = currentStartDestination!!
     ) {
         // --- Nhóm 1: Màn hình cơ bản (Splash, Onboarding, Auth) ---
         composable(Screen.Splash.route) { SplashScreen(navController) }
@@ -166,9 +194,16 @@ fun AppNavigation() {
                 authViewModel = authViewModel,
                 googleSignInLauncher = googleSignInLauncher,
                 onAuthSuccess = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
+                    composableScope.launch {
+                        val destination = if (authRepository.fetchIsProfileSetupComplete()) {
+                            Screen.Home.route // Người dùng cũ
+                        } else {
+                            Screen.ChooseLang.route // Người dùng mới
+                        }
+                        navController.navigate(destination) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
+                            }
                         }
                     }
                 },
@@ -178,6 +213,7 @@ fun AppNavigation() {
             )
         }
         composable(Screen.Register.route) {
+            // Tương tự, nếu đăng ký thành công, cần kiểm tra (hoặc mặc định là ChooseLang)
             RegisterScreen(
                 authViewModel = authViewModel,
                 onBackToLogin = {
@@ -210,7 +246,7 @@ fun AppNavigation() {
         // --- Nhóm 3: Màn hình Chính (Container) ---
         composable(Screen.Home.route) { MainScreenContainer(navController) }
 
-        // --- Nhóm 4: Màn hình Chủ đề/Bài học/Tiến trình ---
+        // --- Nhóm 4 & 5 (Các màn hình khác giữ nguyên) ---
         composable(Screen.TopicSelect.route) {
             TopicSelectionScreen(
                 onNavigateBack = { navController.popBackStack() },
@@ -313,10 +349,9 @@ fun AppNavigation() {
             )
         }
 
-        // ✅ SỬA LỖI: Truyền AuthViewModel vào EditProfileScreen
         composable(Screen.EditProfile.route) {
             EditProfileScreen(
-                authViewModel = authViewModel, // 👈 ĐÃ THÊM VIEWMODEL
+                authViewModel = authViewModel,
                 onBackClick = { navController.popBackStack() },
                 onSaveClick = {
                     navController.popBackStack()
@@ -329,7 +364,8 @@ fun AppNavigation() {
                         }
                     }
                 },
-                onLogout = { /* Hiện tại chưa dùng */ }
+                onLogout = { Toast.makeText(context, "Chức năng Đăng xuất tạm thời chưa khả dụng. Vui lòng sử dụng nút Đăng xuất trên màn hình Hồ sơ chính.", Toast.LENGTH_LONG).show()
+                }
             )
         }
 
@@ -350,7 +386,7 @@ fun AppNavigation() {
 // ------------------------------
 // MARK: MainScreenContainer
 // ------------------------------
-
+// (Giữ nguyên)
 /**
  * Container cho các màn hình có BottomNavBar.
  */

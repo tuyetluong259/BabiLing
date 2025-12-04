@@ -13,4 +13,5 @@
     <color name="fruit_text">#FBC02D</color>
     <color name="animals_text">#E64A19</color>
     <color name="toys_text">#7B1FA2</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 </resources>

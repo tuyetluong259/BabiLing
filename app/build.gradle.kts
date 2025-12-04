@@ -83,7 +83,6 @@ android {
 dependencies {
     // Compose BOM (Quản lý phiên bản cho các thư viện Compose)
     implementation(platform(libs.androidx.compose.bom))
-
     // Core & Lifecycle
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

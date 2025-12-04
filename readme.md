@@ -26,7 +26,8 @@
 - Tải ảnh: Coil - Thư viện tải ảnh được tối ưu cho Jetpack Compose.
 - Quản lý phiên bản: Version Catalog (libs.versions.toml).
 # 📂 Cấu Trúc Dự Án
-```BabiLing/
+```
+BabiLing/
 ├── app/
 │   ├── src/main/
 │   │├── java/com/example/babiling/
@@ -47,13 +48,19 @@
 ```
 # 🚀 Cài Đặt và Chạy Thử
 **Để build và chạy thử dự án, bạn cần thực hiện các bước sau:**
+
 **_- Yêu cầu:_**
+
 - Android Studio Iguana | 2023.2.1 hoặc mới hơn.
 - JDK 17.Các bước cài đặt:
+
 ***1.Clone Repository:***
-- git clone [(https://github.com/tuyetluong259/BabiLing.git)]
+
+- git clone https://github.com/tuyetluong259/BabiLing.git
 - cd BabiLing
+
 ***2.Kết nối với Firebase:***
+
 - Truy cập Firebase Console.
 - Tạo một dự án Firebase mới.
 - Thêm một ứng dụng Android vào dự án Firebase với package name là com.example.babiling.
@@ -62,13 +69,19 @@
   - Authentication: Bật phương thức đăng nhập bằng Email/Password và Google.
   - Firestore Database: Tạo một database ở chế độ production.
   - Storage: (Nếu cần) Tạo một bucket lưu trữ.
+
 ***3.Build Dự Án:***
+
 - Mở dự án bằng Android Studio.
 - Android Studio sẽ tự động đồng bộ Gradle. Quá trình này có thể mất vài phút.
 - Nếu gặp lỗi org.gradle.java.home, hãy vào File -> Settings -> Build, Execution, Deployment -> Build Tools -> Gradle và chọn một Gradle JDK là jbr-17 hoặc Embedded JDK 17.
+
 ***4.Chạy Ứng Dụng:***
+
 - Kết nối một thiết bị Android thật hoặc khởi động một máy ảo (Emulator).
 - Nhấn nút Run 'app' (▶️) trên thanh công cụ của Android Studio.
+
 ***Để cài đặt về điện thoại:***
+
 - Quét mã qr và tải xuống
 <p align="center"><img src="app/src/main/res/drawable/qrcode_babiling.png" alt="Logo BabiLing" width="400"/></p>

@@ -28,23 +28,55 @@
 # 📂 Cấu Trúc Dự Án
 ```
 BabiLing/
-├── app/
-│   ├── src/main/
-│   │├── java/com/example/babiling/
-│   │   │   ├── data/                 # Lớp Repository, Model, và nguồn dữ liệu (Local/Remote)
-│   │   │   │   ├── local/            # Room Database, DAO
-│   │   │   │   ├── remote/           # Tương tác với Firebase
-│   │   │   │   └── repository/       # Trung tâm điều phối dữ liệu
-│   │   │   ├── ui/                   # Các thành phần liên quan đến UI
-│   │   │   │   ├── screens/          # Các màn hình chính của ứng dụng (Auth, Home, Profile...)
-│   │   │   │   ├── theme/            # Theme, Color, Typography
-│   │   │   │   └── navigation/       # Định nghĩa các route và luồng điều hướng
-│   │   │   ├── MainActivity.kt       # Activity chính, nơi chứa NavHost
-│   │   │   └── ServiceLocator.kt     # Cung cấp các dependency cho ứng dụng
-│   │   └── res/                      # Tài nguyên (drawable, font, string...)
-│   └── build.gradle.kts              # File build của module app
-├── build.gradle.kts                  # File build của toàn dự án
-└── gradle/libs.versions.toml         # Version Catalog để quản lý thư viện 
+app/
+ ├── src/
+ │   ├── main/
+ │   │   ├── assets/                      # Dữ liệu tài sản ứng dụng (file ngôn ngữ, tệp tĩnh...)
+ │   │   ├── java/com/example/babiling/
+ │   │   │   ├── data/                    # Tầng Data - quản lý dữ liệu
+ │   │   │   │   ├── local/               # Room Database / SharedPreferences (local data)
+ │   │   │   │   ├── model/               # Các data class (Entity, DTO...)
+ │   │   │   │   ├── repository/          # Repository pattern giao tiếp Data Source
+ │   │   │   │   ├── seed/                # Dữ liệu mẫu ban đầu nếu có
+ │   │   │   │
+ │   │   │   ├── ui/                      # Tầng UI (Compose Screens)
+ │   │   │   │   ├── screens/
+ │   │   │   │   │   ├── auth/            # Màn hình xác thực (Login, Signup...)
+ │   │   │   │   │   ├── choose/          # Màn chọn topic, mô hình học
+ │   │   │   │   │   ├── home/            # Trang chủ sau khi đăng nhập
+ │   │   │   │   │   ├── onboarding/      # Màn hình giới thiệu ứng dụng
+ │   │   │   │   │   ├── profile/         # Hồ sơ người dùng
+ │   │   │   │   │   ├── progress/        # Theo dõi tiến độ học tập
+ │   │   │   │   │   ├── rating/          # Màn hình đánh giá, xếp hạng
+ │   │   │   │   │   ├── settings/        # Cài đặt: Theme, tài khoản,...
+ │   │   │   │   │   ├── splash/          # Màn hình khởi động
+ │   │   │   │   │   ├── topic/           # Học theo chủ đề (Từ vựng, luyện tập...)
+ │   │   │   │
+ │   │   │   ├── theme/                   # Colors, Typography, Shapes cho Compose
+ │   │   │   ├── utils/                   # Các hàm tiện ích dùng chung
+ │   │   │   ├── workers/                 # WorkManager, tác vụ chạy nền
+ │   │   │   │
+ │   │   │   ├── App.kt                   # Application class (Init DI, Firebase,...)
+ │   │   │   ├── MainActivity.kt          # Activity chính chứa Navigation Host
+ │   │   │   ├── Navigation.kt            # Định nghĩa NavGraph điều hướng
+ │   │   │   ├── ServiceLocator.kt        # Dependency Provider (DI tự quản lý)
+ │   │   │
+ │   │   ├── res/                         # Tài nguyên UI (layout xml, drawable, string…)
+ │   │   │   ├── AndroidManifest.xml      # Khai báo quyền + cấu hình app
+ │   │
+ │   ├── test/ [unitTest]                 # Unit test cho ViewModel, Repository
+ │
+ │
+ ├── gradle/
+ │   ├── wrapper/                         # File chạy Gradle
+ │   ├── libs.versions.toml               # Quản lý version dependency (Version Catalog)
+ │
+ ├── build.gradle(.kts)                   # Cấu hình Module App
+ ├── settings.gradle(.kts)                # Cấu hình Project
+ ├── google-services.json                 # Firebase cấu hình
+ ├── local.properties                     # Cấu hình SDK local
+ ├── README.md                            # Hướng dẫn dự án
+
 ```
 # 🚀 Cài Đặt và Chạy Thử
 **Để build và chạy thử dự án, bạn cần thực hiện các bước sau:**

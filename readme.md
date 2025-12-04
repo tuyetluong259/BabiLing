@@ -26,24 +26,24 @@
 - Tải ảnh: Coil - Thư viện tải ảnh được tối ưu cho Jetpack Compose.
 - Quản lý phiên bản: Version Catalog (libs.versions.toml).
 # 📂 Cấu Trúc Dự Án
-1. [ ] BabiLing/
-2. [ ] ├── app/
-3. [ ] │   ├── src/main/
-4. [ ] │   │├── java/com/example/babiling/
-5. [ ] │   │   │   ├── data/                 # Lớp Repository, Model, và nguồn dữ liệu (Local/Remote)
-6. [ ] │   │   │   │   ├── local/            # Room Database, DAO
-7. [ ] │   │   │   │   ├── remote/           # Tương tác với Firebase
-8. [ ] │   │   │   │   └── repository/       # Trung tâm điều phối dữ liệu
-9. [ ] │   │   │   ├── ui/                   # Các thành phần liên quan đến UI
-10. [ ] │   │   │   │   ├── screens/          # Các màn hình chính của ứng dụng (Auth, Home, Profile...)
-11. [ ] │   │   │   │   ├── theme/            # Theme, Color, Typography
-12. [ ] │   │   │   │   └── navigation/       # Định nghĩa các route và luồng điều hướng
-13. [ ] │   │   │   ├── MainActivity.kt       # Activity chính, nơi chứa NavHost
-14. [ ] │   │   │   └── ServiceLocator.kt     # Cung cấp các dependency cho ứng dụng
-15. [ ] │   │   └── res/                      # Tài nguyên (drawable, font, string...)
-16. [ ] │   └── build.gradle.kts              # File build của module app
-17. [ ] ├── build.gradle.kts                  # File build của toàn dự án
-18. [ ] └── gradle/libs.versions.toml         # Version Catalog để quản lý thư viện
+```BabiLing/
+├── app/
+│   ├── src/main/
+│   │├── java/com/example/babiling/
+│   │   │   ├── data/                 # Lớp Repository, Model, và nguồn dữ liệu (Local/Remote)
+│   │   │   │   ├── local/            # Room Database, DAO
+│   │   │   │   ├── remote/           # Tương tác với Firebase
+│   │   │   │   └── repository/       # Trung tâm điều phối dữ liệu
+│   │   │   ├── ui/                   # Các thành phần liên quan đến UI
+│   │   │   │   ├── screens/          # Các màn hình chính của ứng dụng (Auth, Home, Profile...)
+│   │   │   │   ├── theme/            # Theme, Color, Typography
+│   │   │   │   └── navigation/       # Định nghĩa các route và luồng điều hướng
+│   │   │   ├── MainActivity.kt       # Activity chính, nơi chứa NavHost
+│   │   │   └── ServiceLocator.kt     # Cung cấp các dependency cho ứng dụng
+│   │   └── res/                      # Tài nguyên (drawable, font, string...)
+│   └── build.gradle.kts              # File build của module app
+├── build.gradle.kts                  # File build của toàn dự án
+└── gradle/libs.versions.toml         # Version Catalog để quản lý thư viện'''
 
 * # 🚀 Cài Đặt và Chạy Thử
 **Để build và chạy thử dự án, bạn cần thực hiện các bước sau:**

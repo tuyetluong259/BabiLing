@@ -40,19 +40,14 @@ fun ProfileScreen(
     onBackClick: () -> Unit = {},
     onEditClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
-    // ✅ THÊM THAM SỐ THEME (nếu bạn muốn cho phép chuyển đổi)
     isDarkTheme: Boolean = false,
     onToggleTheme: (Boolean) -> Unit = {}
 ) {
-    // ✅ LẤY VIEWMODEL ĐỂ CÓ DỮ LIỆU USER VÀ THEME STATE
     val currentUser by authViewModel.currentUser.collectAsState()
-
-    // Lấy thông tin user
     val displayName = currentUser?.displayName ?: "Bạn ơi"
     val userEmail = currentUser?.email ?: "chưa có email"
     val photoUrl = currentUser?.photoUrl?.toString()
 
-    // Trạng thái cho Switch (dùng cho theme)
     var isInterfaceEnabled by remember { mutableStateOf(isDarkTheme) }
 
     Box(
@@ -89,7 +84,6 @@ fun ProfileScreen(
                         .border(4.dp, Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    // ✅ HIỂN THỊ AVATAR THỰC
                     if (photoUrl != null) {
                         Image(
                             painter = rememberAsyncImagePainter(photoUrl),
@@ -113,7 +107,7 @@ fun ProfileScreen(
 
             // ✅ DÒNG 1: "Hello [Display Name]"
             Text(
-                text = "Hello, ${displayName.substringBefore(' ')}!", // Chỉ lấy từ đầu tiên của tên hiển thị
+                text = "Hello, ${displayName.substringBefore(' ')}!",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = BalooThambi2Family,
